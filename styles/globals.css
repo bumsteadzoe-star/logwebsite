@@ -1,0 +1,89 @@
+/* ─── Brand Tokens ──────────────────────────────────────────── */
+:root {
+  --color-cream:  #EBE5DC;   /* primary background */
+  --color-tan:    #C4A882;   /* footer / stats background */
+  --color-green:  #1B502F;   /* PRIMARY ACCENT — CTAs, highlights */
+  --color-dark:   #1A1A1A;   /* primary text, dark sections */
+  --color-white:  #FFFFFF;   /* text over dark photos */
+  --color-muted:  #6B6560;   /* captions, secondary text */
+  --color-card:   #F5EFE6;   /* card backgrounds */
+  --color-border: rgba(26,26,26,0.10); /* subtle dividers */
+}
+
+/* ─── Reset ─────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ─── Base ──────────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-space-grotesk), 'Space Grotesk', sans-serif;
+  background-color: var(--color-cream);
+  color: var(--color-dark);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ─── Marquee animation ─────────────────────────────────────── */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* Used by photo carousels with 3× duplicated items */
+@keyframes marquee-third {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-33.333%); }
+}
+
+.marquee-track {
+  animation: marquee 32s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* ─── Film grain overlay utility ────────────────────────────── */
+.grain {
+  position: relative;
+}
+.grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.07'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 200px 200px;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  opacity: 0.6;
+  z-index: 5;
+}
+
+/* ─── Global link reset ─────────────────────────────────────── */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ─── Focus styles ──────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--color-green);
+  outline-offset: 3px;
+}
+
+/* ─── Image sepia warmth ────────────────────────────────────── */
+.film-img {
+  filter: sepia(0.08) saturate(0.92) contrast(1.03);
+}

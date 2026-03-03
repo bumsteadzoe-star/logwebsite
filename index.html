@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LOG — document what moves you.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── Reset ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Space Grotesk', sans-serif; background: #EBE5DC; color: #1A1A1A; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    /* ─── Brand tokens ─── */
+    :root {
+      --cream: #EBE5DC; --tan: #C4A882; --green: #1B502F;
+      --dark: #1A1A1A; --muted: #6B6560; --card: #F5EFE6;
+    }
+
+    /* ─── Marquee ─── */
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    .mq-fwd { animation: marquee 32s linear infinite; }
+    .mq-rev { animation: marquee 40s linear infinite reverse; }
+
+    /* ─── Grain ─── */
+    .grain::after {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+      background-size: 180px 180px; mix-blend-mode: overlay; opacity: 0.5;
+    }
+
+    /* ─── Page routing ─── */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ─── Cards ─── */
+    .card { background: var(--card); border: 1px solid rgba(26,26,26,0.07); border-radius: 1px; overflow: hidden; transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s ease; cursor: pointer; }
+    .card:hover { transform: translateY(-6px) rotate(-0.4deg); box-shadow: 0 16px 48px rgba(26,26,26,0.14); }
+    .film-img { filter: sepia(0.08) saturate(0.9) contrast(1.04); }
+
+    /* ─── Input ─── */
+    .field { width: 100%; font-family: 'Space Grotesk', sans-serif; font-size: 1rem; color: #1A1A1A; background: transparent; border: none; border-bottom: 1.5px solid rgba(26,26,26,0.2); padding: 0.75rem 0; outline: none; transition: border-color 0.2s; }
+    .field:focus { border-color: #1B502F; }
+    .field::placeholder { color: rgba(26,26,26,0.3); }
+
+    /* ─── Navbar scroll ─── */
+    #navbar { transition: background 0.35s, border-color 0.35s; }
+    #navbar.scrolled { background: rgba(235,229,220,0.95) !important; backdrop-filter: blur(12px); border-bottom-color: rgba(26,26,26,0.08) !important; }
+    #navbar.scrolled .nav-logo { color: #1A1A1A !important; }
+    #navbar.scrolled .nav-link { color: rgba(26,26,26,0.65) !important; }
+    #navbar.hero-page { background: transparent !important; }
+
+    /* ─── Grain image overlay ─── */
+    .img-wrap { position: relative; overflow: hidden; }
+    .img-wrap::after {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E");
+      background-size: 160px 160px; mix-blend-mode: multiply; opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     NAVBAR (shared across all pages)
+══════════════════════════════════════════ -->
+<header id="navbar" style="position:fixed;top:0;left:0;right:0;z-index:100;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 2.75rem;background:transparent;border-bottom:1px solid transparent;">
+  <a class="nav-logo" onclick="goTo('home')" style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.25rem;letter-spacing:-0.05em;color:#fff;cursor:pointer;">LOG</a>
+  <div style="display:flex;align-items:center;gap:2.25rem;">
+    <a onclick="goTo('home')" class="nav-link" style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:0.82rem;letter-spacing:0.03em;color:rgba(255,255,255,0.75);cursor:pointer;">home</a>
+    <a onclick="goTo('recs')" class="nav-link" style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:0.82rem;letter-spacing:0.03em;color:rgba(255,255,255,0.75);cursor:pointer;">recs</a>
+    <a onclick="goTo('contact')" class="nav-link" style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:0.82rem;letter-spacing:0.03em;color:rgba(255,255,255,0.75);cursor:pointer;">contact</a>
+    <a onclick="goTo('waitlist')" style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:0.78rem;letter-spacing:0.05em;color:#EBE5DC;background:#1B502F;padding:0.55rem 1.2rem;border-radius:2px;cursor:pointer;">join the waitlist!</a>
+  </div>
+</header>
+
+
+<!-- ══════════════════════════════════════════
+     PAGE: HOME
+══════════════════════════════════════════ -->
+<div id="page-home" class="page active">
+
+  <!-- HERO -->
+  <section class="grain" style="position:relative;height:100vh;min-height:700px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;background:#0f1a12;">
+    <div aria-hidden style="position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 20% 60%, rgba(196,168,130,0.18) 0%, transparent 60%), radial-gradient(ellipse 50% 70% at 80% 30%, rgba(27,80,47,0.35) 0%, transparent 55%), linear-gradient(160deg, #0a1209 0%, #122418 40%, #0e1a12 100%);"></div>
+    <div aria-hidden style="position:absolute;bottom:0;left:0;right:0;height:45%;background:linear-gradient(to top, rgba(9,20,11,0.9) 0%, transparent 100%);pointer-events:none;"></div>
+    <!-- Top bar -->
+    <div style="position:relative;z-index:10;display:flex;justify-content:space-between;align-items:center;padding:5.5rem 3rem 0;">
+      <span style="font-family:'Courier Prime',monospace;font-size:0.65rem;color:rgba(235,229,220,0.35);letter-spacing:0.15em;text-transform:uppercase;">est. 2025</span>
+      <span style="font-family:'Courier Prime',monospace;font-size:0.65rem;color:rgba(235,229,220,0.35);letter-spacing:0.1em;">your world · your story</span>
+    </div>
+    <!-- Main -->
+    <div style="position:relative;z-index:10;padding:0 3rem 4.5rem;display:grid;grid-template-columns:1fr auto;align-items:flex-end;gap:2rem;">
+      <div>
+        <h1 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(7rem,20vw,18rem);line-height:0.82;color:#EBE5DC;letter-spacing:-0.05em;margin:0 0 1.5rem 0;">LOG</h1>
+        <p style="font-family:'Space Grotesk',sans-serif;font-weight:300;font-size:clamp(0.95rem,2vw,1.3rem);color:rgba(235,229,220,0.6);letter-spacing:0.01em;line-height:1.5;">document what moves you.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:1.75rem;padding-bottom:0.25rem;">
+        <p style="font-family:'Space Grotesk',sans-serif;font-weight:400;font-size:clamp(0.85rem,1.5vw,1.05rem);color:rgba(235,229,220,0.65);max-width:320px;line-height:1.6;text-align:right;">the app for sharing where you've been, what you loved, and what's worth knowing.</p>
+        <a onclick="goTo('waitlist')" style="display:inline-block;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:0.82rem;letter-spacing:0.08em;text-transform:uppercase;color:#1A1A1A;background:#EBE5DC;padding:1rem 2.25rem;border-radius:2px;cursor:pointer;">join the waitlist →</a>
+        <span style="font-family:'Courier Prime',monospace;font-size:0.65rem;color:rgba(235,229,220,0.25);letter-spacing:0.08em;">coming soon · 2025</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS BAR -->
+  <section style="background:#C4A882;padding:3.5rem 3rem;border-top:1px solid rgba(26,26,26,0.08);border-bottom:1px solid rgba(26,26,26,0.08);">
+    <div style="max-width:1400px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;">
+      <div style="text-align:center;">
+        <p style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(3rem,6vw,5.5rem);line-height:1;letter-spacing:-0.05em;color:#1A1A1A;margin-bottom:0.6rem;">2,400+</p>
+        <p style="font-family:'Courier Prime',monospace;font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(26,26,26,0.5);">spots logged</p>
+      </div>
+      <div style="text-align:center;border-left:1px solid rgba(26,26,26,0.12);">
+        <p style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(3rem,6vw,5.5rem);line-height:1;letter-spacing:-0.05em;color:#1A1A1A;margin-bottom:0.6rem;">18</p>
+        <p style="font-family:'Courier Prime',monospace;font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(26,26,26,0.5);">cities &amp; counting</p>
+      </div>
+      <div style="text-align:center;border-left:1px solid rgba(26,26,26,0.12);">
+        <p style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(3rem,6vw,5.5rem);line-height:1;letter-spacing:-0.05em;color:#1A1A1A;margin-bottom:0.6rem;">∞</p>
+        <p style="font-family:'Courier Prime',monospace;font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(26,26,26,0.5);">stories to tell</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- VALUE PROPS -->
+  <section style="background:#EBE5DC;padding:7rem 3rem;">
+    <div style="max-width:1400px;margin:0 auto;">
+      <p style="font-family:'Courier Prime',monospace;font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;color:#6B6560;margin-bottom:3rem;">what LOG is for</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);">
+        <div style="padding:0 3rem 2.5rem 0;">
+          <span style="font-family:'Courier Prime',monospace;font-size:0.72rem;letter-spacing:0.1em;color:#1B502F;display:block;margin-bottom:1.75rem;">01</span>
+          <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(2.5rem,4vw,4.25rem);line-height:0.88;color:#1A1A1A;letter-spacing:-0.04em;margin-bottom:1.75rem;">discover</h2>
+          <p style="font-family:'Space Grotesk',sans-serif;font-size:0.95rem;line-height:1.7;color:#6B6560;max-width:280px;">find hidden gems, local spots, and recs from people who actually know. no algorithms. just real taste.</p>
+        </div>
+        <div style="padding:0 3rem 2.5rem 3rem;border-left:1px solid rgba(26,26,26,0.1);">
+          <span style="font-family:'Courier Prime',monospace;font-size:0.72rem;letter-spacing:0.1em;color:#1B502F;display:block;margin-bottom:1.75rem;">02</span>
+          <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(2.5rem,4vw,4.25rem);line-height:0.88;color:#1A1A1A;letter-spacing:-0.04em;margin-bottom:1.75rem;">share</h2>
+          <p style="font-family:'Space Grotesk',sans-serif;font-size:0.95rem;line-height:1.7;color:#6B6560;max-width:280px;">log your experiences and build a living record of your world — the places, the food, the moments worth keeping.</p>
+        </div>
+        <div style="padding:0 0 2.5rem 3rem;border-left:1px solid rgba(26,26,26,0.1);">
+          <span style="font-family:'Courier Prime',monospace;font-size:0.72rem;letter-spacing:0.1em;color:#1B502F;display:block;margin-bottom:1.75rem;">03</span>
+          <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(2.5rem,4vw,4.25rem);line-height:0.88;color:#1A1A1A;letter-spacing:-0.04em;margin-bottom:1.75rem;">experience</h2>
+          <p style="font-family:'Space Grotesk',sans-serif;font-size:0.95rem;line-height:1.7;color:#6B6560;max-width:280px;">go deeper in every city, every trip, every chapter. LOG turns every place into a story worth telling.</p>
+        </div>
+      </div>
+      <div style="margin-top:3rem;padding-top:3rem;border-top:1px solid rgba(26,26,26,0.1);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
+        <p style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(1.1rem,2.2vw,1.6rem);color:#1A1A1A;letter-spacing:-0.03em;">built for people who care about where they go.</p>
+        <a onclick="goTo('recs')" style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:0.82rem;letter-spacing:0.05em;color:#1B502F;border-bottom:1.5px solid #1B502F;padding-bottom:2px;cursor:pointer;">see the recs →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- RECS PREVIEW (3 cards) -->
+  <section style="background:#EBE5DC;padding:2rem 3rem 7rem;">
+    <div style="max-width:1400px;margin:0 auto;">
+      <p style="font-family:'Courier Prime',monospace;font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;color:#6B6560;margin-bottom:2.5rem;">from the feed</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;">
+        <!-- Card 1 -->
+        <div class="card" onclick="openPost('nyc')">
+          <div class="img-wrap" style="aspect-ratio:4/3;background:#C4A882;">
+            <img src="https://placehold.co/800x600/C4A882/1A1A1A?text=LES+NYC" alt="NYC" class="film-img" style="width:100%;height:100%;object-fit:cover;" />
+            <div style="position:absolute;top:0.75rem;left:0.75rem;background:#1B502F;color:#EBE5DC;font-family:'Courier Prime',monospace;font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:0.28rem 0.6rem;border-radius:1px;z-index:2;">New York, NY</div>
+          </div>
+          <div style="padding:1.25rem 1.25rem 1.5rem;">
+            <p style="font-family:'Courier Prime',monospace;font-size:0.65rem;color:#6B6560;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.6rem;">bars</p>
+            <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.1rem;line-height:1.22;color:#1A1A1A;letter-spacing:-0.025em;margin-bottom:0.65rem;">lower east side at 1am: the bars that actually matter</h3>
+            <p style="font-family:'Space Grotesk',sans-serif;font-size:0.875rem;line-height:1.62;color:#6B6560;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:1.1rem;">started at Attaboy, ended somewhere we're still trying to place on a map.</p>
+            <div style="display:flex;justify-content:space-between;border-top:1px solid rgba(26,26,26,0.07);padding-top:0.75rem;">
+              <span style="font-family:'Courier Prime',monospace;font-size:0.72rem;color:#6B6560;">by zoe b.</span>
+              <span style="font-family:'Courier Prime',monospace;font-size:0.68rem;color:rgba(107,101,96,0.55);">Jan 2025</span>
+            </div>
+          </div>
+        </div>
+        <!-- Card 2 -->
+        <div class="card" onclick="openPost('paris')">
+          <div class="img-wrap" style="aspect-ratio:4/3;background:#A8906E;">
+            <img src="https://placehold.co/800x600/A8906E/EBE5DC?text=Paris+Cafés" alt="Paris" class="film-img" style="width:100%;height:100%;object-fit:cover;" />
+            <div style="position:absolute;top:0.75rem;left:0.75rem;background:#1B502F;color:#EBE5DC;font-family:'Courier Prime',monospace;font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:0.28rem 0.6rem;border-radius:1px;z-index:2;">Paris, France</div>
+          </div>
+          <div style="padding:1.25rem 1.25rem 1.5rem;">
+            <p style="font-family:'Courier Prime',monospace;font-size:0.65rem;color:#6B6560;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.6rem;">cafés</p>
+            <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.1rem;line-height:1.22;color:#1A1A1A;letter-spacing:-0.025em;margin-bottom:0.65rem;">paris cafés that aren't in any guidebook</h3>
+            <p style="font-family:'Space Grotesk',sans-serif;font-size:0.875rem;line-height:1.62;color:#6B6560;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:1.1rem;">four spots that Parisians actually go to. no croissant emoji on the menu.</p>
+            <div style="display:flex;justify-content:space-between;border-top:1px solid rgba(26,26,26,0.07);padding-top:0.75rem;">
+              <span style="font-family:'Courier Prime',monospace;font-size:0.72rem;color:#6B6560;">by emma l.</span>
+              <span style="font-family:'Courier Prime',monospace;font-size:0.68rem;color:rgba(107,101,96,0.55);">Feb 2025</span>
+            </div>
+          </div>
+        </div>
+        <!-- Card 3 -->
+        <div class="card" onclick="openPost('ba')">
+          <div class="img-wrap" style="aspect-ratio:4/3;background:#3D2B1A;">
+            <img src="https://placehold.co/800x600/3D2B1A/EBE5DC?text=Buenos+Aires" alt="Buenos Aires" class="film-img" style="width:100%;height:100%;object-fit:cover;" />
+            <div style="position:absolute;top:0.75rem;left:0.75rem;background:#1B502F;color:#EBE5DC;font-family:'Courier Prime',monospace;font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:0.28rem 0.6rem;border-radius:1px;z-index:2;">Buenos Aires</div>
+          </div>
+          <div style="padding:1.25rem 1.25rem 1.5rem;">
+            <p style="font-family:'Courier Prime',monospace;font-size:0.65rem;color:#6B6560;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.6rem;">food + nightlife</p>
+            <h3 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.1rem;line-height:1.22;color:#1A1A1A;letter-spacing:-0.025em;margin-bottom:0.65rem;">buenos aires is for people who eat at midnight</h3>
+            <p style="font-family:'Space Grotesk',sans-serif;font-size:0.875rem;line-height:1.62;color:#6B6560;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:1.1rem;">a city that doesn't start until 10pm. here's how to do it right.</p>
+            <div style="display:flex;justify-content:space-between;border-top:1px solid rgba(26,26,26,0.07);padding-top:0.75rem;">
+              <span style="font-family:'Courier Prime',monospace;font-size:0.72rem;color:#6B6560;">by marcus r.</span>
+              <span style="font-family:'Courier Prime',monospace;font-size:0.68rem;color:rgba(107,101,96,0.55);">Feb 2025</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- USE CASE HOOK (MARQUEE) -->
+  <section style="background:#1A1A1A;padding:6rem 0;overflow:hidden;">
+    <p style="font-family:'Courier Prime',monospace;font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(235,229,220,0.35);padding:0 3rem;margin-bottom:3rem;">LOG is for you if you're...</p>
+    <!-- Row 1 -->
+    <div style="display:flex;overflow:hidden;-webkit-mask-image:linear-gradient(to right,transparent 0%,black 6%,black 94%,transparent 100%);mask-image:linear-gradient(to right,transparent 0%,black 6%,black 94%,transparent 100%);margin-bottom:1.75rem;">
+      <div class="mq-fwd" style="display:flex;align-items:center;white-space:nowrap;will-change:transform;">
+        <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(2rem,4.5vw,3.5rem);letter-spacing:-0.035em;color:#EBE5DC;flex-shrink:0;display:inline-flex;align-items:center;">studying abroad?<span style="color:#C4A882;margin:0 1.75rem;">·</span></span>
+        <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(2rem,4.5vw,3.5rem);letter-spacing:-0.035em;color:#1B502F;flex-shrink:0;display:inline-flex;align-items:center;">new city?<span style="color:#C4A882;margin:0 1.75rem;">·</span></span>
+        <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(2rem,4.5vw,3.5rem);letter-spacing:-0.035em;color:#EBE5DC;flex-shrink:0;display:inline-flex;align-items:center;">need recs?<span style="color:#C4A882;margin:0 1.75rem;">·</span></span>
+        <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(2rem,4.5vw,3.5rem);letter-spacing:-0.035em;color:#1B502F;flex-shrink:0;display:inline-flex;align-items:center;">sharing your life?<span style="color:#C4A882;margin:0 1.75rem;">·</span></span>
+        <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(2rem,4.5vw,3.5rem);letter-spacing:-0.035em;color:#EBE5DC;flex-shrink:0;display:inline-flex;align-items:center;">planning a trip?<span style="color:#C4A882;margin:0 1.75rem;">·</span></span>
+        <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(2rem,4.5vw,3.5rem);letter-spacing:-0.035em;color:#1B502F;flex-shrink:0;display:inline-flex;align-items:center;">moving somewhere new?<span style="color:#C4A882;margin:0 1.75rem;">·</span></span>
+        <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(2rem,4.5vw,3.5rem);letter-spacing:-0.035em;color:#EBE5DC;flex-shrink:0;display:inline-flex;align-items:center;">studying abroad?<span style="color:#C4A882;margin:0 1.75rem;">·</span></span>
+        <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(2rem,4.5vw,3.5rem);letter-spacing:-0.035em;color:#1B502F;flex-shrink:0;display:inline-flex;align-items:center;">new city?<span style="color:#C4A882;margin:0 1.75rem;">·</span></span>
+        <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(2rem,4.5vw,3.5rem);letter-spacing:-0.035em;color:#EBE5DC;flex-shrink:0;display:inline-flex;align-items:center;">need recs?<span style="color:#C4A882;margin:0 1.75rem;">·</span></span>
+        <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(2rem,4.5vw,3.5rem);letter-spacing:-0.035em;color:#1B502F;flex-shrink:0;display:inline-flex;align-items:center;">sharing your life?<span style="color:#C4A882;margin:0 1.75rem;">·</span></span>
+        <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(2rem,4.5vw,3.5rem);letter-spacing:-0.035em;color:#EBE5DC;flex-shrink:0;display:inline-flex;align-items:center;">planning a trip?<span style="color:#C4A882;margin:0 1.75rem;">·</span></span>
+        <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(2rem,4.5vw,3.5rem);letter-spacing:-0.035em;color:#1B502F;flex-shrink:0;display:inline-flex;align-items:center;">moving somewhere new?<span style="color:#C4A882;margin:0 1.75rem;">·</span></span>
+      </div>
+    </div>
+    <!-- Row 2 reverse -->
+    <div style="display:flex;overflow:hidden;-webkit-mask-image:linear-gradient(to right,transparent 0%,black 6%,black 94%,transparent 100%);mask-image:linear-gradient(to right,transparent 0%,black 6%,black 94%,transparent 100%);">
+      <div class="mq-rev" style="display:flex;align-items:center;white-space:nowrap;will-change:transform;">
+        <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(2rem,4.5vw,3.5rem);letter-spacing:-0.035em;color:rgba(235,229,220,0.28);flex-shrink:0;display:inline-flex;align-items:center;">exploring your neighborhood?<span style="color:#C4A882;margin:0 1.75rem;">·</span></span>
+        <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(2rem,4.5vw,3.5rem);letter-spacing:-0.035em;color:#C4A882;flex-shrink:0;display:inline-flex;align-items:center;">building your feed?<span style="color:rgba(196,168,130,0.4);margin:0 1.75rem;">·</span></span>
+        <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(2rem,4.5vw,3.5rem);letter-spacing:-0.035em;color:rgba(235,229,220,0.28);flex-shrink:0;display:inline-flex;align-items:center;">documenting moments?<span style="color:#C4A882;margin:0 1.75rem;">·</span></span>
+        <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(2rem,4.5vw,3.5rem);letter-spacing:-0.035em;color:#C4A882;flex-shrink:0;display:inline-flex;align-items:center;">new in town?<span style="color:rgba(196,168,130,0.4);margin:0 1.75rem;">·</span></span>
+        <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(2rem,4.5vw,3.5rem);letter-spacing:-0.035em;color:rgba(235,229,220,0.28);flex-shrink:0;display:inline-flex;align-items:center;">chasing good coffee?<span style="color:#C4A882;margin:0 1.75rem;">·</span></span>
+        <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(2rem,4.5vw,3.5rem);letter-spacing:-0.035em;color:rgba(235,229,220,0.28);flex-shrink:0;display:inline-flex;align-items:center;">exploring your neighborhood?<span style="color:#C4A882;margin:0 1.75rem;">·</span></span>
+        <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(2rem,4.5vw,3.5rem);letter-spacing:-0.035em;color:#C4A882;flex-shrink:0;display:inline-flex;align-items:center;">building your feed?<span style="color:rgba(196,168,130,0.4);margin:0 1.75rem;">·</span></span>
+        <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(2rem,4.5vw,3.5rem);letter-spacing:-0.035em;color:rgba(235,229,220,0.28);flex-shrink:0;display:inline-flex;align-items:center;">documenting moments?<span style="color:#C4A882;margin:0 1.75rem;">·</span></span>
+        <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(2rem,4.5vw,3.5rem);letter-spacing:-0.035em;color:#C4A882;flex-shrink:0;display:inline-flex;align-items:center;">new in town?<span style="color:rgba(196,168,130,0.4);margin:0 1.75rem;">·</span></span>
+        <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(2rem,4.5vw,3.5rem);letter-spacing:-0.035em;color:rgba(235,229,220,0.28);flex-shrink:0;display:inline-flex;align-items:center;">chasing good coffee?<span style="color:#C4A882;margin:0 1.75rem;">·</span></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- WAITLIST CTA -->
+  <section class="grain" style="position:relative;background:#1B502F;padding:9rem 3rem;display:flex;flex-direction:column;align-items:center;text-align:center;overflow:hidden;">
+    <div aria-hidden style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%, rgba(235,229,220,0.06) 0%, transparent 65%);pointer-events:none;"></div>
+    <p style="font-family:'Courier Prime',monospace;font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(235,229,220,0.45);margin-bottom:2rem;position:relative;">coming soon</p>
+    <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(3rem,8vw,7rem);line-height:0.88;color:#EBE5DC;letter-spacing:-0.045em;margin-bottom:2rem;max-width:900px;position:relative;">join the waitlist.</h2>
+    <p style="font-family:'Space Grotesk',sans-serif;font-size:1rem;line-height:1.7;color:rgba(235,229,220,0.6);max-width:420px;margin-bottom:3.5rem;position:relative;">LOG is coming soon. get early access and help shape what it becomes.</p>
+    <a onclick="goTo('waitlist')" style="display:inline-block;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:0.82rem;letter-spacing:0.08em;text-transform:uppercase;color:#1B502F;background:#EBE5DC;padding:1.1rem 2.75rem;border-radius:2px;position:relative;cursor:pointer;">join the waitlist →</a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="background:#C4A882;padding:4rem 3rem 3rem;">
+    <div style="max-width:1400px;margin:0 auto;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:3rem;padding-bottom:3rem;border-bottom:1px solid rgba(26,26,26,0.12);">
+        <div>
+          <p style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:2rem;letter-spacing:-0.05em;color:#1A1A1A;line-height:1;margin-bottom:0.75rem;">LOG</p>
+          <a href="mailto:explore@logsocial.app" style="font-family:'Courier Prime',monospace;font-size:0.8rem;color:rgba(26,26,26,0.5);">explore@logsocial.app</a>
+        </div>
+        <nav style="display:flex;gap:2rem;align-items:center;flex-wrap:wrap;">
+          <a onclick="goTo('home')" style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:0.82rem;color:#1A1A1A;cursor:pointer;">home</a>
+          <a onclick="goTo('recs')" style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:0.82rem;color:#1A1A1A;cursor:pointer;">recs</a>
+          <a onclick="goTo('contact')" style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:0.82rem;color:#1A1A1A;cursor:pointer;">contact</a>
+          <a onclick="goTo('waitlist')" style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:0.82rem;color:#1A1A1A;cursor:pointer;">join the waitlist!</a>
+        </nav>
+      </div>
+      <div style="padding-top:2rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
+        <p style="font-family:'Courier Prime',monospace;font-size:0.72rem;color:rgba(26,26,26,0.4);">© 2025 LOG. all rights reserved.</p>
+        <p style="font-family:'Courier Prime',monospace;font-size:0.72rem;color:rgba(26,26,26,0.4);">document what moves you.</p>
+      </div>
+    </div>
+  </footer>
+</div><!-- /page-home -->
+
+
+<!-- ══════════════════════════════════════════
+     PAGE: RECS
+══════════════════════════════════════════ -->
+<div id="page-recs" class="page">
+  <div style="background:#EBE5DC;min-height:100vh;padding-top:64px;">
+    <!-- Header -->
+    <div style="padding:3rem 3rem 2.5rem;max-width:1400px;margin:0 auto;border-bottom:1px solid rgba(26,26,26,0.1);">
+      <p style="font-family:'Courier Prime',monospace;font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;color:#6B6560;margin-bottom:1.25rem;">the feed</p>
+      <h1 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(3.5rem,8vw,7rem);line-height:0.88;letter-spacing:-0.045em;color:#1A1A1A;">recs.</h1>
+    </div>
+    <!-- Grid -->
+    <div style="padding:4rem 3rem 8rem;max-width:1400px;margin:0 auto;">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:2rem;">
+
+        <!-- All 6 posts -->
+        <div class="card" onclick="openPost('nyc')">
+          <div class="img-wrap" style="aspect-ratio:4/3;background:#C4A882;"><img src="https://placehold.co/800x600/C4A882/1A1A1A?text=LES+NYC" alt="NYC" class="film-img" style="width:100%;height:100%;object-fit:cover;" /><div style="position:absolute;top:0.75rem;left:0.75rem;background:#1B502F;color:#EBE5DC;font-family:'Courier Prime',monospace;font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:0.28rem 0.6rem;border-radius:1px;z-index:2;">New York, NY</div></div>
+          <div style="padding:1.25rem 1.25rem 1.5rem;"><p style="font-family:'Courier Prime',monospace;font-size:0.65rem;color:#6B6560;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.6rem;">bars</p><h3 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.1rem;line-height:1.22;color:#1A1A1A;letter-spacing:-0.025em;margin-bottom:0.65rem;">lower east side at 1am: the bars that actually matter</h3><p style="font-family:'Space Grotesk',sans-serif;font-size:0.875rem;line-height:1.62;color:#6B6560;margin-bottom:1.1rem;">started at Attaboy, ended somewhere we're still trying to place on a map.</p><div style="display:flex;justify-content:space-between;border-top:1px solid rgba(26,26,26,0.07);padding-top:0.75rem;"><span style="font-family:'Courier Prime',monospace;font-size:0.72rem;color:#6B6560;">by zoe b.</span><span style="font-family:'Courier Prime',monospace;font-size:0.68rem;color:rgba(107,101,96,0.55);">Jan 2025</span></div></div>
+        </div>
+
+        <div class="card" onclick="openPost('paris')">
+          <div class="img-wrap" style="aspect-ratio:4/3;background:#A8906E;"><img src="https://placehold.co/800x600/A8906E/EBE5DC?text=Paris+Cafés" alt="Paris" class="film-img" style="width:100%;height:100%;object-fit:cover;" /><div style="position:absolute;top:0.75rem;left:0.75rem;background:#1B502F;color:#EBE5DC;font-family:'Courier Prime',monospace;font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:0.28rem 0.6rem;border-radius:1px;z-index:2;">Paris, France</div></div>
+          <div style="padding:1.25rem 1.25rem 1.5rem;"><p style="font-family:'Courier Prime',monospace;font-size:0.65rem;color:#6B6560;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.6rem;">cafés</p><h3 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.1rem;line-height:1.22;color:#1A1A1A;letter-spacing:-0.025em;margin-bottom:0.65rem;">paris cafés that aren't in any guidebook</h3><p style="font-family:'Space Grotesk',sans-serif;font-size:0.875rem;line-height:1.62;color:#6B6560;margin-bottom:1.1rem;">four spots that Parisians actually go to. no croissant emoji on the menu.</p><div style="display:flex;justify-content:space-between;border-top:1px solid rgba(26,26,26,0.07);padding-top:0.75rem;"><span style="font-family:'Courier Prime',monospace;font-size:0.72rem;color:#6B6560;">by emma l.</span><span style="font-family:'Courier Prime',monospace;font-size:0.68rem;color:rgba(107,101,96,0.55);">Feb 2025</span></div></div>
+        </div>
+
+        <div class="card" onclick="openPost('ba')">
+          <div class="img-wrap" style="aspect-ratio:4/3;background:#3D2B1A;"><img src="https://placehold.co/800x600/3D2B1A/EBE5DC?text=Buenos+Aires" alt="Buenos Aires" class="film-img" style="width:100%;height:100%;object-fit:cover;" /><div style="position:absolute;top:0.75rem;left:0.75rem;background:#1B502F;color:#EBE5DC;font-family:'Courier Prime',monospace;font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:0.28rem 0.6rem;border-radius:1px;z-index:2;">Buenos Aires</div></div>
+          <div style="padding:1.25rem 1.25rem 1.5rem;"><p style="font-family:'Courier Prime',monospace;font-size:0.65rem;color:#6B6560;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.6rem;">food + nightlife</p><h3 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.1rem;line-height:1.22;color:#1A1A1A;letter-spacing:-0.025em;margin-bottom:0.65rem;">buenos aires is for people who eat at midnight</h3><p style="font-family:'Space Grotesk',sans-serif;font-size:0.875rem;line-height:1.62;color:#6B6560;margin-bottom:1.1rem;">a city that doesn't start until 10pm. here's how to do it right.</p><div style="display:flex;justify-content:space-between;border-top:1px solid rgba(26,26,26,0.07);padding-top:0.75rem;"><span style="font-family:'Courier Prime',monospace;font-size:0.72rem;color:#6B6560;">by marcus r.</span><span style="font-family:'Courier Prime',monospace;font-size:0.68rem;color:rgba(107,101,96,0.55);">Feb 2025</span></div></div>
+        </div>
+
+        <div class="card" onclick="openPost('tokyo')">
+          <div class="img-wrap" style="aspect-ratio:4/3;background:#6B6560;"><img src="https://placehold.co/800x600/6B6560/EBE5DC?text=Tokyo" alt="Tokyo" class="film-img" style="width:100%;height:100%;object-fit:cover;" /><div style="position:absolute;top:0.75rem;left:0.75rem;background:#1B502F;color:#EBE5DC;font-family:'Courier Prime',monospace;font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:0.28rem 0.6rem;border-radius:1px;z-index:2;">Tokyo, Japan</div></div>
+          <div style="padding:1.25rem 1.25rem 1.5rem;"><p style="font-family:'Courier Prime',monospace;font-size:0.65rem;color:#6B6560;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.6rem;">food</p><h3 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.1rem;line-height:1.22;color:#1A1A1A;letter-spacing:-0.025em;margin-bottom:0.65rem;">tokyo convenience stores: a serious guide</h3><p style="font-family:'Space Grotesk',sans-serif;font-size:0.875rem;line-height:1.62;color:#6B6560;margin-bottom:1.1rem;">7-Eleven at 3am might be the best meal you have all trip. this is not a bit.</p><div style="display:flex;justify-content:space-between;border-top:1px solid rgba(26,26,26,0.07);padding-top:0.75rem;"><span style="font-family:'Courier Prime',monospace;font-size:0.72rem;color:#6B6560;">by kai t.</span><span style="font-family:'Courier Prime',monospace;font-size:0.68rem;color:rgba(107,101,96,0.55);">Mar 2025</span></div></div>
+        </div>
+
+        <div class="card" onclick="openPost('rome')">
+          <div class="img-wrap" style="aspect-ratio:4/3;background:#C4A882;"><img src="https://placehold.co/800x600/C4A882/1A1A1A?text=Rome" alt="Rome" class="film-img" style="width:100%;height:100%;object-fit:cover;" /><div style="position:absolute;top:0.75rem;left:0.75rem;background:#1B502F;color:#EBE5DC;font-family:'Courier Prime',monospace;font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:0.28rem 0.6rem;border-radius:1px;z-index:2;">Rome, Italy</div></div>
+          <div style="padding:1.25rem 1.25rem 1.5rem;"><p style="font-family:'Courier Prime',monospace;font-size:0.65rem;color:#6B6560;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.6rem;">neighborhood guide</p><h3 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.1rem;line-height:1.22;color:#1A1A1A;letter-spacing:-0.025em;margin-bottom:0.65rem;">trastevere on a tuesday: why the timing matters</h3><p style="font-family:'Space Grotesk',sans-serif;font-size:0.875rem;line-height:1.62;color:#6B6560;margin-bottom:1.1rem;">the neighborhood everyone recommends. here's how to actually do it.</p><div style="display:flex;justify-content:space-between;border-top:1px solid rgba(26,26,26,0.07);padding-top:0.75rem;"><span style="font-family:'Courier Prime',monospace;font-size:0.72rem;color:#6B6560;">by sofia m.</span><span style="font-family:'Courier Prime',monospace;font-size:0.68rem;color:rgba(107,101,96,0.55);">Mar 2025</span></div></div>
+        </div>
+
+        <div class="card" onclick="openPost('cph')">
+          <div class="img-wrap" style="aspect-ratio:4/3;background:#1A1A1A;"><img src="https://placehold.co/800x600/1A1A1A/EBE5DC?text=Copenhagen" alt="Copenhagen" class="film-img" style="width:100%;height:100%;object-fit:cover;" /><div style="position:absolute;top:0.75rem;left:0.75rem;background:#1B502F;color:#EBE5DC;font-family:'Courier Prime',monospace;font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:0.28rem 0.6rem;border-radius:1px;z-index:2;">Copenhagen, DK</div></div>
+          <div style="padding:1.25rem 1.25rem 1.5rem;"><p style="font-family:'Courier Prime',monospace;font-size:0.65rem;color:#6B6560;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.6rem;">cafés</p><h3 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.1rem;line-height:1.22;color:#1A1A1A;letter-spacing:-0.025em;margin-bottom:0.65rem;">copenhagen and the art of actually slow mornings</h3><p style="font-family:'Space Grotesk',sans-serif;font-size:0.875rem;line-height:1.62;color:#6B6560;margin-bottom:1.1rem;">three cafés that changed how we think about mornings.</p><div style="display:flex;justify-content:space-between;border-top:1px solid rgba(26,26,26,0.07);padding-top:0.75rem;"><span style="font-family:'Courier Prime',monospace;font-size:0.72rem;color:#6B6560;">by zoe b.</span><span style="font-family:'Courier Prime',monospace;font-size:0.68rem;color:rgba(107,101,96,0.55);">Apr 2025</span></div></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!-- Footer -->
+  <footer style="background:#C4A882;padding:4rem 3rem 3rem;"><div style="max-width:1400px;margin:0 auto;"><div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:3rem;padding-bottom:3rem;border-bottom:1px solid rgba(26,26,26,0.12);"><div><p style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:2rem;letter-spacing:-0.05em;color:#1A1A1A;margin-bottom:0.75rem;">LOG</p><a href="mailto:explore@logsocial.app" style="font-family:'Courier Prime',monospace;font-size:0.8rem;color:rgba(26,26,26,0.5);">explore@logsocial.app</a></div><nav style="display:flex;gap:2rem;align-items:center;flex-wrap:wrap;"><a onclick="goTo('home')" style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:0.82rem;color:#1A1A1A;cursor:pointer;">home</a><a onclick="goTo('recs')" style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:0.82rem;color:#1A1A1A;cursor:pointer;">recs</a><a onclick="goTo('waitlist')" style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:0.82rem;color:#1A1A1A;cursor:pointer;">join the waitlist!</a></nav></div><div style="padding-top:2rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;"><p style="font-family:'Courier Prime',monospace;font-size:0.72rem;color:rgba(26,26,26,0.4);">© 2025 LOG. all rights reserved.</p><p style="font-family:'Courier Prime',monospace;font-size:0.72rem;color:rgba(26,26,26,0.4);">document what moves you.</p></div></div></footer>
+</div><!-- /page-recs -->
+
+
+<!-- ══════════════════════════════════════════
+     PAGE: BLOG POST (dynamic from JS data)
+══════════════════════════════════════════ -->
+<div id="page-post" class="page">
+  <div style="background:#EBE5DC;min-height:100vh;">
+    <!-- Hero image -->
+    <div id="post-hero" style="position:relative;height:75vh;min-height:560px;overflow:hidden;background:#1A1A1A;">
+      <img id="post-img" src="" alt="" class="film-img" style="width:100%;height:100%;object-fit:cover;" />
+      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(26,26,26,0.75) 0%,rgba(26,26,26,0.2) 50%,transparent 100%),linear-gradient(to bottom,rgba(26,26,26,0.35) 0%,transparent 25%);"></div>
+      <!-- Grain overlay on hero image -->
+      <div aria-hidden style="position:absolute;inset:0;background-image:url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E&quot;);background-size:180px;mix-blend-mode:overlay;opacity:0.5;pointer-events:none;"></div>
+      <div style="position:absolute;bottom:3rem;left:3rem;right:3rem;z-index:10;">
+        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem;">
+          <span id="post-city-badge" style="background:#1B502F;color:#EBE5DC;font-family:'Courier Prime',monospace;font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:0.28rem 0.6rem;border-radius:1px;"></span>
+          <span id="post-category-badge" style="font-family:'Courier Prime',monospace;font-size:0.68rem;color:rgba(235,229,220,0.55);letter-spacing:0.08em;"></span>
+        </div>
+        <h1 id="post-title" style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(2rem,5vw,4rem);line-height:0.95;color:#EBE5DC;letter-spacing:-0.04em;max-width:800px;"></h1>
+      </div>
+    </div>
+    <!-- Body -->
+    <div style="max-width:780px;margin:0 auto;padding:4rem 3rem 4rem;">
+      <div style="display:flex;justify-content:space-between;margin-bottom:3rem;padding-bottom:2rem;border-bottom:1px solid rgba(26,26,26,0.1);">
+        <span id="post-author" style="font-family:'Courier Prime',monospace;font-size:0.75rem;color:#6B6560;"></span>
+        <span id="post-date" style="font-family:'Courier Prime',monospace;font-size:0.72rem;color:rgba(107,101,96,0.6);"></span>
+      </div>
+      <p id="post-desc" style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:1.2rem;line-height:1.65;color:#1A1A1A;margin-bottom:2rem;letter-spacing:-0.01em;"></p>
+      <div id="post-body" style="font-family:'Space Grotesk',sans-serif;font-size:1.05rem;line-height:1.8;color:#2d2d2d;"></div>
+      <div style="margin-top:4rem;padding-top:2.5rem;border-top:1px solid rgba(26,26,26,0.1);">
+        <a onclick="goTo('recs')" style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:0.82rem;letter-spacing:0.05em;color:#1B502F;border-bottom:1.5px solid #1B502F;padding-bottom:2px;cursor:pointer;">← back to recs</a>
+      </div>
+    </div>
+  </div>
+  <footer style="background:#C4A882;padding:4rem 3rem 3rem;"><div style="max-width:1400px;margin:0 auto;"><div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:3rem;padding-bottom:3rem;border-bottom:1px solid rgba(26,26,26,0.12);"><div><p style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:2rem;letter-spacing:-0.05em;color:#1A1A1A;margin-bottom:0.75rem;">LOG</p><a href="mailto:explore@logsocial.app" style="font-family:'Courier Prime',monospace;font-size:0.8rem;color:rgba(26,26,26,0.5);">explore@logsocial.app</a></div><nav style="display:flex;gap:2rem;align-items:center;flex-wrap:wrap;"><a onclick="goTo('home')" style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:0.82rem;color:#1A1A1A;cursor:pointer;">home</a><a onclick="goTo('recs')" style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:0.82rem;color:#1A1A1A;cursor:pointer;">recs</a><a onclick="goTo('waitlist')" style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:0.82rem;color:#1A1A1A;cursor:pointer;">join the waitlist!</a></nav></div><div style="padding-top:2rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;"><p style="font-family:'Courier Prime',monospace;font-size:0.72rem;color:rgba(26,26,26,0.4);">© 2025 LOG. all rights reserved.</p><p style="font-family:'Courier Prime',monospace;font-size:0.72rem;color:rgba(26,26,26,0.4);">document what moves you.</p></div></div></footer>
+</div><!-- /page-post -->
+
+
+<!-- ══════════════════════════════════════════
+     PAGE: JOIN THE WAITLIST
+══════════════════════════════════════════ -->
+<div id="page-waitlist" class="page">
+  <!-- Hero -->
+  <div class="grain" style="position:relative;background:#1B502F;padding:10rem 3rem 7rem;overflow:hidden;">
+    <div aria-hidden style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%, rgba(235,229,220,0.06) 0%, transparent 65%);pointer-events:none;"></div>
+    <div style="max-width:900px;position:relative;">
+      <p style="font-family:'Courier Prime',monospace;font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(235,229,220,0.45);margin-bottom:2rem;">coming soon</p>
+      <h1 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(3rem,8vw,7rem);line-height:0.88;letter-spacing:-0.045em;color:#EBE5DC;margin-bottom:2rem;">join the waitlist.</h1>
+      <p style="font-family:'Space Grotesk',sans-serif;font-size:1.1rem;line-height:1.65;color:rgba(235,229,220,0.65);max-width:480px;">LOG is coming soon. get in early and help us build something worth logging.</p>
+    </div>
+  </div>
+  <!-- Form + benefits -->
+  <div style="background:#EBE5DC;max-width:1100px;margin:0 auto;padding:7rem 3rem 8rem;display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start;">
+    <!-- Benefits -->
+    <div>
+      <p style="font-family:'Courier Prime',monospace;font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;color:#6B6560;margin-bottom:2.5rem;">what you get</p>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:1.5rem;">
+        <li style="display:flex;align-items:flex-start;gap:1rem;"><span style="color:#1B502F;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.1rem;flex-shrink:0;">→</span><span style="font-family:'Space Grotesk',sans-serif;font-size:1rem;line-height:1.6;color:#1A1A1A;">early access before public launch</span></li>
+        <li style="display:flex;align-items:flex-start;gap:1rem;"><span style="color:#1B502F;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.1rem;flex-shrink:0;">→</span><span style="font-family:'Space Grotesk',sans-serif;font-size:1rem;line-height:1.6;color:#1A1A1A;">help shape features and direction</span></li>
+        <li style="display:flex;align-items:flex-start;gap:1rem;"><span style="color:#1B502F;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.1rem;flex-shrink:0;">→</span><span style="font-family:'Space Grotesk',sans-serif;font-size:1rem;line-height:1.6;color:#1A1A1A;">exclusive city guides from our beta community</span></li>
+        <li style="display:flex;align-items:flex-start;gap:1rem;"><span style="color:#1B502F;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.1rem;flex-shrink:0;">→</span><span style="font-family:'Space Grotesk',sans-serif;font-size:1rem;line-height:1.6;color:#1A1A1A;">first to know about every new city drop</span></li>
+      </ul>
+    </div>
+    <!-- Form -->
+    <div id="waitlist-form-wrap">
+      <p style="font-family:'Courier Prime',monospace;font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;color:#6B6560;margin-bottom:2.5rem;">sign up</p>
+      <form id="waitlist-form" onsubmit="handleWaitlist(event)" style="display:flex;flex-direction:column;gap:2.5rem;">
+        <div>
+          <label style="display:block;font-family:'Courier Prime',monospace;font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:#6B6560;margin-bottom:0.5rem;">name</label>
+          <input name="name" type="text" required placeholder="your name" class="field" />
+        </div>
+        <div>
+          <label style="display:block;font-family:'Courier Prime',monospace;font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:#6B6560;margin-bottom:0.5rem;">email</label>
+          <input name="email" type="email" required placeholder="you@example.com" class="field" />
+        </div>
+        <div>
+          <label style="display:block;font-family:'Courier Prime',monospace;font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:#6B6560;margin-bottom:0.5rem;">your city</label>
+          <input name="city" type="text" required placeholder="new york, tokyo, paris..." class="field" />
+        </div>
+        <button type="submit" id="waitlist-btn" style="width:100%;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:0.85rem;letter-spacing:0.08em;text-transform:uppercase;color:#EBE5DC;background:#1B502F;padding:1.1rem;border:none;border-radius:2px;cursor:pointer;transition:opacity 0.2s;">join the waitlist →</button>
+      </form>
+      <div id="waitlist-success" style="display:none;">
+        <p style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:2rem;color:#1B502F;letter-spacing:-0.035em;margin-bottom:1rem;">you're on the list.</p>
+        <p style="font-family:'Space Grotesk',sans-serif;font-size:1rem;color:#6B6560;line-height:1.65;">we'll reach out when LOG launches in your city. stay curious.</p>
+      </div>
+    </div>
+  </div>
+  <footer style="background:#C4A882;padding:4rem 3rem 3rem;"><div style="max-width:1400px;margin:0 auto;"><div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:3rem;padding-bottom:3rem;border-bottom:1px solid rgba(26,26,26,0.12);"><div><p style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:2rem;letter-spacing:-0.05em;color:#1A1A1A;margin-bottom:0.75rem;">LOG</p><a href="mailto:explore@logsocial.app" style="font-family:'Courier Prime',monospace;font-size:0.8rem;color:rgba(26,26,26,0.5);">explore@logsocial.app</a></div><nav style="display:flex;gap:2rem;align-items:center;flex-wrap:wrap;"><a onclick="goTo('home')" style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:0.82rem;color:#1A1A1A;cursor:pointer;">home</a><a onclick="goTo('recs')" style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:0.82rem;color:#1A1A1A;cursor:pointer;">recs</a><a onclick="goTo('waitlist')" style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:0.82rem;color:#1A1A1A;cursor:pointer;">join the waitlist!</a></nav></div><div style="padding-top:2rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;"><p style="font-family:'Courier Prime',monospace;font-size:0.72rem;color:rgba(26,26,26,0.4);">© 2025 LOG. all rights reserved.</p><p style="font-family:'Courier Prime',monospace;font-size:0.72rem;color:rgba(26,26,26,0.4);">document what moves you.</p></div></div></footer>
+</div><!-- /page-waitlist -->
+
+
+<!-- ══════════════════════════════════════════
+     PAGE: CONTACT (stub)
+══════════════════════════════════════════ -->
+<div id="page-contact" class="page">
+  <div style="background:#EBE5DC;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8rem 3rem;text-align:center;">
+    <p style="font-family:'Courier Prime',monospace;font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:#6B6560;margin-bottom:2rem;">get in touch</p>
+    <h1 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(3rem,7vw,6rem);line-height:0.88;letter-spacing:-0.045em;color:#1A1A1A;margin-bottom:2rem;">say hello.</h1>
+    <p style="font-family:'Space Grotesk',sans-serif;font-size:1.05rem;line-height:1.7;color:#6B6560;max-width:400px;margin-bottom:3rem;">questions, ideas, collaborations — we'd love to hear from you.</p>
+    <a href="mailto:explore@logsocial.app" style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:1rem;color:#1B502F;border-bottom:2px solid #1B502F;padding-bottom:3px;letter-spacing:-0.01em;">explore@logsocial.app</a>
+  </div>
+</div><!-- /page-contact -->
+
+
+<!-- ══════════════════════════════════════════
+     ROUTING + DATA SCRIPT
+══════════════════════════════════════════ -->
+<script>
+// ─── Post data ───────────────────────────────────────────────
+const POSTS = {
+  nyc: {
+    title: 'lower east side at 1am: the bars that actually matter',
+    city: 'New York, NY', category: 'bars',
+    img: 'https://placehold.co/1400x800/C4A882/1A1A1A?text=LES+NYC',
+    author: 'by zoe b.', date: 'January 15, 2025',
+    desc: "started at Attaboy, ended somewhere we're still trying to place on a map. here's the full route.",
+    body: `<p>everyone talks about the lower east side like it's still 2015. they're wrong — it's better now, just different. the tourist traps have mostly cleared out and what's left is something that actually feels like a neighborhood.</p>
+<br/><p>start at <strong>Attaboy</strong> on Eldridge. no menu, just tell them what you're feeling. they'll make something good. it's small, it fills up fast, but the bartenders actually care.</p>
+<br/><p>from there, cut over to <strong>Scarr's</strong> if you want a slice first (you do), then walk down to <strong>The Flower Shop</strong> on Rivington. it's louder, it's dancier, it's the kind of place where you stay two hours longer than you planned.</p>
+<br/><p>end the night at <strong>Mehanata</strong> if you're still standing. bulgarian bar, ice cage, live accordion. trust the process.</p>`
+  },
+  paris: {
+    title: "paris cafés that aren't in any guidebook",
+    city: 'Paris, France', category: 'cafés',
+    img: 'https://placehold.co/1400x800/A8906E/EBE5DC?text=Paris+Cafés',
+    author: 'by emma l.', date: 'February 1, 2025',
+    desc: "four spots that Parisians actually go to. no croissant emoji on the menu, no English on the chalkboard.",
+    body: `<p>everyone lands in Paris with a list. most of those lists are wrong. the cafés worth going to don't have outdoor seating on the main boulevard. they're two streets back, with handwritten menus and regulars who've been coming since the 80s.</p>
+<br/><p><strong>Café de la Mairie</strong> on Place Saint-Sulpice is where you start. corner table, espresso, watch the square. it's in guides but it doesn't feel like it — the crowd is local, the vibe is unhurried.</p>
+<br/><p><strong>Le Petit Fer à Cheval</strong> in the Marais has been there since 1903. order a kir. sit at the bar. it's small enough that you'll end up in someone else's conversation by the second drink.</p>
+<br/><p>the rule: if there's a menu with photos, keep walking.</p>`
+  },
+  ba: {
+    title: 'buenos aires is for people who eat at midnight',
+    city: 'Buenos Aires, Argentina', category: 'food + nightlife',
+    img: 'https://placehold.co/1400x800/3D2B1A/EBE5DC?text=Buenos+Aires',
+    author: 'by marcus r.', date: 'February 14, 2025',
+    desc: "a city that doesn't start until 10pm. here's how to do it right.",
+    body: `<p>the first time you go to Buenos Aires you'll get it wrong. you'll try to have dinner at 7, you'll go to a club before midnight, you'll be home before the city wakes up. don't do that.</p>
+<br/><p>dinner starts at 9:30 at the earliest. <strong>Don Julio</strong> in Palermo is worth the wait — get there early to put your name in, get wine from the bodega next door, and drink it on the sidewalk while you wait.</p>
+<br/><p>for late nights: <strong>Crobar</strong> doesn't fill up until 2am. <strong>El Florentin</strong> in San Telmo runs milonga nights where the old crowd and the young crowd actually mix.</p>
+<br/><p>sleep is optional. the city will keep going without you.</p>`
+  },
+  tokyo: {
+    title: 'tokyo convenience stores: a serious guide',
+    city: 'Tokyo, Japan', category: 'food',
+    img: 'https://placehold.co/1400x800/6B6560/EBE5DC?text=Tokyo',
+    author: 'by kai t.', date: 'March 1, 2025',
+    desc: "7-Eleven at 3am might be the best meal you have all trip. this is not a bit.",
+    body: `<p>people hear "convenience store" and picture sad hot dogs under fluorescent lights. they've never been to Japan. the 7-Eleven in Tokyo has better food than most restaurants you'll eat at this month.</p>
+<br/><p>the onigiri tier list (in order): tuna mayo, salmon, mentaiko. everything else is a distraction. get two.</p>
+<br/><p>for hot food: the oden in winter is non-negotiable. the nikuman (steamed pork bun) at FamilyMart is somehow perfect. the egg salad sandwiches at 7-Eleven are the subject of legitimate debate.</p>
+<br/><p>the real move is 3am after a night in Shinjuku. everything is open, everything is available, nothing costs more than $3.</p>`
+  },
+  rome: {
+    title: 'trastevere on a tuesday: why the timing matters',
+    city: 'Rome, Italy', category: 'neighborhood guide',
+    img: 'https://placehold.co/1400x800/C4A882/1A1A1A?text=Rome',
+    author: 'by sofia m.', date: 'March 15, 2025',
+    desc: "the neighborhood everyone recommends. here's how to actually do it — avoid the weekend.",
+    body: `<p>Trastevere gets a bad reputation from people who went on a Saturday in July. ignore them. the neighborhood is real — it just requires timing.</p>
+<br/><p>go on a Tuesday or Wednesday evening. the piazza is full but not overwhelmed. <strong>Bar San Calisto</strong> has been there since the 60s and a beer costs €1.50. it's exactly what Rome is supposed to feel like.</p>
+<br/><p>for dinner: <strong>Da Enzo al 29</strong> if you can get in. <strong>Tonnarello</strong> if you can't. the cacio e pepe will ruin all other cacio e pepe for you.</p>
+<br/><p>the streets are best after 10pm when the tourist groups have moved on.</p>`
+  },
+  cph: {
+    title: 'copenhagen and the art of actually slow mornings',
+    city: 'Copenhagen, Denmark', category: 'cafés',
+    img: 'https://placehold.co/1400x800/1A1A1A/EBE5DC?text=Copenhagen',
+    author: 'by zoe b.', date: 'April 1, 2025',
+    desc: "three cafés that changed how we think about mornings.",
+    body: `<p>Copenhagen gets hygge right and everyone knows it. what people don't talk about is that the coffee scene here is quietly one of the best in Europe — without any of the pretension.</p>
+<br/><p><strong>The Coffee Collective</strong> in Frederiksberg roasts their own, sources directly, and treats it like something worth caring about. get the pour-over, sit by the window, block out two hours.</p>
+<br/><p><strong>Democratic Coffee</strong> near Nørreport is the everyday spot — good coffee, beautiful light, people working on things that might matter.</p>
+<br/><p>the thing about Copenhagen mornings: nobody is rushing. there's something to learn from that.</p>`
+  }
+}
+
+// ─── Page navigation ─────────────────────────────────────────
+function goTo(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'))
+  document.getElementById('page-' + page).classList.add('active')
+  window.scrollTo(0, 0)
+  updateNavbar(page)
+}
+
+function updateNavbar(page) {
+  const nav = document.getElementById('navbar')
+  const logo = nav.querySelector('.nav-logo')
+  const links = nav.querySelectorAll('.nav-link')
+  const isHero = page === 'home'
+  if (isHero) {
+    nav.style.background = 'transparent'
+    nav.style.borderBottomColor = 'transparent'
+    logo.style.color = '#fff'
+    links.forEach(l => l.style.color = 'rgba(255,255,255,0.75)')
+  } else {
+    nav.style.background = 'rgba(235,229,220,0.95)'
+    nav.style.backdropFilter = 'blur(12px)'
+    nav.style.borderBottomColor = 'rgba(26,26,26,0.08)'
+    logo.style.color = '#1A1A1A'
+    links.forEach(l => l.style.color = 'rgba(26,26,26,0.65)')
+  }
+}
+
+// ─── Scroll handler (home page only) ─────────────────────────
+window.addEventListener('scroll', () => {
+  const activePage = document.querySelector('.page.active')
+  if (!activePage || activePage.id !== 'page-home') return
+  const nav = document.getElementById('navbar')
+  const logo = nav.querySelector('.nav-logo')
+  const links = nav.querySelectorAll('.nav-link')
+  const scrolled = window.scrollY > 60
+  nav.style.background = scrolled ? 'rgba(235,229,220,0.95)' : 'transparent'
+  nav.style.backdropFilter = scrolled ? 'blur(12px)' : 'none'
+  nav.style.borderBottomColor = scrolled ? 'rgba(26,26,26,0.08)' : 'transparent'
+  logo.style.color = scrolled ? '#1A1A1A' : '#fff'
+  links.forEach(l => l.style.color = scrolled ? 'rgba(26,26,26,0.65)' : 'rgba(255,255,255,0.75)')
+}, { passive: true })
+
+// ─── Open individual post ─────────────────────────────────────
+function openPost(id) {
+  const post = POSTS[id]
+  if (!post) return
+  document.getElementById('post-img').src = post.img
+  document.getElementById('post-img').alt = post.title
+  document.getElementById('post-city-badge').textContent = post.city
+  document.getElementById('post-category-badge').textContent = post.category
+  document.getElementById('post-title').textContent = post.title
+  document.getElementById('post-author').textContent = post.author
+  document.getElementById('post-date').textContent = post.date
+  document.getElementById('post-desc').textContent = post.desc
+  document.getElementById('post-body').innerHTML = post.body
+  goTo('post')
+}
+
+// ─── Waitlist form (demo) ─────────────────────────────────────
+function handleWaitlist(e) {
+  e.preventDefault()
+  const btn = document.getElementById('waitlist-btn')
+  btn.textContent = 'submitting...'
+  btn.style.opacity = '0.6'
+  // Simulate API call (replace with real fetch to /api/waitlist in Next.js)
+  setTimeout(() => {
+    document.getElementById('waitlist-form').style.display = 'none'
+    document.getElementById('waitlist-success').style.display = 'block'
+  }, 1000)
+}
+</script>
+
+</body>
+</html>
