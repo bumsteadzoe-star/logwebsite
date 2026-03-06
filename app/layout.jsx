@@ -24,7 +24,7 @@ const sigmar = Sigmar({
 })
 
 export const metadata = {
-  title: 'LOG — document what moves you.',
+  title: 'LOG',
   description: 'discover, share, and experience your city through the eyes of people who actually live it.',
   icons: {
     icon: '/static/favicon.png',
