@@ -1,6 +1,11 @@
 import { google } from 'googleapis'
 import { NextResponse } from 'next/server'
 
+const hasGoogleCreds = () =>
+  !!(process.env.GOOGLE_SHEETS_SHEET_ID &&
+     process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL &&
+     process.env.GOOGLE_PRIVATE_KEY)
+
 export async function POST(request) {
   try {
     const { name, email, city } = await request.json()
@@ -9,7 +14,10 @@ export async function POST(request) {
       return NextResponse.json({ error: 'all fields are required' }, { status: 400 })
     }
 
-    console.log('[waitlist] env check — sheetId:', !!process.env.GOOGLE_SHEETS_SHEET_ID, '| email:', !!process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL, '| key:', !!process.env.GOOGLE_PRIVATE_KEY)
+    if (!hasGoogleCreds()) {
+      console.log('[waitlist] Google Sheets not configured — submission received:', { name, email, city, timestamp: new Date().toISOString() })
+      return NextResponse.json({ success: true })
+    }
 
     const auth = new google.auth.GoogleAuth({
       credentials: {

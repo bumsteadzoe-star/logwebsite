@@ -1,12 +1,22 @@
 import { google } from 'googleapis'
 import { NextResponse } from 'next/server'
 
+const hasGoogleCreds = () =>
+  !!(process.env.GOOGLE_SHEETS_SHEET_ID &&
+     process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL &&
+     process.env.GOOGLE_PRIVATE_KEY)
+
 export async function POST(request) {
   try {
     const { name, email, university } = await request.json()
 
     if (!name || !email || !university) {
       return NextResponse.json({ error: 'all fields are required' }, { status: 400 })
+    }
+
+    if (!hasGoogleCreds()) {
+      console.log('[study-abroad] Google Sheets not configured — submission received:', { name, email, university, timestamp: new Date().toISOString() })
+      return NextResponse.json({ success: true })
     }
 
     const auth = new google.auth.GoogleAuth({
