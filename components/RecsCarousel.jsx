@@ -72,7 +72,7 @@ export default function RecsCarousel() {
     <section style={{ backgroundColor: '#EBE5DC', padding: '0 0 5rem', borderTop: '1px solid rgba(26,26,26,0.1)' }}>
 
       {/* Header */}
-      <div style={{ padding: '2.25rem 3rem 2.75rem', textAlign: 'center' }}>
+      <div className="recs-header" style={{ padding: '2.25rem 3rem 2.75rem', textAlign: 'center' }}>
         <h2 style={{
           fontFamily: 'var(--font-space-grotesk), sans-serif',
           fontWeight: 700,

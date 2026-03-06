@@ -73,6 +73,7 @@ export default function StudyAbroadPage() {
 
         {/* Centered heading text */}
         <div
+          className="study-intro"
           style={{
             maxWidth: '1100px',
             margin: '0 auto',
@@ -122,7 +123,7 @@ export default function StudyAbroadPage() {
           }}
         >
           {/* Left: Benefits */}
-          <div>
+          <div className="study-benefits">
             <p
               style={{
                 fontFamily: 'var(--font-courier), monospace',
@@ -179,7 +180,7 @@ export default function StudyAbroadPage() {
           </div>
 
           {/* Right: Form */}
-          <div>
+          <div className="study-form-col">
             <p
               style={{
                 fontFamily: 'var(--font-courier), monospace',

@@ -91,14 +91,53 @@ a {
 /* ─── Mobile responsive overrides (≤640px) ──────────────────── */
 @media (max-width: 640px) {
   /* Navbar */
-  .nav-header { padding: 0 1.25rem !important; }
-  .nav-links  { display: none !important; }
+  .nav-header    { padding: 0 1.25rem !important; }
+  .nav-links     { display: none !important; }
+  .nav-hamburger { display: flex !important; }
+
+  /* Mobile dropdown menu */
+  .nav-mobile-menu {
+    display: block !important;
+    position: fixed !important;
+    top: 64px !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 99 !important;
+    background-color: rgba(235,229,220,0.98) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    border-bottom: 1px solid rgba(26,26,26,0.1) !important;
+  }
 
   /* Hero section */
   .hero-content { padding: 0 1.5rem 3rem !important; }
   .hero-grid    { grid-template-columns: 1fr !important; gap: 1.5rem !important; }
-  .hero-right   { align-items: flex-start !important; }
+  .hero-right   {
+    align-items: stretch !important;
+    flex-direction: column !important;
+    gap: 1.25rem !important;
+  }
   .hero-tagline { white-space: normal !important; }
+
+  /* Swap description below CTA on mobile */
+  .hero-cta  {
+    order: 1 !important;
+    display: block !important;
+    text-align: center !important;
+  }
+  .hero-desc {
+    order: 2 !important;
+    text-align: left !important;
+  }
+
+  /* StatsBar marquee — faster on mobile */
+  .stats-marquee { animation-duration: 28s !important; }
+
+  /* RecsCarousel header padding */
+  .recs-header {
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+  }
 
   /* ValueProps pillars */
   .value-pillars { grid-template-columns: 1fr !important; }
@@ -147,4 +186,34 @@ a {
   .post-article-pad { padding: 3rem 1.25rem 2rem !important; }
   .post-section-pad { padding-left: 1.25rem !important; padding-right: 1.25rem !important; }
   .post-closing-pad { padding: 0 1.25rem 4rem !important; }
+
+  /* BlogPolaroid — full width on mobile */
+  .blog-polaroid { width: 100% !important; }
+  .blog-polaroid img { height: 260px !important; }
+
+  /* Recs page */
+  .recs-posts-pad { padding: 2.5rem 1.25rem 5rem !important; }
+
+  /* Recs slug article body */
+  .article-body-pad { padding: 3rem 1.25rem 3rem !important; }
+
+  /* Recs slug related posts */
+  .related-posts-pad { padding: 3rem 1.25rem 5rem !important; }
+  .related-posts-grid { grid-template-columns: 1fr !important; }
+
+  /* Study abroad intro */
+  .study-intro { padding: 1.5rem 1.25rem 0 !important; }
+
+  /* Waitlist page — form above benefits on mobile */
+  .waitlist-grid {
+    grid-template-columns: 1fr !important;
+    gap: 3rem !important;
+    padding: 3rem 1.5rem 5rem !important;
+  }
+  .waitlist-form-col { order: 1 !important; }
+  .waitlist-benefits { order: 2 !important; }
+
+  /* Study abroad page — form above benefits on mobile */
+  .study-form-col  { order: 1 !important; }
+  .study-benefits  { order: 2 !important; }
 }

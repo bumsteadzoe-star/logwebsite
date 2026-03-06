@@ -1,4 +1,4 @@
-import { Space_Grotesk, Courier_Prime } from 'next/font/google'
+import { Space_Grotesk, Courier_Prime, Sigmar } from 'next/font/google'
 import '../styles/globals.css'
 
 const spaceGrotesk = Space_Grotesk({
@@ -16,6 +16,13 @@ const courierPrime = Courier_Prime({
   display: 'swap',
 })
 
+const sigmar = Sigmar({
+  subsets: ['latin'],
+  weight: ['400'],
+  variable: '--font-sigmar',
+  display: 'swap',
+})
+
 export const metadata = {
   title: 'LOG — document what moves you.',
   description: 'discover, share, and experience your city through the eyes of people who actually live it.',
@@ -23,7 +30,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${spaceGrotesk.variable} ${courierPrime.variable}`}>
+    <html lang="en" className={`${spaceGrotesk.variable} ${courierPrime.variable} ${sigmar.variable}`}>
       <body>{children}</body>
     </html>
   )

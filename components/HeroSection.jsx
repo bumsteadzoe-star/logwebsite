@@ -126,12 +126,12 @@ export default function HeroSection() {
           <div>
             <h1
               style={{
-                fontFamily: 'var(--font-space-grotesk), sans-serif',
-                fontWeight: 700,
-                fontSize: 'clamp(7rem, 20vw, 18rem)',
+                fontFamily: 'var(--font-sigmar), sans-serif',
+                fontWeight: 400,
+                fontSize: 'clamp(6.25rem, 17.5vw, 15.5rem)',
                 lineHeight: 0.85,
                 color: '#EBE5DC',
-                letterSpacing: '-0.05em',
+                letterSpacing: '-0.02em',
                 margin: '0 0 1.25rem -0.055em',
               }}
             >
@@ -164,6 +164,7 @@ export default function HeroSection() {
             }}
           >
             <p
+              className="hero-desc"
               style={{
                 fontFamily: 'var(--font-space-grotesk), sans-serif',
                 fontWeight: 400,
@@ -179,6 +180,7 @@ export default function HeroSection() {
 
             <Link
               href="/join-the-waitlist"
+              className="hero-cta"
               style={{
                 display: 'inline-block',
                 fontFamily: 'var(--font-space-grotesk), sans-serif',

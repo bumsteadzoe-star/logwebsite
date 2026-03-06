@@ -112,6 +112,7 @@ export default function JoinWaitlistPage() {
 
         {/* Form + benefits */}
         <div
+          className="waitlist-grid"
           style={{
             maxWidth: '1100px',
             margin: '0 auto',
@@ -123,7 +124,7 @@ export default function JoinWaitlistPage() {
           }}
         >
           {/* Left: Benefits */}
-          <div>
+          <div className="waitlist-benefits">
             <p
               style={{
                 fontFamily: 'var(--font-courier), monospace',
@@ -176,7 +177,7 @@ export default function JoinWaitlistPage() {
           </div>
 
           {/* Right: Form */}
-          <div>
+          <div className="waitlist-form-col">
             {status === 'success' ? (
               <div>
                 <p

@@ -136,6 +136,7 @@ export default function PostPage({ params }) {
 
         {/* Article body */}
         <div
+          className="article-body-pad"
           style={{
             maxWidth: '780px',
             margin: '0 auto',
@@ -332,6 +333,7 @@ export default function PostPage({ params }) {
         {/* Related posts */}
         {relatedPosts.length > 0 && (
           <div
+            className="related-posts-pad"
             style={{
               padding: '5rem 3rem 8rem',
               borderTop: '1px solid rgba(26,26,26,0.1)',
@@ -351,6 +353,7 @@ export default function PostPage({ params }) {
                 more from the feed
               </p>
               <div
+                className="related-posts-grid"
                 style={{
                   display: 'grid',
                   gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',

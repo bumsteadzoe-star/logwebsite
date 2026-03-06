@@ -91,6 +91,7 @@ export default function RecsPage() {
 
         {/* Blog posts */}
         <div
+          className="recs-posts-pad"
           style={{
             padding: '4rem 3rem 8rem',
             maxWidth: '1400px',

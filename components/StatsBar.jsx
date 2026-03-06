@@ -40,7 +40,7 @@ export default function StatsBar() {
         }}
       >
       <div
-        className="marquee-track"
+        className="marquee-track stats-marquee"
         style={{
           display: 'flex',
           alignItems: 'center',

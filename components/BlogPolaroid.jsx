@@ -4,6 +4,7 @@ export default function BlogPolaroid({ post }) {
   return (
     <a
       href={`/recs/${post.slug}`}
+      className="blog-polaroid"
       style={{
         display: 'block',
         width: '510px',
