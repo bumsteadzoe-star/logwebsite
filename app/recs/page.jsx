@@ -3,12 +3,16 @@ import Footer from '@/components/Footer'
 import BlogPolaroid from '@/components/BlogPolaroid'
 import posts from '@/data/posts'
 
+export const revalidate = 3600
+
 export const metadata = {
   title: 'recs — LOG',
   description: 'curated spots, honest takes, and places worth logging.',
 }
 
 export default function RecsPage() {
+  const publishedPosts = posts.filter(p => p.published)
+
   return (
     <>
       <Navbar />
@@ -101,7 +105,9 @@ export default function RecsPage() {
             gap: '2rem',
           }}
         >
-          <BlogPolaroid post={posts[0]} />
+          {publishedPosts.map(post => (
+            <BlogPolaroid key={post.slug} post={post} />
+          ))}
         </div>
       </main>
       <Footer />

@@ -6,16 +6,26 @@ const hasGoogleCreds = () =>
      process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL &&
      process.env.GOOGLE_PRIVATE_KEY)
 
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
 export async function POST(request) {
   try {
-    const { name, email, city } = await request.json()
+    const body = await request.json()
+
+    const name  = typeof body.name  === 'string' ? body.name.trim().slice(0, 200)  : ''
+    const email = typeof body.email === 'string' ? body.email.trim().slice(0, 320) : ''
+    const city  = typeof body.city  === 'string' ? body.city.trim().slice(0, 200)  : ''
 
     if (!name || !email || !city) {
       return NextResponse.json({ error: 'all fields are required' }, { status: 400 })
     }
 
+    if (!EMAIL_RE.test(email)) {
+      return NextResponse.json({ error: 'invalid email address' }, { status: 400 })
+    }
+
     if (!hasGoogleCreds()) {
-      console.log('[waitlist] Google Sheets not configured — submission received:', { name, email, city, timestamp: new Date().toISOString() })
+      console.log('[waitlist] Google Sheets not configured — submission received')
       return NextResponse.json({ success: true })
     }
 
@@ -32,7 +42,7 @@ export async function POST(request) {
     await sheets.spreadsheets.values.append({
       spreadsheetId: process.env.GOOGLE_SHEETS_SHEET_ID,
       range: 'Sheet1!A:D',
-      valueInputOption: 'USER_ENTERED',
+      valueInputOption: 'RAW',
       requestBody: {
         values: [[new Date().toISOString(), name, email, city]],
       },
@@ -40,7 +50,7 @@ export async function POST(request) {
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('Waitlist error:', error)
+    console.error('Waitlist error:', error.message)
     return NextResponse.json({ error: 'failed to join waitlist' }, { status: 500 })
   }
 }

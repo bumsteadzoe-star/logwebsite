@@ -6,6 +6,8 @@ import Footer from '@/components/Footer'
 import StudyAbroadPost from '@/components/StudyAbroadPost'
 import posts from '@/data/posts'
 
+export const revalidate = 3600
+
 export async function generateStaticParams() {
   return posts.map(post => ({ slug: post.slug }))
 }
@@ -258,18 +260,7 @@ export default function PostPage({ params }) {
                 return null
               })}
             </div>
-          ) : (
-            <div
-              style={{
-                fontFamily: 'var(--font-space-grotesk), sans-serif',
-                fontWeight: 400,
-                fontSize: '1.05rem',
-                lineHeight: 1.8,
-                color: '#2d2d2d',
-              }}
-              dangerouslySetInnerHTML={{ __html: post.body }}
-            />
-          )}
+          ) : null}
 
           {/* Location links */}
           {post.locationLinks && post.locationLinks.length > 0 && (

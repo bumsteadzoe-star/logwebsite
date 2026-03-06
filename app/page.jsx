@@ -8,6 +8,11 @@ import Footer from '@/components/Footer'
 
 const RecsCarousel = dynamic(() => import('@/components/RecsCarousel'), { ssr: false })
 
+export const metadata = {
+  title: 'LOG — document what moves you.',
+  description: 'discover, share, and experience your city through the eyes of people who actually live it.',
+}
+
 export default function Home() {
   return (
     <>

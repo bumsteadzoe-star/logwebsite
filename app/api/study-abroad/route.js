@@ -6,16 +6,26 @@ const hasGoogleCreds = () =>
      process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL &&
      process.env.GOOGLE_PRIVATE_KEY)
 
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
 export async function POST(request) {
   try {
-    const { name, email, university } = await request.json()
+    const body = await request.json()
+
+    const name       = typeof body.name       === 'string' ? body.name.trim().slice(0, 200)       : ''
+    const email      = typeof body.email      === 'string' ? body.email.trim().slice(0, 320)      : ''
+    const university = typeof body.university === 'string' ? body.university.trim().slice(0, 300) : ''
 
     if (!name || !email || !university) {
       return NextResponse.json({ error: 'all fields are required' }, { status: 400 })
     }
 
+    if (!EMAIL_RE.test(email)) {
+      return NextResponse.json({ error: 'invalid email address' }, { status: 400 })
+    }
+
     if (!hasGoogleCreds()) {
-      console.log('[study-abroad] Google Sheets not configured — submission received:', { name, email, university, timestamp: new Date().toISOString() })
+      console.log('[study-abroad] Google Sheets not configured — submission received')
       return NextResponse.json({ success: true })
     }
 
@@ -32,7 +42,7 @@ export async function POST(request) {
     await sheets.spreadsheets.values.append({
       spreadsheetId: process.env.GOOGLE_SHEETS_SHEET_ID,
       range: 'StudyAbroad!A:D',
-      valueInputOption: 'USER_ENTERED',
+      valueInputOption: 'RAW',
       requestBody: {
         values: [[new Date().toISOString(), name, email, university]],
       },
@@ -40,7 +50,7 @@ export async function POST(request) {
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('Study abroad request error:', error)
+    console.error('Study abroad request error:', error.message)
     return NextResponse.json({ error: 'failed to submit request' }, { status: 500 })
   }
 }
