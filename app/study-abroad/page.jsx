@@ -1,6 +1,8 @@
+import dynamic from 'next/dynamic'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
-import StudyAbroadForm from '@/components/StudyAbroadForm'
+
+const StudyAbroadForm = dynamic(() => import('@/components/StudyAbroadForm'), { ssr: false })
 
 export const metadata = {
   title: 'study abroad — LOG',
@@ -108,6 +110,7 @@ export default function StudyAbroadPage() {
 
         {/* Form + benefits */}
         <div
+          className="study-form-grid"
           style={{
             maxWidth: '1100px',
             margin: '0 auto',

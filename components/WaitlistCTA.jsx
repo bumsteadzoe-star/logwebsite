@@ -3,6 +3,7 @@ import Link from 'next/link'
 export default function WaitlistCTA() {
   return (
     <section
+      className="waitlist-section"
       style={{
         backgroundColor: '#1B502F',
         padding: '9rem 3rem',
@@ -72,6 +73,7 @@ export default function WaitlistCTA() {
       </h2>
 
       <p
+        className="waitlist-desc"
         style={{
           fontFamily: 'var(--font-space-grotesk), sans-serif',
           fontWeight: 400,

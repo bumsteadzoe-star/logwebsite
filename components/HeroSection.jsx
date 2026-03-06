@@ -102,6 +102,7 @@ export default function HeroSection() {
 
       {/* Hero content */}
       <div
+        className="hero-content"
         style={{
           position: 'relative',
           zIndex: 10,
@@ -113,6 +114,7 @@ export default function HeroSection() {
         }}
       >
         <div
+          className="hero-grid"
           style={{
             display: 'grid',
             gridTemplateColumns: '1fr auto',
@@ -136,6 +138,7 @@ export default function HeroSection() {
               LOG
             </h1>
             <p
+              className="hero-tagline"
               style={{
                 fontFamily: 'var(--font-space-grotesk), sans-serif',
                 fontWeight: 400,
@@ -152,6 +155,7 @@ export default function HeroSection() {
 
           {/* Right: description + CTA */}
           <div
+            className="hero-right"
             style={{
               display: 'flex',
               flexDirection: 'column',

@@ -87,3 +87,64 @@ a {
 .film-img {
   filter: sepia(0.08) saturate(0.92) contrast(1.03);
 }
+
+/* ─── Mobile responsive overrides (≤640px) ──────────────────── */
+@media (max-width: 640px) {
+  /* Navbar */
+  .nav-header { padding: 0 1.25rem !important; }
+  .nav-links  { display: none !important; }
+
+  /* Hero section */
+  .hero-content { padding: 0 1.5rem 3rem !important; }
+  .hero-grid    { grid-template-columns: 1fr !important; gap: 1.5rem !important; }
+  .hero-right   { align-items: flex-start !important; }
+  .hero-tagline { white-space: normal !important; }
+
+  /* ValueProps pillars */
+  .value-pillars { grid-template-columns: 1fr !important; }
+  .value-pillar  {
+    border-left: none !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+    border-top: 1px solid rgba(26,26,26,0.1) !important;
+  }
+  .value-pillar-first {
+    border-top: none !important;
+    padding-top: 0 !important;
+  }
+
+  /* ValueProps bottom feature */
+  .value-bottom       { flex-direction: column !important; gap: 2.5rem !important; }
+  .value-bottom-left  { flex: 0 0 100% !important; }
+  .value-bottom-right { flex: 0 0 100% !important; }
+  .value-polaroid     { width: 100% !important; max-width: 100% !important; flex-shrink: 1 !important; }
+  .value-polaroid a   { width: 100% !important; }
+
+  /* WaitlistCTA */
+  .waitlist-section { padding: 5rem 1.5rem !important; }
+  .waitlist-desc    { white-space: normal !important; }
+
+  /* Study Abroad page form grid */
+  .study-form-grid {
+    grid-template-columns: 1fr !important;
+    gap: 3rem !important;
+    padding: 3rem 1.5rem 5rem !important;
+  }
+
+  /* StudyAbroadPost hero title */
+  .post-hero-title { white-space: normal !important; }
+
+  /* StudyAbroadPost rec card with photo */
+  .rec-card-photo     { grid-template-columns: 1fr !important; }
+  .rec-card-photo-img { min-height: 220px !important; }
+
+  /* StudyAbroadPost tip card with photo */
+  .tip-card-photo { grid-template-columns: 1fr !important; }
+
+  /* StudyAbroadPost article padding */
+  .post-article-pad { padding: 3rem 1.25rem 2rem !important; }
+  .post-section-pad { padding-left: 1.25rem !important; padding-right: 1.25rem !important; }
+  .post-closing-pad { padding: 0 1.25rem 4rem !important; }
+}

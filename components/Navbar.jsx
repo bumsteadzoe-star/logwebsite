@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 
 const navLinks = [
@@ -12,15 +12,23 @@ const navLinks = [
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
+  const scrolledRef = useRef(false)
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 60)
+    const handleScroll = () => {
+      const isNowScrolled = window.scrollY > 60
+      if (isNowScrolled !== scrolledRef.current) {
+        scrolledRef.current = isNowScrolled
+        setScrolled(isNowScrolled)
+      }
+    }
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
   return (
     <header
+      className="nav-header"
       style={{
         position: 'fixed',
         top: 0,
@@ -56,7 +64,7 @@ export default function Navbar() {
       </Link>
 
       {/* Desktop nav */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '2.25rem' }}>
+      <div className="nav-links" style={{ display: 'flex', alignItems: 'center', gap: '2.25rem' }}>
         {navLinks.map(({ label, href }) => (
           <Link
             key={label}

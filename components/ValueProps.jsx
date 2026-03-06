@@ -51,6 +51,7 @@ export default function ValueProps() {
 
         {/* Pillar grid */}
         <div
+          className="value-pillars"
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(3, 1fr)',
@@ -59,6 +60,7 @@ export default function ValueProps() {
           {pillars.map((pillar, i) => (
             <div
               key={pillar.label}
+              className={i === 0 ? 'value-pillar value-pillar-first' : 'value-pillar'}
               style={{
                 padding: '0 3rem 2.5rem 0',
                 borderLeft: i > 0 ? '1px solid rgba(26,26,26,0.1)' : 'none',
@@ -111,6 +113,7 @@ export default function ValueProps() {
 
         {/* Bottom feature section */}
         <div
+          className="value-bottom"
           style={{
             marginTop: '5rem',
             paddingTop: '2.25rem',
@@ -120,7 +123,7 @@ export default function ValueProps() {
           }}
         >
           {/* Left 50%: text — centered within the left half */}
-          <div style={{ flex: '0 0 50%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1.1rem' }}>
+          <div className="value-bottom-left" style={{ flex: '0 0 50%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1.1rem' }}>
             <h2
               style={{
                 fontFamily: 'var(--font-space-grotesk), sans-serif',
@@ -167,8 +170,10 @@ export default function ValueProps() {
           </div>
 
           {/* Right 50%: polaroid — left edge at center axis */}
-          <div style={{ flex: '0 0 50%', display: 'flex', justifyContent: 'flex-start' }}>
-            <BlogPolaroid post={posts[0]} />
+          <div className="value-bottom-right" style={{ flex: '0 0 50%', display: 'flex', justifyContent: 'flex-start', width: '100%' }}>
+            <div className="value-polaroid" style={{ width: '510px', flexShrink: 0 }}>
+              <BlogPolaroid post={posts[0]} />
+            </div>
           </div>
         </div>
       </div>

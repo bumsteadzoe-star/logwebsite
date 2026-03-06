@@ -1,9 +1,18 @@
 'use client';
 
-import { useRef, useMemo, useState, useEffect } from 'react';
+import { useRef, useMemo, useState, useEffect, Component } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useTexture } from '@react-three/drei';
 import * as THREE from 'three';
+
+class ErrorBoundary extends Component {
+  constructor(props) { super(props); this.state = { hasError: false }; }
+  static getDerivedStateFromError() { return { hasError: true }; }
+  render() {
+    if (this.state.hasError) return this.props.fallback;
+    return this.props.children;
+  }
+}
 
 const DEFAULT_DEPTH_RANGE = 50;
 
@@ -326,15 +335,17 @@ export default function InfiniteGallery({
 
   return (
     <div style={containerStyle} className={className}>
-      <Canvas camera={{ position: [0, 0, 0], fov: 55 }} gl={{ antialias: true, alpha: true }}>
-        <GalleryScene
-          images={images}
-          speed={speed}
-          visibleCount={visibleCount}
-          fadeSettings={fadeSettings}
-          blurSettings={blurSettings}
-        />
-      </Canvas>
+      <ErrorBoundary fallback={<FallbackGallery images={images} />}>
+        <Canvas camera={{ position: [0, 0, 0], fov: 55 }} gl={{ antialias: true, alpha: true }}>
+          <GalleryScene
+            images={images}
+            speed={speed}
+            visibleCount={visibleCount}
+            fadeSettings={fadeSettings}
+            blurSettings={blurSettings}
+          />
+        </Canvas>
+      </ErrorBoundary>
     </div>
   );
 }

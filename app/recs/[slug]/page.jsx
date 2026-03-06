@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Navbar from '@/components/Navbar'
 import PostCard from '@/components/PostCard'
 import Footer from '@/components/Footer'
+import StudyAbroadPost from '@/components/StudyAbroadPost'
 import posts from '@/data/posts'
 
 export async function generateStaticParams() {
@@ -22,6 +23,18 @@ export async function generateMetadata({ params }) {
 export default function PostPage({ params }) {
   const post = posts.find(p => p.slug === params.slug)
   if (!post) notFound()
+
+  if (post.type === 'study-abroad') {
+    return (
+      <>
+        <Navbar />
+        <main style={{ backgroundColor: '#EBE5DC' }}>
+          <StudyAbroadPost post={post} />
+        </main>
+        <Footer />
+      </>
+    )
+  }
 
   const publishedPosts = posts.filter(p => p.published)
   const related = publishedPosts.filter(p => p.slug !== post.slug && p.city === post.city).slice(0, 3)
