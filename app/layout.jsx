@@ -30,6 +30,15 @@ export const metadata = {
     icon: '/static/favicon.png',
     apple: '/static/favicon.png',
   },
+  openGraph: {
+    title: 'LOG',
+    description: 'discover, share, and experience your city through the eyes of people who actually live it.',
+    images: [{ url: '/images/film1.jpg', width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    images: ['/images/film1.jpg'],
+  },
 }
 
 export default function RootLayout({ children }) {
