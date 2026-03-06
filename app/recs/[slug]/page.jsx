@@ -15,9 +15,19 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }) {
   const post = posts.find(p => p.slug === params.slug)
   if (!post) return {}
+  const image = post.coverImage || '/images/film1.jpg'
   return {
     title: `${post.title} — LOG`,
     description: post.description,
+    openGraph: {
+      title: `${post.title} — LOG`,
+      description: post.description,
+      images: [{ url: image, width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      images: [image],
+    },
   }
 }
 
