@@ -38,10 +38,10 @@ export default function Footer() {
           <div>
             <p
               style={{
-                fontFamily: 'var(--font-space-grotesk), sans-serif',
-                fontWeight: 700,
+                fontFamily: 'var(--font-sigmar), sans-serif',
+                fontWeight: 400,
                 fontSize: '2rem',
-                letterSpacing: '-0.05em',
+                letterSpacing: '-0.01em',
                 color: '#1A1A1A',
                 lineHeight: 1,
                 marginBottom: '0.75rem',

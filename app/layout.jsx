@@ -26,6 +26,10 @@ const sigmar = Sigmar({
 export const metadata = {
   title: 'LOG — document what moves you.',
   description: 'discover, share, and experience your city through the eyes of people who actually live it.',
+  icons: {
+    icon: '/static/favicon.png',
+    apple: '/static/favicon.png',
+  },
 }
 
 export default function RootLayout({ children }) {
