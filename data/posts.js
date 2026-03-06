@@ -23,7 +23,7 @@ const posts = [
       {
         category: 'Food',
         name: 'La Casa del Abuelo',
-        thoughts: 'Close to the center of the city. A very local spot, not many tourists inside. Amazing Spanish tapas, the best Spanish tortilla I\'ve ever had.',
+        thoughts: 'Close to the center of the city. A more local spot, not many tourists inside. Amazing Spanish tapas, the best Spanish tortilla I\'ve ever had.',
         rating: 4.7,
         website: 'https://www.lacasadelabuelo.es/',
         photo: null,
@@ -55,7 +55,7 @@ const posts = [
       {
         category: 'Nightlife',
         name: 'Istar',
-        thoughts: 'Really expensive drinks (like 18 euros for a vodka soda) and really expensive tickets but if you know a promoter can get in for free. Weeknights are easier to get in. I actually really liked the interior (looks like a fancy cave), definitely a nicer club vibe so dress up a bit. Gets full really late (around 2ish).',
+        thoughts: 'Really expensive drinks (like 18 euros for a vodka soda) and really expensive tickets but if you know a promoter can get in for free. I actually really liked the interior (looks like a fancy cave), definitely a nicer club vibe so dress up a bit. Gets full really late (around 2ish).',
         rating: 3.5,
         website: 'https://istar-club.com/',
         photo: '/images/laurablogphotos/Istar.jpeg',
@@ -63,7 +63,7 @@ const posts = [
       {
         category: 'Activities',
         name: 'Prado Museum',
-        thoughts: 'One of the most famous museums in Spain, went there with my drawing class and got to see beautiful famous paintings. Got a tour with my dad, this is a must-do at least once while you are in Madrid.',
+        thoughts: 'One of the most famous museums in Spain, went there with my drawing class and got to see beautiful famous paintings. This is a must-do at least once while you are in Madrid.',
         rating: 4.3,
         website: 'https://museopradotickets.com/en',
         photo: null,
