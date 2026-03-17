@@ -146,10 +146,10 @@ const posts = [
       {
         category: 'Food',
         name: 'The Victoria & Alfred Waterfront',
-        thoughts: "Looks out onto the waterfront. Huge open-air pier with wooden floors and a strip wall. Has the best popup food with free samples, and also fancier spots. If it's your vibe, you can get dinner on the catamarans.",
+        thoughts: "Looks out onto the waterfront. Huge open-air pier with wooden floors and a strip wall. Has the best popup food with free samples, and also fancier spots. If it's your vibe, you can get dinner on the catamarans. They have the Oranjezicht farmers market 3 times a week here.",
         rating: 5.0,
         website: 'https://www.waterfront.co.za/',
-        photo: '/images/madhavblogphotos/waterfront.jpg',
+        photo: '/images/madhavblogphotos/farmers.jpg',
       },
       {
         category: 'Food',
@@ -162,7 +162,7 @@ const posts = [
       {
         category: 'Food',
         name: 'The Salt River or Altona Fisheries',
-        thoughts: "They have a huge fish and chips culture, specifically hot chips. They have a piri piri sauce that is famous — a spicy red sauce — and a chips sauce that is so awesome. They also sell gatsbys, the national food: a 3-foot long baguette sandwich with steak, hot chips, and a ton of sauce. Such a great vibe.",
+        thoughts: "They have a huge fish and chips culture, specifically hot chips. They have a pirinaise sauce that is famous, its generally a spicy red sauce and they have a chips sauce that is so awesome. They also sell gatsbys, the national food. A 3-foot long baguette sandwich with steak, hot chips, and a ton of sauce. Such a great vibe.",
         rating: 5.0,
         website: 'https://www.instagram.com/altonafisheries/',
         photo: null,
@@ -177,6 +177,14 @@ const posts = [
       },
       {
         category: 'Nightlife',
+        name: 'Armchair Theatre',
+        thoughts: "Located in the student neighbourhood of Observatory, the Armchair Theatre is a pub, watering hole, dance floor, restaurant, and community center all in one. Trivia once a week, open mics all the time — it's where the young of Cape Town gather at nights for a reliably fantastic time dancing and making love.",
+        rating: 5.0,
+        website: 'https://armchair.kamooni.africa/',
+        photo: '/images/madhavblogphotos/armchair.jpg',
+      },
+      {
+        category: 'Nightlife',
         name: 'Modular on Riebeeck Street',
         thoughts: "Harder to find. Club in an unassuming alley — there are 3 sets of staircases going underground. You go inside and it's like Berghain. It's a clothes-optional, deep dark euro techno environment. Each staircase goes to a different club; as you go farther down they get more deep and techno, the earlier ones are more chill. Cape Town has a lot of mainstream clubs where they play white girl music, but this is the best for Afrobeats and up-and-coming artists off the beaten path.",
         rating: 5.0,
@@ -186,18 +194,26 @@ const posts = [
       {
         category: 'Nature',
         name: '3 Peaks Challenge',
-        thoughts: "Cape Town is a city with 3 mountains in it. You leave before dawn, summit and come down each of the mountains, and reach the top of the last one by sunset. You can do it with friends or compete — each mountain is a different type of hike. You get amazing views of every side of the city, vineyards, etc. If you time it right there are low clouds that sit on top of Table Mountain, called the \"tablecloth\" — try to time it to see this. It's one of the most beautiful things I have ever seen.",
+        thoughts: "Cape Town is a city with 3 mountains in it. There is this thing called the 3 Peaks Challenge. You leave before dawn, summit and come down each of the mountains, and reach the top of the last one by sunset. You can do it with friends or compete — each mountain is a different type of hike. You get amazing views of every side of the city, vineyards, etc. If you time it right there are low clouds that sit on top of Table Mountain, called the \"tablecloth\" — try to time it to see this. It's one of the most beautiful things I have ever seen.",
         rating: 5.0,
         website: 'https://www.threepeakschallenge.co.za/',
-        photo: '/images/madhavblogphotos/3peak.jpg',
+        photo: '/images/madhavblogphotos/3peaknew.jpg',
       },
       {
         category: 'Nature',
         name: 'Boulders Beach',
-        thoughts: "Boulders Beach costs money to enter. Instead, if you enter from the side, walk over rock formations, and swim a bit you can get in for free. Tide pooling is the best I've ever seen — nothing beats it, and I've been tidepooling in 5 continents. The coral has more color than you have ever seen. This all leads into the beach with penguins. It's the most incredible thing ever — don't get too close to the penguins, but so incredible.",
+        thoughts: "Boulders Beach costs money to enter. Instead, if you enter from the side, walk over rock formations, and swim a bit you can get in for free. Tide pooling is the best I've ever seen — nothing beats it, and I've been tidepooling in 5 continents. The coral has more color than you have ever seen. This all leads into to the beach with penguins. It's the most incredible thing ever — don't get too close to the penguins, but so incredible.",
         rating: 5.0,
         website: 'https://www.sanparks.org/parks/table-mountain/what-to-do/attractions/boulders-penguin-colony',
-        photo: '/images/madhavblogphotos/tidepool.png',
+        photo: '/images/madhavblogphotos/boulder.jpg',
+      },
+      {
+        category: 'Nature',
+        name: 'Kirstenbosch',
+        thoughts: "Beautiful botanical garden. There are huge purple flowers everywhere. In all directions people are walking their dogs. This is the first time I ever did magic mushrooms, and I could never recommend any other location to anybody ever for their first ever trip because of these massive cliffs that look onto huge natural orchards. It's beautiful.",
+        rating: 5.0,
+        website: 'https://www.sanbi.org/gardens/kirstenbosch/',
+        photo: null,
       },
       {
         category: 'Activities',
@@ -213,7 +229,7 @@ const posts = [
         thoughts: "Starts at Cape Town and goes to Port Elizabeth. You rent a car and can be there and back in 5–6 days. You drive through reserves with elephants and giraffes, cities and towns with deep pre-apartheid culture, and through Mossel Bay, which has the best seafood I have ever eaten. The mountain passes are beautiful and you drive along the ocean for a lot of it.",
         rating: 5.0,
         website: 'https://route62.co.za/',
-        photo: null,
+        photo: '/images/madhavblogphotos/roadtrip.jpg',
       },
       {
         category: 'Activities',
@@ -221,12 +237,12 @@ const posts = [
         thoughts: "You must go to a rugby game, even if you have no idea what's going on. Cape Town Stadium is where Shakira performed \"Waka Waka.\" Super fun to go and drink with friends.",
         rating: 5.0,
         website: 'https://dhlstadium.co.za/events/event-detail/u20-world-rugby-dhl-stadium',
-        photo: null,
+        photo: '/images/madhavblogphotos/rugby.jpeg',
       },
     ],
     tips: [
       {
-        text: "Find a South African friend to invite you to their family braais (barbeques) on the weekend — it's a huge part of the culture there.",
+        text: "Find a South African friend to invite you to their family braais (barbeques) on the weekend, it's a huge fun part of the culture there.",
         photo: null,
       },
       {
@@ -236,6 +252,7 @@ const posts = [
     ],
     closing: "All of Madhav's recommendations above are saved in this Google Maps list so you can use them while exploring Cape Town.",
     mapsLink: 'https://maps.app.goo.gl/mVvkvmMTJUrpyUeg8',
+    spotifyLink: 'https://open.spotify.com/playlist/0xLMzZC2NL61WDadnMGOkC?si=0bFjwOlYQ_aE3WC9fqL1Mg&pi=twyyU_-CSH22f',
   },
   {
     slug: 'paris-cafes-not-in-any-guide',

@@ -554,15 +554,27 @@ export default function StudyAbroadPost({ post }) {
             }}>
               {post.closing}
             </p>
-            <a
-              href={post.mapsLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="maps-link"
-            >
-              <MapPinIcon />
-              Open Google Maps Collection
-            </a>
+            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+              <a
+                href={post.mapsLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="maps-link"
+              >
+                <MapPinIcon />
+                Open Google Maps Collection
+              </a>
+              {post.spotifyLink && (
+                <a
+                  href={post.spotifyLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="maps-link"
+                >
+                  ♪ Spotify Playlist
+                </a>
+              )}
+            </div>
           </div>
         </div>
 
