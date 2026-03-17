@@ -88,6 +88,27 @@ a {
   filter: sepia(0.08) saturate(0.92) contrast(1.03);
 }
 
+/* ─── Maps link hover (StudyAbroadPost) ────────────────────── */
+.maps-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-space-grotesk), sans-serif;
+  font-weight: 600;
+  font-size: 0.82rem;
+  letter-spacing: 0.05em;
+  color: #1A1A1A;
+  background-color: transparent;
+  border: 1.5px solid rgba(26,26,26,0.25);
+  padding: 0.85rem 1.75rem;
+  text-decoration: none;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.maps-link:hover {
+  border-color: #1B502F;
+  color: #1B502F;
+}
+
 /* ─── Mobile responsive overrides (≤640px) ──────────────────── */
 @media (max-width: 640px) {
   /* Navbar */

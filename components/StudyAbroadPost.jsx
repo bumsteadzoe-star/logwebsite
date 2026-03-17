@@ -1,5 +1,3 @@
-'use client'
-
 import Link from 'next/link'
 
 const CATEGORY_ORDER = ['Food', 'Coffee', 'Nightlife', 'Activities', 'Nature']
@@ -404,7 +402,7 @@ export default function StudyAbroadPost({ post }) {
               textTransform: 'uppercase',
               padding: '0.25rem 0.65rem',
             }}>
-              Study Abroad
+              {post.category}
             </span>
             <span style={{
               fontFamily: 'var(--font-courier), monospace',
@@ -525,7 +523,7 @@ export default function StudyAbroadPost({ post }) {
               textTransform: 'uppercase',
               color: '#6B6560',
             }}>
-              Laura's Tips
+              {post.author.split(' ')[0]}'s Tips
             </span>
             <div style={{ flex: 1, height: '1px', backgroundColor: 'rgba(26,26,26,0.1)' }} />
           </div>
@@ -560,29 +558,7 @@ export default function StudyAbroadPost({ post }) {
               href={post.mapsLink}
               target="_blank"
               rel="noopener noreferrer"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.6rem',
-                fontFamily: 'var(--font-space-grotesk), sans-serif',
-                fontWeight: 600,
-                fontSize: '0.82rem',
-                letterSpacing: '0.05em',
-                color: '#1A1A1A',
-                backgroundColor: 'transparent',
-                border: '1.5px solid rgba(26,26,26,0.25)',
-                padding: '0.85rem 1.75rem',
-                textDecoration: 'none',
-                transition: 'border-color 0.2s ease, color 0.2s ease',
-              }}
-              onMouseEnter={e => {
-                e.currentTarget.style.borderColor = '#1B502F'
-                e.currentTarget.style.color = '#1B502F'
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.borderColor = 'rgba(26,26,26,0.25)'
-                e.currentTarget.style.color = '#1A1A1A'
-              }}
+              className="maps-link"
             >
               <MapPinIcon />
               Open Google Maps Collection
@@ -629,7 +605,7 @@ export default function StudyAbroadPost({ post }) {
               letterSpacing: '-0.04em',
               marginBottom: '1.25rem',
             }}>
-              Get more recs like Laura's.
+              Get more recs like {post.author.split(' ')[0]}'s.
             </h2>
             <p style={{
               fontFamily: 'var(--font-space-grotesk), sans-serif',

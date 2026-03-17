@@ -100,8 +100,8 @@ export default function RecsPage() {
             padding: '4rem 3rem 8rem',
             maxWidth: '1400px',
             margin: '0 auto',
-            display: 'flex',
-            flexWrap: 'wrap',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(3, 1fr)',
             gap: '2rem',
           }}
         >

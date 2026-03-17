@@ -172,7 +172,7 @@ export default function ValueProps() {
           {/* Right 50%: polaroid — left edge at center axis */}
           <div className="value-bottom-right" style={{ flex: '0 0 50%', display: 'flex', justifyContent: 'flex-start', width: '100%' }}>
             <div className="value-polaroid" style={{ width: '510px', flexShrink: 0 }}>
-              <BlogPolaroid post={posts[0]} />
+              <BlogPolaroid post={posts[1]} />
             </div>
           </div>
         </div>

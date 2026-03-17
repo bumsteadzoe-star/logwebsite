@@ -7,8 +7,7 @@ export default function BlogPolaroid({ post }) {
       className="blog-polaroid"
       style={{
         display: 'block',
-        width: '510px',
-        flexShrink: 0,
+        width: '100%',
         backgroundColor: '#FFFFFF',
         padding: '12px 12px 0',
         boxShadow: '0 12px 48px rgba(26,26,26,0.2)',

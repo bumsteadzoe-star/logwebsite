@@ -13,7 +13,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }) {
-  const post = posts.find(p => p.slug === params.slug)
+  const { slug } = await params
+  const post = posts.find(p => p.slug === slug)
   if (!post) return {}
   const image = post.coverImage || '/images/film1.jpg'
   return {
@@ -32,8 +33,9 @@ export async function generateMetadata({ params }) {
 }
 
 
-export default function PostPage({ params }) {
-  const post = posts.find(p => p.slug === params.slug)
+export default async function PostPage({ params }) {
+  const { slug } = await params
+  const post = posts.find(p => p.slug === slug)
   if (!post) notFound()
 
   if (post.type === 'study-abroad') {
