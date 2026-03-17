@@ -1,8 +1,6 @@
-import dynamic from 'next/dynamic'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
-
-const StudyAbroadForm = dynamic(() => import('@/components/StudyAbroadForm'), { ssr: false })
+import StudyAbroadForm from '@/components/StudyAbroadFormClient'
 
 export const metadata = {
   title: 'study abroad — LOG',
