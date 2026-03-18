@@ -38,7 +38,7 @@ export default async function PostPage({ params }) {
   const post = posts.find(p => p.slug === slug)
   if (!post) notFound()
 
-  if (post.type === 'study-abroad') {
+  if (post.type === 'study-abroad' || post.type === 'trip') {
     return (
       <>
         <Navbar />
