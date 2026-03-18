@@ -11,7 +11,7 @@ export const metadata = {
 }
 
 export default function RecsPage() {
-  const publishedPosts = posts.filter(p => p.published)
+  const publishedPosts = posts.filter(p => p.published).sort((a, b) => new Date(b.date) - new Date(a.date))
 
   return (
     <>

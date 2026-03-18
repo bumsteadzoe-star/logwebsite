@@ -213,7 +213,7 @@ a {
   .blog-polaroid img { height: 260px !important; }
 
   /* Recs page */
-  .recs-posts-pad { padding: 2.5rem 1.25rem 5rem !important; }
+  .recs-posts-pad { padding: 2.5rem 1.25rem 5rem !important; grid-template-columns: 1fr !important; }
 
   /* Recs slug article body */
   .article-body-pad { padding: 3rem 1.25rem 3rem !important; }
