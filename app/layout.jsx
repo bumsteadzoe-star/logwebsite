@@ -47,9 +47,11 @@ export default function RootLayout({ children }) {
     <html lang="en" className={`${spaceGrotesk.variable} ${courierPrime.variable} ${sigmar.variable}`}>
       <body>{children}</body>
       <Script
-        src="https://tracker.metricool.com/resources/be.js"
+        id="metricool-tracker"
         strategy="afterInteractive"
-        onLoad={() => { window.beTracker && window.beTracker.t({ hash: 'b0863b6de25313b3405dc8c559a7e274' }) }}
+        dangerouslySetInnerHTML={{
+          __html: `function loadScript(a){var b=document.getElementsByTagName("head")[0],c=document.createElement("script");c.type="text/javascript",c.src="https://tracker.metricool.com/resources/be.js",c.onreadystatechange=a,c.onload=a,b.appendChild(c)}loadScript(function(){beTracker.t({hash:"b0863b6de25313b3405dc8c559a7e274"})});`,
+        }}
       />
     </html>
   )
