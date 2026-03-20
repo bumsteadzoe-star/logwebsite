@@ -1,4 +1,5 @@
 import { Space_Grotesk, Courier_Prime, Sigmar } from 'next/font/google'
+import Script from 'next/script'
 import '../styles/globals.css'
 
 const spaceGrotesk = Space_Grotesk({
@@ -45,6 +46,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${spaceGrotesk.variable} ${courierPrime.variable} ${sigmar.variable}`}>
       <body>{children}</body>
+      <Script
+        src="https://tracker.metricool.com/resources/be.js"
+        strategy="afterInteractive"
+        onLoad={() => { window.beTracker && window.beTracker.t({ hash: 'b0863b6de25313b3405dc8c559a7e274' }) }}
+      />
     </html>
   )
 }
