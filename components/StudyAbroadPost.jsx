@@ -11,10 +11,18 @@ const CATEGORY_ICONS = {
 }
 
 function StarRating({ rating }) {
+  if (rating === null || rating === undefined) {
+    return (
+      <span style={{ fontFamily: 'var(--font-courier), monospace', fontSize: '0.68rem', color: '#6B6560', letterSpacing: '0.02em' }}>
+        n/a
+      </span>
+    )
+  }
   const max = 5
-  const full = Math.floor(rating)
-  const partial = rating % 1
-  const empty = max - Math.ceil(rating)
+  const capped = Math.min(rating, max)
+  const full = Math.floor(capped)
+  const partial = capped % 1
+  const empty = max - Math.ceil(capped)
   return (
     <span style={{ display: 'inline-flex', alignItems: 'center', gap: '2px' }}>
       {Array.from({ length: full }).map((_, i) => (
@@ -36,7 +44,7 @@ function StarRating({ rating }) {
         marginLeft: '4px',
         letterSpacing: '0.02em',
       }}>
-        {rating.toFixed(1)}
+        {capped.toFixed(1)}
       </span>
     </span>
   )
@@ -362,7 +370,7 @@ export default function StudyAbroadPost({ post }) {
             width: '100%',
             height: '100%',
             objectFit: 'cover',
-            objectPosition: 'center center',
+            objectPosition: 'center 70%',
             filter: 'contrast(1.04) brightness(1.02)',
           }}
         />
