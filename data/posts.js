@@ -759,7 +759,7 @@ const posts = [
       {
         category: 'Food',
         name: 'Canela',
-        thoughts: "Candlelit, old town Palma, traditional Spanish food. Super vibey and the cocktails are genuinely great. One of those restaurants where the whole vibe just works.",
+        thoughts: "Candlelit, old town Palma. Super vibey and the cocktails are genuinely great. One of those restaurants where the whole vibe just works.",
         rating: 4.2,
         website: null,
         photo: '/images/julietteblogphotos/canela.jpg',
