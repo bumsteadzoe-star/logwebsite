@@ -364,7 +364,7 @@ export default function StudyAbroadPost({ post }) {
         backgroundColor: '#1A1A1A',
       }}>
         <img
-          src={post.coverImage}
+          src={post.heroImage || post.coverImage}
           alt={post.title}
           style={{
             width: '100%',
