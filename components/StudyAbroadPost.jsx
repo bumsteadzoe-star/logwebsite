@@ -19,10 +19,9 @@ function StarRating({ rating }) {
     )
   }
   const max = 5
-  const capped = Math.min(rating, max)
-  const full = Math.floor(capped)
-  const partial = capped % 1
-  const empty = max - Math.ceil(capped)
+  const full = Math.floor(rating)
+  const partial = rating % 1
+  const empty = max - Math.ceil(rating)
   return (
     <span style={{ display: 'inline-flex', alignItems: 'center', gap: '2px' }}>
       {Array.from({ length: full }).map((_, i) => (
@@ -44,7 +43,7 @@ function StarRating({ rating }) {
         marginLeft: '4px',
         letterSpacing: '0.02em',
       }}>
-        {capped.toFixed(1)}
+        {rating.toFixed(1)}
       </span>
     </span>
   )
@@ -341,14 +340,16 @@ function TipCard({ tip, index }) {
 }
 
 export default function StudyAbroadPost({ post }) {
+  const recs = post.recs || []
+
   const groupedRecs = CATEGORY_ORDER.reduce((acc, cat) => {
-    const catRecs = post.recs.filter(r => r.category === cat)
+    const catRecs = recs.filter(r => r.category === cat)
     if (catRecs.length > 0) acc[cat] = catRecs
     return acc
   }, {})
 
   // catch any categories not in CATEGORY_ORDER
-  post.recs.forEach(r => {
+  recs.forEach(r => {
     if (!groupedRecs[r.category]) groupedRecs[r.category] = []
     if (!groupedRecs[r.category].includes(r)) groupedRecs[r.category].push(r)
   })
@@ -364,13 +365,13 @@ export default function StudyAbroadPost({ post }) {
         backgroundColor: '#1A1A1A',
       }}>
         <img
-          src={post.heroImage || post.coverImage}
+          src={post.heroImage || post.coverImage || '/images/film1.jpg'}
           alt={post.title}
           style={{
             width: '100%',
             height: '100%',
             objectFit: 'cover',
-            objectPosition: 'center 70%',
+            objectPosition: 'center center',
             filter: 'contrast(1.04) brightness(1.02)',
           }}
         />
