@@ -1287,15 +1287,15 @@ const posts = [
     published: true,
     type: 'study-abroad',
     slug: 'juliette-nyc-local-guide',
-    title: 'Juliette\'s Local NYC Guide',
+    title: 'Juliet\'s Local NYC Guide',
     city: 'New York City, NY',
     category: 'Local Guide',
     coverImage: '/images/julietteblogphotos/coverjul.JPG',
     heroImage: '/images/julietteblogphotos/centralpark3.JPG',
-    description: 'Juliette grew up on the Upper East Side and knows New York like no one else.',
-    author: 'Juliette Faulk',
+    description: 'Juliet grew up on the Upper East Side and knows New York like no one else.',
+    author: 'Juliet Faulk',
     date: '2026-04-16',
-    intro: 'Juliette grew up on the upper east side and knows new york like no one else. She\'s sushi obsessed and has the recs to prove it. Looking for the best dispensary and happy hour combo? Or a nicer dinner with great food? She has you covered across all bases. Check out all of her NYC must do\'s below.',
+    intro: 'Juliet grew up on the upper east side and knows new york like no one else. She\'s sushi obsessed and has the recs to prove it. Looking for the best dispensary and happy hour combo? Or a nicer dinner with great food? She has you covered across all bases. Check out all of her NYC must do\'s below.',
     recs: [
       {
         category: 'Food',
@@ -1576,7 +1576,7 @@ const posts = [
         photo: null,
       },
     ],
-    closing: 'All of Juliette\'s recommendations above are saved in this Google Maps list so you can use them while exploring New York.',
+    closing: 'All of Juliet\'s recommendations above are saved in this Google Maps list so you can use them while exploring New York.',
     mapsLink: 'https://maps.app.goo.gl/R6a75BWESWH3NLwPA',
   },
 ]
