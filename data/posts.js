@@ -1586,8 +1586,8 @@ const posts = [
     title: 'A Week in Paris',
     city: 'Paris, France',
     category: 'Founder Blog',
-    coverImage: '/images/parisblogphotos/daroco.jpg',
-    heroImage: '/images/parisblogphotos/louvre.jpg',
+    coverImage: '/images/parisblogphotos/viewfromairbnb.jpg',
+    heroImage: '/images/parisblogphotos/versailles.jpg',
     description: "Zoe, the founder of LOG, puts her collected recs to the test — a week of eating, exploring, and marathoning through Paris.",
     author: 'Zoe Bumstead',
     date: '2026-04-16',
@@ -1607,7 +1607,7 @@ const posts = [
         thoughts: 'Right next to the Eiffel Tower, young waiter who gave us good travel recs. Touristy but food was great — the crème brûlée was my favorite and they do homemade lasagna.',
         rating: 3.75,
         website: null,
-        photo: null,
+        photo: '/images/parisblogphotos/towercafe.jpg',
       },
       {
         category: 'Food',
@@ -1743,7 +1743,7 @@ const posts = [
         thoughts: 'Incredible. A must-do — we got a guided tour which was super worth it. People were queued in line forever with normal tickets and there\'s so much history you don\'t understand without a tour.',
         rating: 4.6,
         website: 'https://www.chateauversailles.fr/',
-        photo: null,
+        photo: '/images/parisblogphotos/versailles.jpg',
       },
       {
         category: 'Activities',
@@ -1775,7 +1775,7 @@ const posts = [
         thoughts: 'Tons of vintage and thrift shops in this area. Get a coffee and walk around — pop into all the stores you see, wide variety of prices. They also have popup stores.',
         rating: 4.8,
         website: null,
-        photo: null,
+        photo: '/images/parisblogphotos/vintage.jpg',
       },
       {
         category: 'Activities',
@@ -1807,7 +1807,7 @@ const posts = [
         thoughts: "There were a lot of us so we rented an Airbnb in the 6th district. Definitely more expensive and touristy but I think it\'s worth it to stay closer to the center, especially if you only have a few days.",
         rating: 4,
         website: null,
-        photo: null,
+        photo: '/images/parisblogphotos/viewfromairbnb.jpg',
       },
     ],
     tips: [
