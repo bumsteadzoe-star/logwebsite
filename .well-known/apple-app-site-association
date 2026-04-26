@@ -1,9 +1,0 @@
-{
-  "applinks": {
-    "apps": [],
-    "details": [{
-      "appID": "YVFS9CRYJS.com.logsocial.app",
-      "paths": ["/share/*"]
-    }]
-  }
-}
