@@ -1,39 +1,42 @@
 // import Script from 'next/script'
+// import { createClient } from '@supabase/supabase-js'
 
 // const SITE = process.env.NEXT_PUBLIC_SITE_URL || 'https://logsocial.app'
 // const DEFAULT_OG_IMAGE = `${SITE}/images/film1.jpg`
 
-// function firstString(value) {
-//   if (value == null) return ''
-//   if (Array.isArray(value)) return firstString(value[0])
-//   return String(value)
-// }
+// const supabase = createClient(
+//   process.env.NEXT_PUBLIC_SUPABASE_URL,
+//   process.env.SUPABASE_SERVICE_ROLE_KEY 
+// )
 
-// function absoluteOgImage(raw) {
-//   const s = firstString(raw).trim()
-//   if (!s) return DEFAULT_OG_IMAGE
-//   try {
-//     return new URL(s).href
-//   } catch {
-//     if (s.startsWith('/')) return `${SITE}${s}`
-//     return DEFAULT_OG_IMAGE
-//   }
-// }
-
-// export async function generateMetadata({ params, searchParams }) {
+// export async function generateMetadata({ params }) {
 //   const { id } = await params
-//   const sp = await searchParams
 
-//   const img = sp.img ?? sp.image ?? sp.og_image
-//   const titleRaw = sp.t ?? sp.title ?? sp.og_title
-//   const captionRaw = sp.c ?? sp.caption ?? sp.desc ?? sp.description ?? sp.og_description
+//   // 1. Fetch post data
+//   const { data: post } = await supabase
+//     .from('posts') 
+//     .select('title, caption, url') // Adjust 'photos' to your actual column name
+//     .eq('id', id)
+//     .single()
 
-//   const line = firstString(titleRaw).trim()
-//   const title = line ? `${line} — Log` : 'Check out this experience on Log'
-//   const description = firstString(captionRaw).trim() || 'Open in the Log app to view this post.'
-//   //const imageUrl = absoluteOgImage(img)
-//   // Instead of a raw link, use the Supabase transformation URL
-//   const imageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/render/image/public/posts/${img}?width=1200&height=630&format=origin&quality=80`
+//   // 2. Determine Title & Description
+//   const title = post?.title ? `${post.title} — Log` : 'Check out this experience on Log'
+//   const description = post?.caption || 'Open in the Log app to view this post.'
+  
+//   // 3. Handle Image Transformation
+//   // Note: If post.photos is an array, we grab the first item
+//   let photoPath = null;
+//   if (post?.url) {
+//     // Split by comma and take the first item, then trim whitespace
+//     const urlArray = post.url.split(',');
+//     photoPath = urlArray[0]?.trim();
+//   }
+  
+//   // 4. Construct the Final Image URL
+//   // We use the first path from your comma-separated list
+//   const imageUrl = photoPath 
+//     ? `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/render/image/public/posts/${photoPath}?width=1200&height=630&format=origin&quality=80`
+//     : DEFAULT_OG_IMAGE
 
 //   return {
 //     metadataBase: new URL(SITE),
@@ -55,21 +58,20 @@
 //   }
 // }
 
+// // Don't forget the Page component itself so the app actually opens!
 // export default async function ShareBridgePage({ params }) {
 //   const { id } = await params
-//   const appStoreUrl =
-//     process.env.NEXT_PUBLIC_IOS_APP_STORE_URL ||
-//     'https://apps.apple.com/us/app/log/id0000000000'
+//   const appStoreUrl = process.env.NEXT_PUBLIC_IOS_APP_STORE_URL || 'https://apps.apple.com/us/app/log/id0000000000'
 
 //   const inline = `
-// (function () {
-//   var id = ${JSON.stringify(id)};
-//   var scheme = 'log://post/' + encodeURIComponent(id);
-//   window.location.href = scheme;
-//   setTimeout(function () {
-//     window.location.href = ${JSON.stringify(appStoreUrl)};
-//   }, 2000);
-// })();`
+//     (function () {
+//       var id = ${JSON.stringify(id)};
+//       var scheme = 'log://post/' + encodeURIComponent(id);
+//       window.location.href = scheme;
+//       setTimeout(function () {
+//         window.location.href = ${JSON.stringify(appStoreUrl)};
+//       }, 2000);
+//     })();`
 
 //   return (
 //     <>
@@ -84,42 +86,42 @@
 import Script from 'next/script'
 import { createClient } from '@supabase/supabase-js'
 
+// 1. Setup constants
 const SITE = process.env.NEXT_PUBLIC_SITE_URL || 'https://logsocial.app'
 const DEFAULT_OG_IMAGE = `${SITE}/images/film1.jpg`
 
+// 2. Initialize the Supabase Admin Client
+// We use the Service Role Key here because this runs only on the server
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY 
+  process.env.SUPABASE_SERVICE_ROLE_KEY
 )
 
+/**
+ * GENERATE METADATA
+ * This is what iMessage/WhatsApp "reads" to show the preview card.
+ */
 export async function generateMetadata({ params }) {
   const { id } = await params
 
-  // 1. Fetch post data
+  // Fetch post data from Supabase
   const { data: post } = await supabase
-    .from('posts') 
-    .select('title, caption, url') // Adjust 'photos' to your actual column name
+    .from('posts')
+    .select('title, caption, url')
     .eq('id', id)
     .single()
 
-  // 2. Determine Title & Description
+  // Extract the first image from the comma-separated string
+  const firstPhotoPath = post?.url?.split(',')[0]?.trim()
+
+  // Construct the Image URL 
+  // Switch to /object/public/ for the most reliable access
+  const imageUrl = firstPhotoPath 
+    ? `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/posts/${firstPhotoPath}`
+    : DEFAULT_OG_IMAGE
+
   const title = post?.title ? `${post.title} — Log` : 'Check out this experience on Log'
   const description = post?.caption || 'Open in the Log app to view this post.'
-  
-  // 3. Handle Image Transformation
-  // Note: If post.photos is an array, we grab the first item
-  let photoPath = null;
-  if (post?.url) {
-    // Split by comma and take the first item, then trim whitespace
-    const urlArray = post.url.split(',');
-    photoPath = urlArray[0]?.trim();
-  }
-  
-  // 4. Construct the Final Image URL
-  // We use the first path from your comma-separated list
-  const imageUrl = photoPath 
-    ? `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/render/image/public/posts/${photoPath}?width=1200&height=630&format=origin&quality=80`
-    : DEFAULT_OG_IMAGE
 
   return {
     metadataBase: new URL(SITE),
@@ -130,7 +132,14 @@ export async function generateMetadata({ params }) {
       description,
       type: 'website',
       url: `${SITE}/share/${id}`,
-      images: [{ url: imageUrl, width: 1200, height: 630 }],
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
     },
     twitter: {
       card: 'summary_large_image',
@@ -141,27 +150,45 @@ export async function generateMetadata({ params }) {
   }
 }
 
-// Don't forget the Page component itself so the app actually opens!
+/**
+ * PAGE COMPONENT
+ * This is what the user sees for 2 seconds before the app opens.
+ */
 export default async function ShareBridgePage({ params }) {
   const { id } = await params
-  const appStoreUrl = process.env.NEXT_PUBLIC_IOS_APP_STORE_URL || 'https://apps.apple.com/us/app/log/id0000000000'
+  const appStoreUrl =
+    process.env.NEXT_PUBLIC_IOS_APP_STORE_URL ||
+    'https://apps.apple.com/us/app/log/id0000000000'
 
+  // Deep link logic: attempts to open the app, falls back to App Store
   const inline = `
-    (function () {
-      var id = ${JSON.stringify(id)};
-      var scheme = 'log://post/' + encodeURIComponent(id);
-      window.location.href = scheme;
-      setTimeout(function () {
-        window.location.href = ${JSON.stringify(appStoreUrl)};
-      }, 2000);
-    })();`
+(function () {
+  var id = ${JSON.stringify(id)};
+  var scheme = 'log://post/' + encodeURIComponent(id);
+  window.location.href = scheme;
+  setTimeout(function () {
+    window.location.href = ${JSON.stringify(appStoreUrl)};
+  }, 2500);
+})();`
 
   return (
-    <>
-      <p style={{ fontFamily: 'system-ui, sans-serif', padding: 24, margin: 0 }}>
-        Opening Log…
-      </p>
-      <Script id="log-share-bridge" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: inline }} />
-    </>
+    <div style={{ 
+      fontFamily: 'system-ui, sans-serif', 
+      display: 'flex', 
+      flexDirection: 'column', 
+      alignItems: 'center', 
+      justifyContent: 'center', 
+      height: '100vh',
+      textAlign: 'center' 
+    }}>
+      <h1 style={{ fontSize: '1.5rem', marginBottom: '8px' }}>Opening Log…</h1>
+      <p style={{ color: '#666' }}>If the app doesn't open, we'll take you to the App Store.</p>
+      
+      <Script 
+        id="log-share-bridge" 
+        strategy="afterInteractive" 
+        dangerouslySetInnerHTML={{ __html: inline }} 
+      />
+    </div>
   )
 }
