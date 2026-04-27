@@ -126,7 +126,7 @@ export async function generateMetadata({ params }) {
     // iMessage cannot render .heic. If we see one, we route it 
     // through Supabase's render engine to force a compatible format.
     if (imageUrl.toLowerCase().endsWith('.heic')) {
-      imageUrl = imageUrl.replace('/object/public/', '/render/image/public/') + '?width=1200&height=630&format=origin'
+      imageUrl = imageUrl.replace('/object/public/', '/render/image/public/') + '?width=1200&height=630&format=origin&quality=80'
     }
   }
 
