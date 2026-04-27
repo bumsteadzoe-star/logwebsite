@@ -98,7 +98,7 @@ export async function generateMetadata({ params }) {
   // 1. Fetch post data
   const { data: post } = await supabase
     .from('posts') 
-    .select('title, caption, photos') // Adjust 'photos' to your actual column name
+    .select('title, caption, url') // Adjust 'photos' to your actual column name
     .eq('id', id)
     .single()
 
@@ -108,8 +108,15 @@ export async function generateMetadata({ params }) {
   
   // 3. Handle Image Transformation
   // Note: If post.photos is an array, we grab the first item
-  const photoPath = Array.isArray(post?.photos) ? post.photos[0] : post?.photos
+  let photoPath = null;
+  if (post?.url) {
+    // Split by comma and take the first item, then trim whitespace
+    const urlArray = post.url.split(',');
+    photoPath = urlArray[0]?.trim();
+  }
   
+  // 4. Construct the Final Image URL
+  // We use the first path from your comma-separated list
   const imageUrl = photoPath 
     ? `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/render/image/public/posts/${photoPath}?width=1200&height=630&format=origin&quality=80`
     : DEFAULT_OG_IMAGE
