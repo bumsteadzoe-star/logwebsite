@@ -8,7 +8,7 @@ export async function generateMetadata({ params, searchParams }) {
   const sp = await searchParams
   const titleRaw = sp.t || sp.title
   const imgRaw = sp.img || sp.image
-  const title = titleRaw ? `${titleRaw} — Log` : 'Check out this location'
+  const title = titleRaw ? `${titleRaw} - Log` : 'Check out this location'
   
   let imageUrl = DEFAULT_OG_IMAGE
   if (imgRaw) {

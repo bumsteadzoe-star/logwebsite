@@ -6,7 +6,7 @@ const DEFAULT_OG_IMAGE = `${SITE}/images/film1.jpg`
 export async function generateMetadata({ params, searchParams }) {
   const { id } = await params
   const sp = await searchParams
-  const title = (sp.t || sp.title) ? `${sp.t || sp.title} — Log` : 'University on Log'
+  const title = (sp.t || sp.title) ? `${sp.t || sp.title} - Log` : 'University on Log'
   const imgRaw = sp.img || sp.image
   
   let imageUrl = DEFAULT_OG_IMAGE
