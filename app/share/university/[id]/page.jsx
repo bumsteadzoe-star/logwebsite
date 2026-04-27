@@ -27,7 +27,7 @@ export async function generateMetadata({ params, searchParams }) {
   const captionRaw = sp.c ?? sp.caption
   const img = sp.img ?? sp.image
   const titleLine = firstString(titleRaw).trim()
-  const title = titleLine ? `${titleLine} — Log` : 'Check out this location on Log'
+  const title = titleLine ? `${titleLine} — Log` : 'Check out this university on Log'
   const description = firstString(captionRaw).trim() || 'Open in the Log app to view this location.'
   const imageUrl = absoluteOgImage(img)
   return {
