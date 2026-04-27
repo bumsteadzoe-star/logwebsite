@@ -122,11 +122,15 @@ export async function generateMetadata({ params }) {
       imageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/posts/${firstPhoto}`
     }
 
-    // 4. THE HEIC WORKAROUND
-    // iMessage cannot render .heic. If we see one, we route it 
-    // through Supabase's render engine to force a compatible format.
     if (imageUrl.toLowerCase().endsWith('.heic')) {
-      imageUrl = imageUrl.replace('/object/public/', '/render/image/public/') + '?width=1200&height=630&format=origin&quality=80'
+      // Use 'render' instead of 'object'
+      // Adding 'quality' and 'width/height' forces the engine to process the pixels
+      imageUrl = imageUrl.replace('/object/public/', '/render/image/public/') + 
+                 '?width=1200&height=630&format=origin&quality=80';
+    } else {
+      // Even for non-HEIC, if they are rotated, we should use the render endpoint
+      imageUrl = imageUrl.replace('/object/public/', '/render/image/public/') + 
+                 '?width=1200&height=630&format=origin&quality=80';
     }
   }
 
