@@ -86,42 +86,49 @@
 import Script from 'next/script'
 import { createClient } from '@supabase/supabase-js'
 
-// 1. Setup constants
-const SITE = process.env.NEXT_PUBLIC_SITE_URL || 'https://logsocial.app'
+// 1. Setup constants - using 'www' to avoid the 308 redirect loop
+const SITE = 'https://www.logsocial.app'
 const DEFAULT_OG_IMAGE = `${SITE}/images/film1.jpg`
 
-// 2. Initialize the Supabase Admin Client
-// We use the Service Role Key here because this runs only on the server
+// 2. Initialize Supabase Admin
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.SUPABASE_SERVICE_ROLE_KEY
 )
 
-/**
- * GENERATE METADATA
- * This is what iMessage/WhatsApp "reads" to show the preview card.
- */
 export async function generateMetadata({ params }) {
   const { id } = await params
 
-  // Fetch post data from Supabase
+  // Fetch post data
   const { data: post } = await supabase
     .from('posts')
     .select('title, caption, url')
     .eq('id', id)
     .single()
 
-  // Extract the first image from the comma-separated string
-  const firstPhotoPath = post?.url?.split(',')[0]?.trim()
-
-  // Construct the Image URL 
-  // Switch to /object/public/ for the most reliable access
-  const imageUrl = firstPhotoPath 
-    ? `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/posts/${firstPhotoPath}`
-    : DEFAULT_OG_IMAGE
-
   const title = post?.title ? `${post.title} — Log` : 'Check out this experience on Log'
   const description = post?.caption || 'Open in the Log app to view this post.'
+  
+  // 3. Intelligent Image Logic
+  const firstPhoto = post?.url?.split(',')[0]?.trim()
+  let imageUrl = DEFAULT_OG_IMAGE
+
+  if (firstPhoto) {
+    if (firstPhoto.startsWith('http')) {
+      // FIX: Use the full URL if the DB already provides one
+      imageUrl = firstPhoto
+    } else {
+      // Build path if DB only provides filename/path
+      imageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/posts/${firstPhoto}`
+    }
+
+    // 4. THE HEIC WORKAROUND
+    // iMessage cannot render .heic. If we see one, we route it 
+    // through Supabase's render engine to force a compatible format.
+    if (imageUrl.toLowerCase().endsWith('.heic')) {
+      imageUrl = imageUrl.replace('/object/public/', '/render/image/public/') + '?width=1200&height=630&format=origin'
+    }
+  }
 
   return {
     metadataBase: new URL(SITE),
@@ -132,14 +139,7 @@ export async function generateMetadata({ params }) {
       description,
       type: 'website',
       url: `${SITE}/share/${id}`,
-      images: [
-        {
-          url: imageUrl,
-          width: 1200,
-          height: 630,
-          alt: title,
-        },
-      ],
+      images: [{ url: imageUrl, width: 1200, height: 630 }],
     },
     twitter: {
       card: 'summary_large_image',
@@ -150,26 +150,19 @@ export async function generateMetadata({ params }) {
   }
 }
 
-/**
- * PAGE COMPONENT
- * This is what the user sees for 2 seconds before the app opens.
- */
 export default async function ShareBridgePage({ params }) {
   const { id } = await params
-  const appStoreUrl =
-    process.env.NEXT_PUBLIC_IOS_APP_STORE_URL ||
-    'https://apps.apple.com/us/app/log/id0000000000'
+  const appStoreUrl = process.env.NEXT_PUBLIC_IOS_APP_STORE_URL || 'https://apps.apple.com/us/app/log/id0000000000'
 
-  // Deep link logic: attempts to open the app, falls back to App Store
   const inline = `
-(function () {
-  var id = ${JSON.stringify(id)};
-  var scheme = 'log://post/' + encodeURIComponent(id);
-  window.location.href = scheme;
-  setTimeout(function () {
-    window.location.href = ${JSON.stringify(appStoreUrl)};
-  }, 2500);
-})();`
+    (function () {
+      var id = ${JSON.stringify(id)};
+      var scheme = 'log://post/' + encodeURIComponent(id);
+      window.location.href = scheme;
+      setTimeout(function () {
+        window.location.href = ${JSON.stringify(appStoreUrl)};
+      }, 2500);
+    })();`
 
   return (
     <div style={{ 
