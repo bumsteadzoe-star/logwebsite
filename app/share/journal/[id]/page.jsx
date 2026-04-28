@@ -25,7 +25,7 @@ export async function generateMetadata({ params, searchParams }) {
     .single()
 
   const journalTitle = journal?.[titleCol]
-  const title = journalTitle ? `${journalTitle} — Journal` : 'Check out this Journal on Log'
+  const title = journalTitle ? `${journalTitle} - Log` : 'Check out this Journal on Log'
   
   let imageUrl = DEFAULT_OG_IMAGE
   if (journal?.cover_url) {
