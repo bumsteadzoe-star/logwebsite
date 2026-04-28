@@ -58,6 +58,7 @@ export default async function ShareJournalBridgePage({ params, searchParams }) {
   if (sp.table) query.set('table', String(sp.table))
   if (sp.col) query.set('col', String(sp.col))
   if (sp.owner_id) query.set('owner_id', String(sp.owner_id))
+  if (sp.trip_name) query.set('trip_name', String(sp.trip_name))
   const deepLinkQuery = query.toString()
 
   const inline = `
