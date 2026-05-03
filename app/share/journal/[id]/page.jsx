@@ -4,10 +4,12 @@ import { createClient } from '@supabase/supabase-js'
 const SITE = 'https://www.logsocial.app'
 const DEFAULT_OG_IMAGE = `${SITE}/images/film1.jpg`
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY
-)
+function getSupabaseAdmin() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY
+  if (!url || !key) return null
+  return createClient(url, key)
+}
 
 export async function generateMetadata({ params, searchParams }) {
   const { id } = await params
@@ -17,12 +19,10 @@ export async function generateMetadata({ params, searchParams }) {
   const tableName = sp.table || 'trips' 
   const titleCol = sp.col || 'name'
 
-  // Fetch from the specific table
-  const { data: journal } = await supabase
-    .from(tableName)
-    .select(`${titleCol}, cover_url`)
-    .eq('id', id)
-    .single()
+  const supabase = getSupabaseAdmin()
+  const { data: journal } = supabase
+    ? await supabase.from(tableName).select(`${titleCol}, cover_url`).eq('id', id).single()
+    : { data: null }
 
   const journalTitle = journal?.[titleCol]
   const title = journalTitle ? `${journalTitle} - Log` : 'Check out this Journal on Log'
