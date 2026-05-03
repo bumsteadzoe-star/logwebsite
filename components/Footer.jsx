@@ -89,18 +89,32 @@ export default function Footer() {
                 </Link>
               ))}
             </nav>
-            <Link
-              href="/terms-of-service"
-              style={{
-                fontFamily: 'var(--font-space-grotesk), sans-serif',
-                fontWeight: 500,
-                fontSize: '0.82rem',
-                letterSpacing: '0.02em',
-                color: '#1A1A1A',
-              }}
-            >
-              Terms of Service
-            </Link>
+            <div style={{ display: 'flex', gap: '1.5rem' }}>
+              <Link
+                href="/terms-of-service"
+                style={{
+                  fontFamily: 'var(--font-space-grotesk), sans-serif',
+                  fontWeight: 500,
+                  fontSize: '0.82rem',
+                  letterSpacing: '0.02em',
+                  color: '#1A1A1A',
+                }}
+              >
+                Terms of Service
+              </Link>
+              <Link
+                href="/privacy-policy"
+                style={{
+                  fontFamily: 'var(--font-space-grotesk), sans-serif',
+                  fontWeight: 500,
+                  fontSize: '0.82rem',
+                  letterSpacing: '0.02em',
+                  color: '#1A1A1A',
+                }}
+              >
+                Privacy Policy
+              </Link>
+            </div>
           </div>
         </div>
 
