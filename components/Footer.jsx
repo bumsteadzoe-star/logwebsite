@@ -114,6 +114,18 @@ export default function Footer() {
               >
                 Privacy Policy
               </Link>
+              <Link
+                href="/community-guidelines"
+                style={{
+                  fontFamily: 'var(--font-space-grotesk), sans-serif',
+                  fontWeight: 500,
+                  fontSize: '0.82rem',
+                  letterSpacing: '0.02em',
+                  color: '#1A1A1A',
+                }}
+              >
+                Community Guidelines
+              </Link>
             </div>
           </div>
         </div>
