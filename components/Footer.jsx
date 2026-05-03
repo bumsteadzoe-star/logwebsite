@@ -64,30 +64,44 @@ export default function Footer() {
           </div>
 
           {/* Nav */}
-          <nav
-            style={{
-              display: 'flex',
-              gap: '2rem',
-              alignItems: 'center',
-              flexWrap: 'wrap',
-            }}
-          >
-            {navLinks.map(({ label, href }) => (
-              <Link
-                key={label}
-                href={href}
-                style={{
-                  fontFamily: 'var(--font-space-grotesk), sans-serif',
-                  fontWeight: 500,
-                  fontSize: '0.82rem',
-                  letterSpacing: '0.02em',
-                  color: '#1A1A1A',
-                }}
-              >
-                {label}
-              </Link>
-            ))}
-          </nav>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.75rem' }}>
+            <nav
+              style={{
+                display: 'flex',
+                gap: '2rem',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+              }}
+            >
+              {navLinks.map(({ label, href }) => (
+                <Link
+                  key={label}
+                  href={href}
+                  style={{
+                    fontFamily: 'var(--font-space-grotesk), sans-serif',
+                    fontWeight: 500,
+                    fontSize: '0.82rem',
+                    letterSpacing: '0.02em',
+                    color: '#1A1A1A',
+                  }}
+                >
+                  {label}
+                </Link>
+              ))}
+            </nav>
+            <Link
+              href="/terms-of-service"
+              style={{
+                fontFamily: 'var(--font-space-grotesk), sans-serif',
+                fontWeight: 500,
+                fontSize: '0.82rem',
+                letterSpacing: '0.02em',
+                color: '#1A1A1A',
+              }}
+            >
+              Terms of Service
+            </Link>
+          </div>
         </div>
 
         {/* Bottom row */}
