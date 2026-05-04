@@ -1,5 +1,3 @@
-import Script from 'next/script'
-
 const SITE = 'https://www.logsocial.app'
 const DEFAULT_OG_IMAGE = `${SITE}/images/film1.jpg`
 
@@ -52,9 +50,11 @@ export default async function LocationBridgePage({ params, searchParams }) {
     })();`
 
   return (
-    <div style={{ textAlign: 'center', marginTop: '40vh', fontFamily: 'system-ui, sans-serif' }}>
-      <h1>Opening location…</h1>
-      <Script id="loc-share-bridge" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: inline }} />
-    </div>
+    <>
+      <script suppressHydrationWarning dangerouslySetInnerHTML={{ __html: inline }} />
+      <div style={{ textAlign: 'center', marginTop: '40vh', fontFamily: 'system-ui, sans-serif' }}>
+        <h1>Opening location…</h1>
+      </div>
+    </>
   )
 }

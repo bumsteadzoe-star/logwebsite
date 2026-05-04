@@ -1,4 +1,3 @@
-import Script from 'next/script'
 import { createClient } from '@supabase/supabase-js'
 
 const SITE = 'https://www.logsocial.app'
@@ -88,22 +87,25 @@ export default async function SharePostBridgePage({ params }) {
     })();`
 
   return (
-    <div
-      style={{
-        fontFamily: 'system-ui, sans-serif',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100vh',
-        textAlign: 'center',
-        backgroundColor: '#fff',
-        color: '#000',
-      }}
-    >
-      <h1 style={{ fontSize: '1.5rem', marginBottom: '8px' }}>Opening Log…</h1>
-      <p style={{ color: '#666' }}>If the app doesn&apos;t open, we&apos;ll take you to the App Store.</p>
-      <Script id="log-share-post-bridge" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: inline }} />
-    </div>
+    <>
+      {/* Inline (not next/script afterInteractive) so Safari runs the log:// handoff during first paint. */}
+      <script suppressHydrationWarning dangerouslySetInnerHTML={{ __html: inline }} />
+      <div
+        style={{
+          fontFamily: 'system-ui, sans-serif',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '100vh',
+          textAlign: 'center',
+          backgroundColor: '#fff',
+          color: '#000',
+        }}
+      >
+        <h1 style={{ fontSize: '1.5rem', marginBottom: '8px' }}>Opening Log…</h1>
+        <p style={{ color: '#666' }}>If the app doesn&apos;t open, we&apos;ll take you to the App Store.</p>
+      </div>
+    </>
   )
 }
