@@ -1,4 +1,3 @@
-import Script from 'next/script'
 import { createClient } from '@supabase/supabase-js'
 
 const SITE = 'https://www.logsocial.app'
@@ -71,9 +70,11 @@ export default async function ShareJournalBridgePage({ params, searchParams }) {
     })();`
 
   return (
-    <div style={{ fontFamily: 'system-ui, sans-serif', textAlign: 'center', marginTop: '40vh' }}>
-      <h1>Opening Journal...</h1>
-      <Script id="journal-bridge" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: inline }} />
-    </div>
+    <>
+      <script suppressHydrationWarning dangerouslySetInnerHTML={{ __html: inline }} />
+      <div style={{ fontFamily: 'system-ui, sans-serif', textAlign: 'center', marginTop: '40vh' }}>
+        <h1>Opening Journal...</h1>
+      </div>
+    </>
   )
 }
