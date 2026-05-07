@@ -61,6 +61,7 @@ Social Media Login Data. We may provide you with the option to register with us 
 Application Data. If you use our application(s), we also may collect the following information if you choose to provide us with access or permission:
 Geolocation Information. We may request access or permission to track location-based information from your mobile device, either continuously or while you are using our mobile application(s), to provide certain location-based services. If you wish to change our access or permissions, you may do so in your device's settings.
 Mobile Device Access. We may request access or permission to certain features from your mobile device, including your mobile device's contacts, camera, reminders, and other features. If you wish to change our access or permissions, you may do so in your device's settings.
+Contacts. If you grant permission to access your device's contacts, we may upload your contacts to our servers solely to help you find and connect with friends already using the Services or to invite them to join. Contact data is not used for advertising, sold to third parties, or retained after your account is deleted.
 Mobile Device Data. We automatically collect device information (such as your mobile device ID, model, and manufacturer), operating system, version information and system configuration information, device and application identification numbers, browser type and version, hardware model Internet service provider and/or mobile carrier, and Internet Protocol (IP) address (or proxy server). If you are using our application(s), we may also collect information about the phone network associated with your mobile device, your mobile device's operating system or platform, the type of mobile device you use, your mobile device's unique device ID, and information about the features of our application(s) you accessed.
 Push Notifications. We may request to send you push notifications regarding your account or certain features of the application(s). If you wish to opt out from receiving these types of communications, you may turn them off in your device's settings.
 This information is primarily needed to maintain the security and operation of our application(s), for troubleshooting, and for our internal analytics and reporting purposes.
@@ -88,6 +89,7 @@ To deliver and facilitate delivery of services to the user. We may process your 
 To enable user-to-user communications. We may process your information if you choose to use any of our offerings that allow for communication with another user.
 To send you marketing and promotional communications. We may process the personal information you send to us for our marketing purposes, if this is in accordance with your marketing preferences. You can opt out of our marketing emails at any time. For more information, see "WHAT ARE YOUR PRIVACY RIGHTS?" below.
 To evaluate and improve our Services, products, marketing, and your experience. We may process your information when we believe it is necessary to identify usage trends, determine the effectiveness of our promotional campaigns, and to evaluate and improve our Services, products, marketing, and your experience.
+To connect you with friends. If you grant access to your contacts, we upload them to identify existing users and facilitate friend connections. Log will upload your contacts to its servers to help you find friends already on the app. You may revoke this permission at any time in your device settings.
 `,
   },
   {
@@ -197,7 +199,7 @@ Category
 Examples
 Collected
 A. Identifiers
-Contact details, such as real name, alias, postal address, telephone or mobile contact number, unique personal identifier, online identifier, Internet Protocol address, email address, and account name
+Contact details, such as real name, alias, postal address, telephone or mobile contact number, unique personal identifier, online identifier, Internet Protocol address, email address, account name, and device contacts (if permission granted, used solely to help you find and connect with friends on the Services)
 YES
 B. Personal information as defined in the California Customer Records statute
 Name, contact information, education, employment, employment history, and financial information
