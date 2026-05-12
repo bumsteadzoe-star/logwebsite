@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
-import { ogImagePublicUrl } from '../../../lib/ogImageUrl'
+import { ogImageForMetadata } from '../../../lib/ogImageUrl'
 
 const SITE = 'https://www.logsocial.app'
 const DEFAULT_OG_IMAGE = `${SITE}/images/film1.jpg`
@@ -34,7 +34,7 @@ export async function generateMetadata({ params, searchParams }) {
   const firstPhoto =
     post?.url?.split(',')[0]?.trim() || imgFromQuery
   let imageUrl = DEFAULT_OG_IMAGE
-  const built = ogImagePublicUrl(firstPhoto)
+  const built = ogImageForMetadata(SITE, firstPhoto)
   if (built) imageUrl = built
 
   return {

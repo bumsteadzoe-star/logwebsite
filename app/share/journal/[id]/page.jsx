@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
-import { ogImagePublicUrl } from '../../../../lib/ogImageUrl'
+import { ogImageForMetadata } from '../../../../lib/ogImageUrl'
 
 const SITE = 'https://www.logsocial.app'
 const DEFAULT_OG_IMAGE = `${SITE}/images/film1.jpg`
@@ -28,7 +28,7 @@ export async function generateMetadata({ params, searchParams }) {
   const title = journalTitle ? `${journalTitle} - Log` : 'Check out this Journal on Log'
   
   let imageUrl = DEFAULT_OG_IMAGE
-  const cover = journal?.cover_url ? ogImagePublicUrl(String(journal.cover_url)) : null
+  const cover = journal?.cover_url ? ogImageForMetadata(SITE, String(journal.cover_url)) : null
   if (cover) imageUrl = cover
 
   return {
