@@ -25,6 +25,8 @@ export async function GET(request) {
     return new NextResponse('Missing src', { status: 400 })
   }
 
+  const placeholderUrl = new URL('/images/film1.jpg', request.url).toString()
+
   let upstream
   try {
     upstream = new URL(src)
@@ -39,7 +41,13 @@ export async function GET(request) {
     return new NextResponse('Forbidden', { status: 403 })
   }
 
-  const res = await fetch(src, { cache: 'force-cache' })
+  const res = await fetch(src, {
+    cache: 'no-store',
+    headers: {
+      Accept: 'image/*,*/*;q=0.8',
+      'User-Agent': 'LogOgImage/1.0 (compatible; +https://www.logsocial.app)',
+    },
+  })
   if (!res.ok) {
     return new NextResponse('Upstream fetch failed', { status: 502 })
   }
@@ -50,7 +58,10 @@ export async function GET(request) {
   }
 
   try {
-    const out = await sharp(input)
+    const meta = await sharp(input, { failOn: 'none', sequentialRead: true }).metadata()
+    const fmt = String(meta.format || '').toLowerCase()
+
+    const out = await sharp(input, { failOn: 'none', sequentialRead: fmt !== 'heif' && fmt !== 'heic' })
       .rotate()
       .resize(1200, 630, { fit: 'cover', position: 'centre' })
       .jpeg({ quality: 82, mozjpeg: true })
@@ -65,6 +76,6 @@ export async function GET(request) {
     })
   } catch (e) {
     console.error('og-image sharp error', e)
-    return NextResponse.redirect(src, 302)
+    return NextResponse.redirect(placeholderUrl, 302)
   }
 }
