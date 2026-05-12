@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import sharp from 'sharp'
+import { renderOgImageBuffer } from '../../../lib/ogImageSharp'
 
 export const runtime = 'nodejs'
 
@@ -58,14 +58,7 @@ export async function GET(request) {
   }
 
   try {
-    const meta = await sharp(input, { failOn: 'none', sequentialRead: true }).metadata()
-    const fmt = String(meta.format || '').toLowerCase()
-
-    const out = await sharp(input, { failOn: 'none', sequentialRead: fmt !== 'heif' && fmt !== 'heic' })
-      .rotate()
-      .resize(1200, 630, { fit: 'cover', position: 'centre' })
-      .jpeg({ quality: 82, mozjpeg: true })
-      .toBuffer()
+    const out = await renderOgImageBuffer(input)
 
     return new NextResponse(out, {
       status: 200,
