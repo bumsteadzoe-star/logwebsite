@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
+import { ogImagePublicUrl } from '../../../../lib/ogImageUrl'
 
 const SITE = 'https://www.logsocial.app'
 const DEFAULT_OG_IMAGE = `${SITE}/images/film1.jpg`
@@ -27,19 +28,15 @@ export async function generateMetadata({ params, searchParams }) {
   const title = journalTitle ? `${journalTitle} - Log` : 'Check out this Journal on Log'
   
   let imageUrl = DEFAULT_OG_IMAGE
-  if (journal?.cover_url) {
-    // Pro Plan Render Transformation
-    let transformed = journal.cover_url.replace('/object/public/', '/render/image/public/')
-    const connector = transformed.includes('?') ? '&' : '?'
-    imageUrl = `${transformed}${connector}width=1200&height=630&format=origin&quality=80`
-  }
+  const cover = journal?.cover_url ? ogImagePublicUrl(String(journal.cover_url)) : null
+  if (cover) imageUrl = cover
 
   return {
     title,
     description: 'Follow this journal on the Log app.',
     openGraph: {
       title,
-      images: [{ url: imageUrl, width: 1200, height: 630 }],
+      images: [{ url: imageUrl }],
     },
     twitter: {
       card: 'summary_large_image',

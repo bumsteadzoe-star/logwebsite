@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
+import { ogImagePublicUrl } from '../../../lib/ogImageUrl'
 
 const SITE = 'https://www.logsocial.app'
 const DEFAULT_OG_IMAGE = `${SITE}/images/film1.jpg`
@@ -8,19 +9,6 @@ function getSupabaseAdmin() {
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY
   if (!url || !key) return null
   return createClient(url, key)
-}
-
-function ogImageFromUrl(raw) {
-  if (!raw || typeof raw !== 'string') return null
-  const trimmed = raw.trim()
-  if (!trimmed) return null
-  const base =
-    trimmed.startsWith('http')
-      ? trimmed
-      : `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/posts/${trimmed}`
-  const renderBase = base.replace('/object/public/', '/render/image/public/')
-  const connector = renderBase.includes('?') ? '&' : '?'
-  return `${renderBase}${connector}width=1200&height=630&format=origin&quality=80`
 }
 
 export async function generateMetadata({ params, searchParams }) {
@@ -46,7 +34,7 @@ export async function generateMetadata({ params, searchParams }) {
   const firstPhoto =
     post?.url?.split(',')[0]?.trim() || imgFromQuery
   let imageUrl = DEFAULT_OG_IMAGE
-  const built = ogImageFromUrl(firstPhoto)
+  const built = ogImagePublicUrl(firstPhoto)
   if (built) imageUrl = built
 
   return {
@@ -58,7 +46,7 @@ export async function generateMetadata({ params, searchParams }) {
       description,
       type: 'website',
       url: `${SITE}/share/${id}`,
-      images: [{ url: imageUrl, width: 1200, height: 630 }],
+      images: [{ url: imageUrl }],
     },
     twitter: {
       card: 'summary_large_image',
