@@ -24,7 +24,12 @@ const sigmar = Sigmar({
   display: 'swap',
 })
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://www.logsocial.app')
+
 export const metadata = {
+  metadataBase: new URL(siteUrl),
   title: 'LOG',
   description: 'discover, share, and experience your city through the eyes of people who actually live it.',
   icons: {
