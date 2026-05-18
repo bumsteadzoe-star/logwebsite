@@ -69,7 +69,7 @@ export default function WaitlistCTA() {
           position: 'relative',
         }}
       >
-        Join the waitlist.
+        Download the app.
       </h2>
 
       <p
@@ -89,8 +89,10 @@ export default function WaitlistCTA() {
         Get early access and tell us what cities you want recs for first.
       </p>
 
-      <Link
-        href="/join-the-waitlist"
+      <a
+        href="https://apps.apple.com/us/app/log-recs-from-friends/id6763411702"
+        target="_blank"
+        rel="noopener noreferrer"
         style={{
           display: 'inline-block',
           fontFamily: 'var(--font-space-grotesk), sans-serif',
@@ -105,8 +107,8 @@ export default function WaitlistCTA() {
           position: 'relative',
         }}
       >
-        join the waitlist →
-      </Link>
+        Download the app!
+      </a>
     </section>
   )
 }
