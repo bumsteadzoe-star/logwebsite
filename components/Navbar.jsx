@@ -89,8 +89,10 @@ export default function Navbar() {
             </Link>
           ))}
 
-          <Link
-            href="/join-the-waitlist"
+          <a
+            href="https://apps.apple.com/us/app/log-recs-from-friends/id6763411702"
+            target="_blank"
+            rel="noopener noreferrer"
             style={{
               fontFamily: 'var(--font-space-grotesk), sans-serif',
               fontWeight: 600,
@@ -102,8 +104,8 @@ export default function Navbar() {
               borderRadius: '10px',
             }}
           >
-            Join the Waitlist!
-          </Link>
+            Download the app!
+          </a>
         </div>
 
         {/* Mobile hamburger button */}
@@ -194,8 +196,10 @@ export default function Navbar() {
               </Link>
             ))}
 
-            <Link
-              href="/join-the-waitlist"
+            <a
+              href="https://apps.apple.com/us/app/log-recs-from-friends/id6763411702"
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={closeMenu}
               style={{
                 display: 'block',
@@ -211,8 +215,8 @@ export default function Navbar() {
                 borderRadius: '10px',
               }}
             >
-              Join the Waitlist →
-            </Link>
+              Download the app!
+            </a>
           </div>
         </div>
       )}
