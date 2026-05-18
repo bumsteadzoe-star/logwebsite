@@ -14,7 +14,7 @@ const pillars = [
     number: '02',
     label: 'Share',
     description:
-      'Keep in touch with friends, share the real experiences in your life, not just the highlights. Log your experiences and build a living record of your world.',
+      'Keep in touch with friends, share the real experiences in your life, not just the highlights. All your experiences and build a living record of your world.',
   },
   {
     number: '03',
