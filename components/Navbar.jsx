@@ -6,7 +6,7 @@ import Link from 'next/link'
 const navLinks = [
   { label: 'home', href: '/' },
   { label: 'recs', href: '/recs' },
-  { label: 'study abroad', href: '/study-abroad' },
+  { label: 'Universities', href: '/study-abroad' },
   { label: 'contact', href: 'mailto:explore@logsocial.app' },
 ]
 
