@@ -149,7 +149,7 @@ export default function HeroSection() {
                 whiteSpace: 'nowrap',
               }}
             >
-              log your life.
+              Log your life.
             </p>
           </div>
 
