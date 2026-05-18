@@ -85,18 +85,6 @@ export default function StudyAbroadPage() {
           <p
             style={{
               fontFamily: 'var(--font-space-grotesk), sans-serif',
-              fontWeight: 400,
-              fontSize: '1rem',
-              lineHeight: 1.7,
-              color: '#6B6560',
-              marginBottom: '0.5rem',
-            }}
-          >
-            Are you studying abroad?
-          </p>
-          <p
-            style={{
-              fontFamily: 'var(--font-space-grotesk), sans-serif',
               fontWeight: 700,
               fontSize: '1rem',
               lineHeight: 1.7,
@@ -136,7 +124,7 @@ export default function StudyAbroadPage() {
             </p>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '1.5rem', padding: 0, margin: 0 }}>
               {[
-                'recommendations from past cohorts',
+                'see everywhere peers have studied abroad',
                 'community with your peers',
                 'a place to share your experiences with friends',
               ].map(text => (
