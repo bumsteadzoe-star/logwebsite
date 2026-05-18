@@ -53,23 +53,23 @@ export default function WaitlistCTA() {
           position: 'relative',
         }}
       >
-        coming soon
+        Live now
       </p>
 
       <h2
         style={{
           fontFamily: 'var(--font-space-grotesk), sans-serif',
           fontWeight: 700,
-          fontSize: 'clamp(3rem, 8vw, 7rem)',
+          fontSize: 'clamp(2.2rem, 6vw, 5.5rem)',
           lineHeight: 0.88,
           color: '#EBE5DC',
           letterSpacing: '-0.045em',
           marginBottom: '2rem',
-          maxWidth: '900px',
+          whiteSpace: 'nowrap',
           position: 'relative',
         }}
       >
-        Download the app.
+        Have you logged it yet?
       </h2>
 
       <p
@@ -86,7 +86,7 @@ export default function WaitlistCTA() {
           position: 'relative',
         }}
       >
-        Get early access and tell us what cities you want recs for first.
+        Authentically share your daily moments.
       </p>
 
       <a
