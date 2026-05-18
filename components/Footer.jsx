@@ -3,9 +3,9 @@ import Link from 'next/link'
 const navLinks = [
   { label: 'Home', href: '/' },
   { label: 'Recs', href: '/recs' },
-  { label: 'Study Abroad', href: '/study-abroad' },
+  { label: 'Universities', href: '/study-abroad' },
   { label: 'Contact', href: 'mailto:explore@logsocial.app' },
-  { label: 'Join the Waitlist!', href: '/join-the-waitlist' },
+  { label: 'Download!', href: 'https://apps.apple.com/us/app/log-recs-from-friends/id6763411702' },
 ]
 
 export default function Footer() {
@@ -73,21 +73,39 @@ export default function Footer() {
                 flexWrap: 'wrap',
               }}
             >
-              {navLinks.map(({ label, href }) => (
-                <Link
-                  key={label}
-                  href={href}
-                  style={{
-                    fontFamily: 'var(--font-space-grotesk), sans-serif',
-                    fontWeight: 500,
-                    fontSize: '0.82rem',
-                    letterSpacing: '0.02em',
-                    color: '#1A1A1A',
-                  }}
-                >
-                  {label}
-                </Link>
-              ))}
+              {navLinks.map(({ label, href }) =>
+                href.startsWith('http') ? (
+                  <a
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      fontFamily: 'var(--font-space-grotesk), sans-serif',
+                      fontWeight: 500,
+                      fontSize: '0.82rem',
+                      letterSpacing: '0.02em',
+                      color: '#1A1A1A',
+                    }}
+                  >
+                    {label}
+                  </a>
+                ) : (
+                  <Link
+                    key={label}
+                    href={href}
+                    style={{
+                      fontFamily: 'var(--font-space-grotesk), sans-serif',
+                      fontWeight: 500,
+                      fontSize: '0.82rem',
+                      letterSpacing: '0.02em',
+                      color: '#1A1A1A',
+                    }}
+                  >
+                    {label}
+                  </Link>
+                )
+              )}
             </nav>
             <div style={{ display: 'flex', gap: '1.5rem' }}>
               <Link
