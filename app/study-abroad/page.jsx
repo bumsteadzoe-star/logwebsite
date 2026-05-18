@@ -65,7 +65,7 @@ export default function StudyAbroadPage() {
               margin: 0,
             }}
           >
-            Study Abroad
+            Universities
           </h1>
         </div>
 
@@ -124,7 +124,7 @@ export default function StudyAbroadPage() {
             </p>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '1.5rem', padding: 0, margin: 0 }}>
               {[
-                'see everywhere peers have studied abroad',
+                '→ see everywhere friends have studied abroad',
                 'community with your peers',
                 'a place to share your experiences with friends',
               ].map(text => (
