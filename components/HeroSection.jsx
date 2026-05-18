@@ -149,7 +149,7 @@ export default function HeroSection() {
                 whiteSpace: 'nowrap',
               }}
             >
-              Discover recommendations from friends.
+              log your life.
             </p>
           </div>
 
@@ -178,8 +178,10 @@ export default function HeroSection() {
               what you loved, and what&apos;s worth knowing.
             </p>
 
-            <Link
-              href="/join-the-waitlist"
+            <a
+              href="https://apps.apple.com/us/app/log-recs-from-friends/id6763411702"
+              target="_blank"
+              rel="noopener noreferrer"
               className="hero-cta"
               style={{
                 display: 'inline-block',
@@ -195,8 +197,8 @@ export default function HeroSection() {
                 whiteSpace: 'nowrap',
               }}
             >
-              Join the waitlist →
-            </Link>
+              Download the app!
+            </a>
           </div>
         </div>
       </div>
