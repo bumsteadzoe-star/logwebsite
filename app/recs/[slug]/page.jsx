@@ -4,6 +4,7 @@ import Navbar from '@/components/Navbar'
 import PostCard from '@/components/PostCard'
 import Footer from '@/components/Footer'
 import StudyAbroadPost from '@/components/StudyAbroadPost'
+import NarrativeTripPost from '@/components/NarrativeTripPost'
 import posts from '@/data/posts'
 
 export const revalidate = 3600
@@ -44,6 +45,18 @@ export default async function PostPage({ params }) {
         <Navbar />
         <main style={{ backgroundColor: '#EBE5DC' }}>
           <StudyAbroadPost post={post} />
+        </main>
+        <Footer />
+      </>
+    )
+  }
+
+  if (post.type === 'narrative-trip') {
+    return (
+      <>
+        <Navbar />
+        <main>
+          <NarrativeTripPost post={post} />
         </main>
         <Footer />
       </>
