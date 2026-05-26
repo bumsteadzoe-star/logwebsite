@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 const navLinks = [
   { label: 'Home', href: '/' },
-  { label: 'Recs', href: '/recs' },
+  { label: 'Places', href: '/recs' },
   { label: 'Universities', href: '/study-abroad' },
   { label: 'Contact', href: 'mailto:explore@logsocial.app' },
   { label: 'Download!', href: 'https://apps.apple.com/us/app/log-recs-from-friends/id6763411702' },

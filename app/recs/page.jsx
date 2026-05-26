@@ -67,7 +67,7 @@ export default function RecsPage() {
               margin: 0,
             }}
           >
-            Recs
+            Places
           </h1>
         </div>
 
@@ -89,7 +89,7 @@ export default function RecsPage() {
               color: '#6B6560',
             }}
           >
-            Recommendations from the friends of Log.
+            Favorite places from the friends of Log
           </p>
         </div>
 
