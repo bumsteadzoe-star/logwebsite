@@ -1044,7 +1044,7 @@ const posts = [
     mapsLink: 'https://maps.app.goo.gl/M4Bp1gArWmwdWbyr8',
   },
   {
-    published: true,
+    published: false,
     type: 'narrative-trip',
     slug: 'jacob-luca-thailand',
     title: 'Sinners & Luca in Thailand',
@@ -1209,7 +1209,7 @@ const posts = [
     title: "Tate's South Africa Abroad",
     city: 'Cape Town, South Africa',
     category: 'Study Abroad',
-    coverImage: '/images/tateblogphotos/cover.JPG',
+    coverImage: '/images/tateblogphotos/saundersbeach.JPG',
     description: "Tate's Cape Town recommendations from her junior year abroad.",
     author: 'Tate Scargolino',
     date: '2026-04-13',
