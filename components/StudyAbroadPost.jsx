@@ -638,10 +638,12 @@ export default function StudyAbroadPost({ post }) {
               color: 'rgba(235,229,220,0.6)',
               marginBottom: '2.5rem',
             }}>
-              Join the waitlist to get notified when we launch.
+              Authentically share your daily moments.
             </p>
-            <Link
-              href="/join-the-waitlist"
+            <a
+              href="https://apps.apple.com/us/app/log-recs-from-friends/id6763411702"
+              target="_blank"
+              rel="noopener noreferrer"
               style={{
                 display: 'inline-block',
                 fontFamily: 'var(--font-space-grotesk), sans-serif',
@@ -654,8 +656,8 @@ export default function StudyAbroadPost({ post }) {
                 padding: '1rem 2.5rem',
                 textDecoration: 'none',
               }}>
-              Join the waitlist →
-            </Link>
+              Download the app!
+            </a>
           </div>
         </div>
 
