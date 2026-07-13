@@ -8,19 +8,19 @@ const pillars = [
     number: '01',
     label: 'Discover',
     description:
-      'Personalized experience suggestions based on your network. Find hidden gems, local spots, and recs from people you know.',
+      'Personalized experience suggestions from the people who actually know you. Surfaced before you search, ranked by how well they fit what you love.',
   },
   {
     number: '02',
     label: 'Share',
     description:
-      'Keep in touch with friends, share the real experiences in your life, not just the highlights. All your experiences and build a living record of your world.',
+      "Automatically create a living map of everywhere you've been. Pass on the must do's and don'ts. Authentically keep in touch with friends.",
   },
   {
     number: '03',
     label: 'Experience',
     description:
-      'Live in the moment, we automatically import your adventures and help you plan your next trips.',
+      'Spend less time deciding and more time doing. From a saved spot to booking a trip. Log turns your taste and your friends recs into an easy plan you can actually act on.',
   },
 ]
 

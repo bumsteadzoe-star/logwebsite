@@ -45,11 +45,12 @@ export default function Navbar() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          backgroundColor: scrolled ? 'rgba(235,229,220,0.95)' : 'rgba(235,229,220,0.55)',
-          backdropFilter: 'blur(14px)',
-          WebkitBackdropFilter: 'blur(14px)',
-          borderBottom: scrolled ? '1px solid rgba(26,26,26,0.1)' : '1px solid rgba(235,229,220,0.15)',
-          transition: 'background-color 0.35s ease, border-color 0.35s ease',
+          backgroundColor: scrolled ? 'rgba(235,229,220,0.82)' : 'rgba(235,229,220,0.45)',
+          backdropFilter: 'blur(18px) saturate(150%)',
+          WebkitBackdropFilter: 'blur(18px) saturate(150%)',
+          borderBottom: scrolled ? '1px solid rgba(255,255,255,0.4)' : '1px solid rgba(235,229,220,0.15)',
+          boxShadow: scrolled ? '0 1px 24px rgba(26,26,26,0.06)' : 'none',
+          transition: 'background-color 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease',
         }}
       >
         {/* Wordmark */}
@@ -93,6 +94,7 @@ export default function Navbar() {
             href="https://apps.apple.com/us/app/log-recs-from-friends/id6763411702"
             target="_blank"
             rel="noopener noreferrer"
+            className="glass-cta"
             style={{
               fontFamily: 'var(--font-space-grotesk), sans-serif',
               fontWeight: 600,
@@ -100,11 +102,13 @@ export default function Navbar() {
               letterSpacing: '0.05em',
               color: '#EBE5DC',
               backgroundColor: '#1B502F',
+              border: '1px solid rgba(235,229,220,0.22)',
+              boxShadow: '0 4px 14px rgba(27,80,47,0.22)',
               padding: '0.55rem 1.2rem',
               borderRadius: '10px',
             }}
           >
-            Download the app!
+            Download Beta!
           </a>
         </div>
 
@@ -201,6 +205,7 @@ export default function Navbar() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={closeMenu}
+              className="glass-cta"
               style={{
                 display: 'block',
                 marginTop: '1.5rem',
@@ -211,11 +216,13 @@ export default function Navbar() {
                 textAlign: 'center',
                 color: '#EBE5DC',
                 backgroundColor: '#1B502F',
+                border: '1px solid rgba(235,229,220,0.22)',
+                boxShadow: '0 4px 14px rgba(27,80,47,0.22)',
                 padding: '1rem 1.5rem',
                 borderRadius: '10px',
               }}
             >
-              Download the app!
+              Download Beta!
             </a>
           </div>
         </div>

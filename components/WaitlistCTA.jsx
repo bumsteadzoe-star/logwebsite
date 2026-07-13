@@ -93,6 +93,7 @@ export default function WaitlistCTA() {
         href="https://apps.apple.com/us/app/log-recs-from-friends/id6763411702"
         target="_blank"
         rel="noopener noreferrer"
+        className="glass-cta"
         style={{
           display: 'inline-block',
           fontFamily: 'var(--font-space-grotesk), sans-serif',
@@ -101,13 +102,17 @@ export default function WaitlistCTA() {
           letterSpacing: '0.08em',
           textTransform: 'uppercase',
           color: '#1B502F',
-          backgroundColor: '#EBE5DC',
+          backgroundColor: 'rgba(235,229,220,0.92)',
+          backdropFilter: 'blur(10px) saturate(150%)',
+          WebkitBackdropFilter: 'blur(10px) saturate(150%)',
+          border: '1px solid rgba(255,255,255,0.5)',
+          boxShadow: '0 8px 24px rgba(0,0,0,0.2)',
           padding: '1.1rem 2.75rem',
           borderRadius: '10px',
           position: 'relative',
         }}
       >
-        Download the app!
+        Download Beta!
       </a>
     </section>
   )

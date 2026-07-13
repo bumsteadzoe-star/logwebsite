@@ -88,6 +88,14 @@ a {
   filter: sepia(0.08) saturate(0.92) contrast(1.03);
 }
 
+/* ─── Glass CTA button hover-lift ───────────────────────────── */
+.glass-cta {
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+}
+.glass-cta:hover {
+  transform: translateY(-2px);
+}
+
 /* ─── Maps link hover (StudyAbroadPost) ────────────────────── */
 .maps-link {
   display: inline-flex;

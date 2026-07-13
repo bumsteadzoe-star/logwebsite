@@ -8,19 +8,22 @@ export default function BlogPolaroid({ post }) {
       style={{
         display: 'block',
         width: '100%',
-        backgroundColor: '#FFFFFF',
+        backgroundColor: 'rgba(255,255,255,0.82)',
+        backdropFilter: 'blur(20px) saturate(160%)',
+        WebkitBackdropFilter: 'blur(20px) saturate(160%)',
+        border: '1px solid rgba(255,255,255,0.6)',
         padding: '12px 12px 0',
-        boxShadow: '0 12px 48px rgba(26,26,26,0.2)',
+        boxShadow: '0 1px 2px rgba(26,26,26,0.05), 0 12px 48px rgba(26,26,26,0.18)',
         transition: 'transform 0.25s ease, box-shadow 0.25s ease',
         textDecoration: 'none',
       }}
       onMouseEnter={e => {
         e.currentTarget.style.transform = 'translateY(-6px)';
-        e.currentTarget.style.boxShadow = '0 24px 64px rgba(26,26,26,0.28)';
+        e.currentTarget.style.boxShadow = '0 1px 2px rgba(26,26,26,0.06), 0 24px 64px rgba(26,26,26,0.26)';
       }}
       onMouseLeave={e => {
         e.currentTarget.style.transform = 'translateY(0)';
-        e.currentTarget.style.boxShadow = '0 12px 48px rgba(26,26,26,0.2)';
+        e.currentTarget.style.boxShadow = '0 1px 2px rgba(26,26,26,0.05), 0 12px 48px rgba(26,26,26,0.18)';
       }}
     >
       <img

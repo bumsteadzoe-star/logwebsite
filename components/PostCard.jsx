@@ -11,20 +11,23 @@ export default function PostCard({ post }) {
     <Link href={`/recs/${post.slug}`} style={{ display: 'block' }}>
       <article
         style={{
-          background: '#F5EFE6',
+          background: 'rgba(245,239,230,0.7)',
+          backdropFilter: 'blur(16px) saturate(150%)',
+          WebkitBackdropFilter: 'blur(16px) saturate(150%)',
           borderRadius: '1px',
           overflow: 'hidden',
-          border: '1px solid rgba(26,26,26,0.07)',
+          border: '1px solid rgba(26,26,26,0.06)',
+          boxShadow: '0 1px 2px rgba(26,26,26,0.04), 0 8px 24px rgba(26,26,26,0.05)',
           transition: 'transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s ease',
           cursor: 'pointer',
         }}
         onMouseEnter={e => {
           e.currentTarget.style.transform = 'translateY(-6px) rotate(-0.4deg)'
-          e.currentTarget.style.boxShadow = '0 16px 48px rgba(26,26,26,0.14)'
+          e.currentTarget.style.boxShadow = '0 1px 2px rgba(26,26,26,0.05), 0 16px 48px rgba(26,26,26,0.14)'
         }}
         onMouseLeave={e => {
           e.currentTarget.style.transform = 'translateY(0) rotate(0deg)'
-          e.currentTarget.style.boxShadow = 'none'
+          e.currentTarget.style.boxShadow = '0 1px 2px rgba(26,26,26,0.04), 0 8px 24px rgba(26,26,26,0.05)'
         }}
       >
         {/* Image area */}

@@ -149,7 +149,7 @@ export default function HeroSection() {
                 whiteSpace: 'nowrap',
               }}
             >
-              Log your life.
+              Powered by the people who know you.
             </p>
           </div>
 
@@ -174,15 +174,15 @@ export default function HeroSection() {
                 textAlign: 'right',
               }}
             >
-              The app for sharing where you&apos;ve been,<br />
-              what you loved, and what&apos;s worth knowing.
+              The app that finds your next great<br />
+              experience before you think to search.
             </p>
 
             <a
               href="https://apps.apple.com/us/app/log-recs-from-friends/id6763411702"
               target="_blank"
               rel="noopener noreferrer"
-              className="hero-cta"
+              className="hero-cta glass-cta"
               style={{
                 display: 'inline-block',
                 fontFamily: 'var(--font-space-grotesk), sans-serif',
@@ -191,13 +191,17 @@ export default function HeroSection() {
                 letterSpacing: '0.08em',
                 textTransform: 'uppercase',
                 color: '#1A1A1A',
-                backgroundColor: '#EBE5DC',
+                backgroundColor: 'rgba(235,229,220,0.88)',
+                backdropFilter: 'blur(10px) saturate(150%)',
+                WebkitBackdropFilter: 'blur(10px) saturate(150%)',
+                border: '1px solid rgba(255,255,255,0.45)',
+                boxShadow: '0 8px 24px rgba(0,0,0,0.22)',
                 padding: '1rem 2.25rem',
                 borderRadius: '10px',
                 whiteSpace: 'nowrap',
               }}
             >
-              Download the app!
+              Download Beta!
             </a>
           </div>
         </div>

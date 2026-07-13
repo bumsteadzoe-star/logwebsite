@@ -82,7 +82,7 @@ export default function RecsCarousel() {
           lineHeight: 0.95,
           margin: 0,
         }}>
-          Log your experiences.
+          Log understands what you love.
         </h2>
       </div>
 
@@ -119,9 +119,10 @@ export default function RecsCarousel() {
                   borderRadius: '14px',
                   overflow: 'hidden',
                   position: 'relative',
+                  border: '1px solid rgba(255,255,255,0.18)',
                   boxShadow: isHovered
-                    ? '0 20px 56px rgba(26,26,26,0.28)'
-                    : '0 8px 28px rgba(26,26,26,0.14)',
+                    ? '0 1px 2px rgba(26,26,26,0.08), 0 20px 56px rgba(26,26,26,0.28)'
+                    : '0 1px 2px rgba(26,26,26,0.06), 0 8px 28px rgba(26,26,26,0.14)',
                   transform: isHovered ? 'translateY(-6px)' : 'translateY(0)',
                   transition: 'box-shadow 0.3s ease, transform 0.3s ease',
                   userSelect: 'none',
