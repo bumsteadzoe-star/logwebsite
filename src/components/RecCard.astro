@@ -1,0 +1,58 @@
+---
+interface Props {
+	tag: string;
+	tagColor?: "sage" | "blue" | "brown";
+	place: string;
+	match: string;
+	initial: string;
+	tip: string;
+	compact?: boolean;
+	class?: string;
+}
+
+const {
+	tag,
+	tagColor = "sage",
+	place,
+	match,
+	initial,
+	tip,
+	compact = false,
+	class: className = "",
+} = Astro.props;
+
+const tagChipClass = tagColor === "sage" ? "chip" : `chip-${tagColor}`;
+---
+
+<div class:list={["glass w-full max-w-xs", compact ? "p-3" : "p-5", className]}>
+	<div class="flex items-center justify-between gap-1.5">
+		<span
+			class:list={[tagChipClass, "font-bold uppercase tracking-wide", compact ? "px-1.5 py-0.5 text-[9px]" : "px-2.5 py-1 text-[11px]"]}
+		>
+			{tag}
+		</span>
+		<span class:list={["chip font-semibold", compact ? "px-1.5 py-0.5 text-[10px]" : "px-2.5 py-1 text-xs"]}>
+			{match}
+		</span>
+	</div>
+	<p
+		class:list={[
+			"font-display font-medium leading-tight text-primary",
+			compact ? "mt-1.5 text-sm" : "mt-3 text-xl",
+		]}
+	>
+		{place}
+	</p>
+	<div class:list={["flex items-start border-t hairline", compact ? "mt-2 gap-1.5 pt-2" : "mt-4 gap-2.5 pt-4"]}>
+		<span
+			class:list={[
+				"flex shrink-0 items-center justify-center rounded-full bg-primary font-semibold text-bone",
+				compact ? "h-4 w-4 text-[8px]" : "h-6 w-6 text-[11px]",
+			]}
+			aria-hidden="true"
+		>
+			{initial}
+		</span>
+		<p class:list={["leading-snug text-text/80", compact ? "text-[10px]" : "text-sm"]}>{tip}</p>
+	</div>
+</div>

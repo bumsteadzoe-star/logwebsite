@@ -1,0 +1,32 @@
+---
+const links = [
+	{ href: "/", label: "Home" },
+	{ href: "/privacy", label: "Privacy" },
+	{ href: "/terms", label: "Terms" },
+	{ href: "mailto:explore@logsocial.app", label: "Contact" },
+];
+---
+
+<footer class="border-t hairline px-4 py-12 sm:px-6 lg:px-8">
+	<div class="mx-auto flex max-w-7xl flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
+		<div class="max-w-xs">
+			<p class="font-wordmark text-2xl leading-none text-primary">Log</p>
+			<p class="mt-2 text-sm text-accent">Built by people who love finding new places.</p>
+		</div>
+
+		<nav class="flex flex-wrap gap-x-6 gap-y-2" aria-label="Footer">
+			{
+				links.map((link) => (
+					<a href={link.href} class="text-sm text-text/70 transition-colors hover:text-secondary">
+						{link.label}
+					</a>
+				))
+			}
+		</nav>
+	</div>
+
+	<div class="mx-auto mt-10 flex max-w-7xl flex-col gap-2 border-t hairline pt-6 text-xs text-accent sm:flex-row sm:items-center sm:justify-between">
+		<p>&copy; {new Date().getFullYear()} Log Social, LLC. All rights reserved.</p>
+		<p>explore@logsocial.app</p>
+	</div>
+</footer>

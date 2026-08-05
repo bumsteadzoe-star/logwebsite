@@ -1,0 +1,92 @@
+---
+import "../styles/global.css";
+import Footer from "../components/Footer.astro";
+import WaitlistModal from "../components/WaitlistModal.astro";
+
+interface Props {
+	title?: string;
+	description?: string;
+}
+
+const {
+	title = "Log — find your next favorite place",
+	description = "Log learns what you like from the places you go and the people you know, then finds what's next — before you think to search.",
+} = Astro.props;
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<meta name="description" content={description} />
+
+		<!-- Preload the fonts actually used above the fold to prevent layout shift. -->
+		<link
+			rel="preload"
+			href="/fonts/inter-latin-wght-normal.woff2"
+			as="font"
+			type="font/woff2"
+			crossorigin
+		/>
+		<link
+			rel="preload"
+			href="/fonts/playfair-display-latin-wght-normal.woff2"
+			as="font"
+			type="font/woff2"
+			crossorigin
+		/>
+		<link
+			rel="preload"
+			href="/fonts/dm-serif-text-latin-400-normal.woff2"
+			as="font"
+			type="font/woff2"
+			crossorigin
+		/>
+
+		<title>{title}</title>
+	</head>
+	<body class="font-sans">
+		<a
+			href="/"
+			class="glass-badge fixed left-4 top-4 z-40 px-4 py-2 font-wordmark text-lg text-primary transition-transform hover:scale-[1.03] sm:left-6 sm:top-6 sm:text-xl"
+		>
+			Log
+		</a>
+		<slot />
+		<Footer />
+		<WaitlistModal />
+
+		<script>
+			function initReveal() {
+				const items = document.querySelectorAll("[data-reveal]");
+				if (!items.length) return;
+
+				const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+				if (prefersReduced) {
+					items.forEach((el) => el.classList.add("is-visible"));
+					return;
+				}
+
+				const observer = new IntersectionObserver(
+					(entries) => {
+						for (const entry of entries) {
+							if (entry.isIntersecting) {
+								entry.target.classList.add("is-visible");
+								observer.unobserve(entry.target);
+							}
+						}
+					},
+					{ threshold: 0.15, rootMargin: "0px 0px -8% 0px" },
+				);
+
+				items.forEach((el) => observer.observe(el));
+			}
+
+			initReveal();
+			document.addEventListener("astro:page-load", initReveal);
+		</script>
+	</body>
+</html>

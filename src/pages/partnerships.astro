@@ -1,0 +1,158 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { Image } from "astro:assets";
+
+import marketImg from "../assets/photos2/IMG_4420.jpg";
+import courtyardImg from "../assets/photos2/IMG_6353.jpg";
+
+const segments = [
+	{
+		n: "01",
+		label: "Businesses",
+		title: "Get found by people who were already coming.",
+		body: "When someone's friend has already logged your place, Log can surface it at the right moment. Partnership tools for offers and booking are in development.",
+		img: marketImg,
+		alt: "A colorful farmers market fruit stand",
+	},
+	{
+		n: "02",
+		label: "Universities",
+		title: "Where one class builds a shared map.",
+		body: "Universities are where taste spreads fastest. Log gives incoming and current students a living map of a place, built by the students who already know it.",
+		img: courtyardImg,
+		alt: "A grand stone courtyard",
+	},
+];
+---
+
+<Layout
+	title="Log — Partnerships"
+	description="Log partners with businesses and universities to build a richer, real map of what's worth experiencing."
+>
+	<main>
+		<section class="mx-auto max-w-3xl px-4 pb-16 pt-32 sm:px-6 sm:pt-40 lg:px-8" data-reveal>
+			<p class="eyebrow">For businesses &amp; universities</p>
+			<h1 class="mt-4 font-display text-[clamp(2.5rem,6vw,4.25rem)] font-medium leading-[1.05] tracking-tight text-primary">
+				Partnering with the places people already <em class="italic">love</em>.
+			</h1>
+			<p class="mt-5 max-w-xl text-base text-text/80 sm:text-lg">
+				Log is built on real recommendations from real people. Businesses and universities help
+				make that map richer.
+			</p>
+		</section>
+
+		<section class="mx-auto max-w-7xl px-4 pb-[var(--spacing-section)] sm:px-6 lg:px-8">
+			<div class="border-t hairline">
+				{
+					segments.map((segment) => (
+						<div class="grid gap-6 border-b hairline py-10 sm:grid-cols-2 sm:items-center sm:gap-10 sm:py-14" data-reveal>
+							<div class:list={[segment.n === "02" ? "sm:order-2" : ""]}>
+								<p class="eyebrow text-secondary">{segment.n} / {segment.label.toUpperCase()}</p>
+								<h2 class="mt-3 font-display text-2xl font-medium leading-[1.15] text-primary sm:text-3xl">
+									{segment.title}
+								</h2>
+								<p class="mt-3 max-w-md text-base text-text/80">{segment.body}</p>
+							</div>
+							<div class="relative overflow-hidden rounded-[var(--radius-lg)]">
+								<Image
+									src={segment.img}
+									alt={segment.alt}
+									class="aspect-[4/3] w-full object-cover"
+									loading="lazy"
+								/>
+							</div>
+						</div>
+					))
+				}
+			</div>
+		</section>
+
+		<!-- Contact -->
+		<section class="relative overflow-hidden mesh-bg-dark">
+			<div class="relative mx-auto max-w-2xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8" data-reveal>
+				<p class="eyebrow text-bone/70">Let's talk</p>
+				<h2 class="mt-4 font-display text-[clamp(2rem,4.5vw,3rem)] font-medium leading-[1.1] text-bone">
+					Tell us about your business or school.
+				</h2>
+
+				<form class="glass-dark mt-9 grid gap-5 p-6 sm:p-8" id="partner-form">
+					<div class="grid gap-5 sm:grid-cols-2">
+						<div>
+							<label for="p-name" class="eyebrow mb-1.5 block text-bone/70">Name</label>
+							<input
+								id="p-name"
+								name="name"
+								type="text"
+								required
+								class="w-full rounded-[var(--radius-sm)] border border-bone/25 bg-bone/10 px-3 py-2 text-sm text-bone outline-none placeholder:text-bone/40 focus-visible:border-bone/60"
+							/>
+						</div>
+						<div>
+							<label for="p-org" class="eyebrow mb-1.5 block text-bone/70">Organization</label>
+							<input
+								id="p-org"
+								name="organization"
+								type="text"
+								required
+								class="w-full rounded-[var(--radius-sm)] border border-bone/25 bg-bone/10 px-3 py-2 text-sm text-bone outline-none placeholder:text-bone/40 focus-visible:border-bone/60"
+							/>
+						</div>
+					</div>
+					<div>
+						<label for="p-email" class="eyebrow mb-1.5 block text-bone/70">Email</label>
+						<input
+							id="p-email"
+							name="email"
+							type="email"
+							required
+							class="w-full rounded-[var(--radius-sm)] border border-bone/25 bg-bone/10 px-3 py-2 text-sm text-bone outline-none placeholder:text-bone/40 focus-visible:border-bone/60"
+						/>
+					</div>
+					<div>
+						<label for="p-message" class="eyebrow mb-1.5 block text-bone/70">Message</label>
+						<textarea
+							id="p-message"
+							name="message"
+							rows="4"
+							required
+							class="w-full resize-none rounded-[var(--radius-sm)] border border-bone/25 bg-bone/10 px-3 py-2 text-sm text-bone outline-none placeholder:text-bone/40 focus-visible:border-bone/60"
+						></textarea>
+					</div>
+
+					<p id="partner-form-status" class="hidden text-sm text-bone" role="status"></p>
+
+					<button
+						type="submit"
+						class="glass-pill mt-2 justify-self-start px-6 py-2.5 text-sm font-medium text-primary transition-transform hover:scale-[1.02] active:scale-[0.98]"
+					>
+						Send
+					</button>
+				</form>
+			</div>
+		</section>
+	</main>
+
+	<script>
+		function initPartnerForm() {
+			const form = document.getElementById("partner-form") as HTMLFormElement | null;
+			const status = document.getElementById("partner-form-status");
+			if (!form || !status) return;
+
+			form.addEventListener("submit", (event) => {
+				event.preventDefault();
+				if (!form.checkValidity()) {
+					form.reportValidity();
+					return;
+				}
+				// No backend is wired up yet — this only simulates success client-side.
+				// Replace with a real submission (Formspree, Supabase, etc.) before launch.
+				status.textContent = "Thanks — we'll be in touch.";
+				status.classList.remove("hidden");
+				form.reset();
+			});
+		}
+
+		initPartnerForm();
+		document.addEventListener("astro:page-load", initPartnerForm);
+	</script>
+</Layout>

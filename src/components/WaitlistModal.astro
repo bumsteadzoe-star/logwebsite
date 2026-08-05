@@ -1,0 +1,301 @@
+<dialog id="waitlist-dialog" class="glass w-[calc(100%-2rem)] max-w-md border-0 p-0">
+	<form id="waitlist-form" class="relative p-7 sm:p-9">
+		<button
+			type="button"
+			data-close-waitlist
+			aria-label="Close"
+			class="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full text-text/60 transition-colors hover:bg-text/5 hover:text-text"
+		>
+			<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+				<path d="M1 1L15 15M15 1L1 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+			</svg>
+		</button>
+
+		<h2 class="pr-8 font-display text-2xl text-primary">Always be in the know.</h2>
+		<p class="mt-2 text-sm text-accent">Sign up for early access.</p>
+
+		<div class="mt-6 grid gap-4">
+			<div>
+				<label for="wl-name" class="eyebrow mb-1.5 block">Your name</label>
+				<input
+					id="wl-name"
+					name="name"
+					type="text"
+					autocomplete="name"
+					required
+					class="w-full rounded-[var(--radius-sm)] border border-accent/30 bg-text/[0.04] px-3 py-2 text-sm text-text outline-none focus-visible:border-secondary"
+				/>
+			</div>
+			<div>
+				<label for="wl-phone" class="eyebrow mb-1.5 block">Phone number</label>
+				<input
+					id="wl-phone"
+					name="phone"
+					type="tel"
+					autocomplete="tel"
+					placeholder="(206) 555-0100"
+					required
+					class="w-full rounded-[var(--radius-sm)] border border-accent/30 bg-text/[0.04] px-3 py-2 text-sm text-text outline-none placeholder:text-accent/50 focus-visible:border-secondary"
+				/>
+			</div>
+			<div>
+				<label for="wl-city" class="eyebrow mb-1.5 block">What city do you live in?</label>
+				<input
+					id="wl-city"
+					name="city"
+					type="text"
+					autocomplete="address-level2"
+					placeholder="Seattle"
+					required
+					class="w-full rounded-[var(--radius-sm)] border border-accent/30 bg-text/[0.04] px-3 py-2 text-sm text-text outline-none placeholder:text-accent/50 focus-visible:border-secondary"
+				/>
+			</div>
+		</div>
+
+		<label class="mt-5 flex items-start gap-2.5">
+			<input
+				id="wl-sms-consent"
+				name="smsConsent"
+				type="checkbox"
+				required
+				class="mt-0.5 h-4 w-4 shrink-0 rounded border-accent/40 text-secondary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary"
+			/>
+			<span class="text-xs leading-snug text-accent">
+				I agree to receive SMS messages from Log at the phone number provided. Message &amp; data
+				rates may apply. Reply STOP to unsubscribe.
+				<a href="/privacy" class="underline hover:text-secondary">Privacy Policy</a> and
+				<a href="/terms" class="underline hover:text-secondary">Terms of Service</a>.
+			</span>
+		</label>
+
+		<p id="wl-error" class="mt-3 hidden text-sm text-primary" role="alert">
+			Something went wrong. Try again in a moment.
+		</p>
+
+		<button
+			type="submit"
+			id="wl-submit"
+			class="mt-6 w-full rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-bone transition-transform hover:scale-[1.01] active:scale-[0.99] disabled:opacity-60"
+		>
+			Get on the list →
+		</button>
+	</form>
+
+	<div id="waitlist-referral" class="relative hidden p-7 text-center sm:p-9">
+		<button
+			type="button"
+			data-close-waitlist
+			aria-label="Close"
+			class="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full text-text/60 transition-colors hover:bg-text/5 hover:text-text"
+		>
+			<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+				<path d="M1 1L15 15M15 1L1 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+			</svg>
+		</button>
+
+		<h2 class="font-display text-2xl text-primary">You're on the list!</h2>
+		<p class="mt-2 text-sm text-accent">Want in first? Refer 2 friends with great taste.</p>
+
+		<div class="mt-6 grid gap-3">
+			<button type="button" data-refer="1" class="wl-refer-btn">Send to friend 1</button>
+			<button type="button" data-refer="2" class="wl-refer-btn">Send to friend 2</button>
+		</div>
+
+		<p id="wl-confirmed" class="mt-5 hidden text-sm font-medium text-secondary" role="status"></p>
+
+		<button
+			type="button"
+			data-close-waitlist
+			class="mt-6 rounded-full bg-text/5 px-5 py-2.5 text-sm font-medium text-text/70 transition-colors hover:bg-text/10"
+		>
+			Done
+		</button>
+	</div>
+</dialog>
+
+<style>
+	dialog#waitlist-dialog {
+		position: fixed;
+		inset: 0;
+		margin: auto;
+		animation: waitlist-in 0.25s ease;
+	}
+
+	dialog#waitlist-dialog::backdrop {
+		background: color-mix(in srgb, var(--color-text) 45%, transparent);
+		backdrop-filter: blur(6px);
+		-webkit-backdrop-filter: blur(6px);
+	}
+
+	@keyframes waitlist-in {
+		from {
+			opacity: 0;
+			transform: translateY(8px) scale(0.98);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0) scale(1);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		dialog#waitlist-dialog {
+			animation: none;
+		}
+	}
+
+	.wl-refer-btn {
+		width: 100%;
+		border-radius: 999px;
+		border: 1px solid color-mix(in srgb, var(--color-primary) 30%, transparent);
+		padding: 0.625rem 1.25rem;
+		font-size: 0.875rem;
+		font-weight: 500;
+		color: var(--color-primary);
+		background: transparent;
+		transition: background-color 0.15s ease, color 0.15s ease;
+	}
+
+	.wl-refer-btn:hover:not(:disabled) {
+		background: color-mix(in srgb, var(--color-primary) 6%, transparent);
+	}
+
+	.wl-refer-btn.is-sent {
+		background: var(--color-primary);
+		color: var(--color-bone);
+		border-color: var(--color-primary);
+	}
+</style>
+
+<script>
+	// Waitlist signup, backed by Supabase (project: lkmyvsglcmiaefdugduh).
+	// The URL + publishable key below are meant to be public — this is the
+	// browser-facing key, restricted server-side to only ever call
+	// create_waitlist_signup (no direct table access; see the migration).
+	// SMS referral is still peer-to-peer: a website has no way to detect
+	// whether the user actually pressed send in Messages, so "sent" below is
+	// optimistic (marked the moment the OS handoff is triggered), not a
+	// verified receipt. Real referral credit comes from the referred friend
+	// later landing on this site via ?ref=CODE and completing their own
+	// signup — captured below and passed through as referred_by.
+	const SUPABASE_URL = "https://lkmyvsglcmiaefdugduh.supabase.co";
+	const SUPABASE_ANON_KEY = "sb_publishable_w4rnnmJjApDN5B8bFQOPug_zqWGBxqO";
+
+	function initWaitlist() {
+		const dialog = document.getElementById("waitlist-dialog") as HTMLDialogElement | null;
+		const form = document.getElementById("waitlist-form") as HTMLFormElement | null;
+		const submitBtn = document.getElementById("wl-submit") as HTMLButtonElement | null;
+		const errorEl = document.getElementById("wl-error");
+		const referral = document.getElementById("waitlist-referral");
+		const confirmedEl = document.getElementById("wl-confirmed");
+		if (!dialog || !form || !submitBtn || !errorEl || !referral || !confirmedEl) return;
+
+		let referralCode = "";
+		let sentCount = 0;
+		const incomingRef = new URLSearchParams(window.location.search).get("ref");
+
+		const smsHref = (body: string) => {
+			const isAndroid = /Android/i.test(navigator.userAgent);
+			return `sms:${isAndroid ? "?" : "&"}body=${encodeURIComponent(body)}`;
+		};
+
+		const referralMessage = () => {
+			const link = `https://logsocial.app/?ref=${referralCode}`;
+			return `I think you'd love this. I just joined Log's beta — an app that remembers every place worth going back to, built from what you and your friends actually love. Get early access: ${link}`;
+		};
+
+		document.querySelectorAll("[data-open-waitlist]").forEach((btn) => {
+			btn.addEventListener("click", () => {
+				form.hidden = false;
+				referral.classList.add("hidden");
+				dialog.showModal();
+			});
+		});
+
+		dialog.querySelectorAll("[data-close-waitlist]").forEach((btn) => {
+			btn.addEventListener("click", () => dialog.close());
+		});
+
+		dialog.addEventListener("click", (event) => {
+			const rect = dialog.getBoundingClientRect();
+			const inside =
+				event.clientX >= rect.left &&
+				event.clientX <= rect.right &&
+				event.clientY >= rect.top &&
+				event.clientY <= rect.bottom;
+			if (!inside) dialog.close();
+		});
+
+		form.addEventListener("submit", async (event) => {
+			event.preventDefault();
+			if (!form.checkValidity()) {
+				form.reportValidity();
+				return;
+			}
+
+			const data = new FormData(form);
+			errorEl.classList.add("hidden");
+			submitBtn.disabled = true;
+			submitBtn.textContent = "Joining…";
+
+			try {
+				const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/create_waitlist_signup`, {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+						apikey: SUPABASE_ANON_KEY,
+						Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+					},
+					body: JSON.stringify({
+						p_name: data.get("name"),
+						p_phone: data.get("phone"),
+						p_city: data.get("city"),
+						p_sms_consent: data.get("smsConsent") === "on",
+						p_referred_by: incomingRef || null,
+					}),
+				});
+
+				if (!res.ok) throw new Error(`Signup failed (${res.status})`);
+				const rows = await res.json();
+				const row = Array.isArray(rows) ? rows[0] : rows;
+				if (!row?.referral_code) throw new Error("No referral code returned");
+
+				referralCode = row.referral_code;
+				sentCount = 0;
+
+				form.hidden = true;
+				confirmedEl.classList.add("hidden");
+				confirmedEl.textContent = "";
+				referral.querySelectorAll<HTMLButtonElement>(".wl-refer-btn").forEach((btn) => {
+					btn.classList.remove("is-sent");
+					btn.disabled = false;
+					btn.textContent = `Send to friend ${btn.dataset.refer}`;
+				});
+				referral.classList.remove("hidden");
+			} catch (err) {
+				console.error(err);
+				errorEl.classList.remove("hidden");
+			} finally {
+				submitBtn.disabled = false;
+				submitBtn.textContent = "Get on the list →";
+			}
+		});
+
+		referral.querySelectorAll<HTMLButtonElement>(".wl-refer-btn").forEach((btn) => {
+			btn.addEventListener("click", () => {
+				if (btn.disabled) return;
+				window.location.href = smsHref(referralMessage());
+				btn.classList.add("is-sent");
+				btn.disabled = true;
+				btn.textContent = "Sent";
+
+				sentCount += 1;
+				confirmedEl.classList.remove("hidden");
+				confirmedEl.textContent = sentCount >= 2 ? "We moved you up the list!" : "1/2 done";
+			});
+		});
+	}
+
+	initWaitlist();
+	document.addEventListener("astro:page-load", initWaitlist);
+</script>
