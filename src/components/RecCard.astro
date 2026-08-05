@@ -27,17 +27,17 @@ const tagChipClass = tagColor === "sage" ? "chip" : `chip-${tagColor}`;
 <div class:list={["glass w-full max-w-xs", compact ? "p-3" : "p-5", className]}>
 	<div class="flex items-center justify-between gap-1.5">
 		<span
-			class:list={[tagChipClass, "font-bold uppercase tracking-wide", compact ? "px-1.5 py-0.5 text-[9px]" : "px-2.5 py-1 text-[11px]"]}
+			class:list={[tagChipClass, "whitespace-nowrap font-bold uppercase tracking-wide", compact ? "px-1.5 py-0.5 text-[9px]" : "px-2.5 py-1 text-[11px]"]}
 		>
 			{tag}
 		</span>
-		<span class:list={["chip font-semibold", compact ? "px-1.5 py-0.5 text-[10px]" : "px-2.5 py-1 text-xs"]}>
+		<span class:list={["chip whitespace-nowrap font-semibold", compact ? "px-1.5 py-0.5 text-[10px]" : "px-2.5 py-1 text-xs"]}>
 			{match}
 		</span>
 	</div>
 	<p
 		class:list={[
-			"font-display font-medium leading-tight text-primary",
+			"whitespace-nowrap font-display font-medium leading-tight text-primary",
 			compact ? "mt-1.5 text-sm" : "mt-3 text-xl",
 		]}
 	>

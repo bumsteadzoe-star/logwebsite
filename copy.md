@@ -111,7 +111,7 @@ shows what the result actually looks like.
 Sant Ambroeus coffee cup + a museum fashion exhibit) with a soft color glow
 behind it, plus two "with Log" mock rec cards (illustrative), updated
 2026-08-05 — see design-notes.md:
-- Category tag: ACTIVITY (blue) — Place: New museum pop-up — Match: 97% match — Friend tip: Z avatar — "Zoe — a must do before it closes in a few weeks."
+- Category tag: ACTIVITY (blue) — Place: Museum pop-up — Match: 97% match — Friend tip: Z avatar — "Zoe — a must do before it closes in a few weeks."
 - Category tag: CAFE (brown) — Place: Coffee + Bagels — Match: 96% match — Friend tip: M avatar — "Maya — do the Apollo and Sant Ambroeus combo."
 
 ---
@@ -194,3 +194,18 @@ Note: every site-wide trigger/CTA that opens this modal or completes the final
 CTA now reads "Get Early Access" (renamed 2026-07-30 from "Join the Waitlist").
 The modal's own headline ("Join the beta.") wasn't part of that rename request
 and is unchanged.
+
+**Current state (2026-08-05, see design-notes.md for the full history) —**
+this section above predates the real Supabase-backed rebuild and is kept for
+history only. Actual current copy:
+- **Headline:** Always be in the know.
+- **Body:** Sign up for early access.
+- **Form fields:** Your name / Phone number (with a country-code selector,
+  US default, ~20 countries, added 2026-08-05 for international signups) /
+  What city do you live in?
+- **Submit button:** Get on the list →
+- **Referral screen headline:** You're on the list!
+- **Referral screen body:** Want in first? Refer 2 friends with great taste.
+- **SMS referral message** (sent via `sms:` deep link): "You have great
+  taste! Sign up for Log, know where to go and what to do based on what you
+  and your network love: {link}"

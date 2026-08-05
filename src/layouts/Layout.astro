@@ -23,6 +23,16 @@ const {
 		<meta name="generator" content={Astro.generator} />
 		<meta name="description" content={description} />
 
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content="https://www.logsocial.app/" />
+		<meta property="og:image" content="https://www.logsocial.app/og-image.png" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content="https://www.logsocial.app/og-image.png" />
+
 		<!-- Preload the fonts actually used above the fold to prevent layout shift. -->
 		<link
 			rel="preload"
