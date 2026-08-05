@@ -340,6 +340,9 @@ The site had no explicit link-preview image, so SMS/iMessage previews were scrap
 **2026-08-05 — Solution section Activity card: "New museum pop-up" → "Museum pop-up"**
 At the compact card's mobile width (`max-w-[150px]`), "New museum pop-up" set in Playfair Display wrapped to two lines, and the "97% match" chip wrapped too since the tag+match chip row was flex-shrinking below content width. Added `whitespace-nowrap` to the place text and both header chips in `RecCard.astro` (so they hold single-line instead of silently shrink-wrapping), and shortened the Activity card's copy to fit the available width instead of shrinking the type past a readable size.
 
+**2026-08-05 — Activity card tip shortened; card nudged up**
+Tip "Zoe — a must do before it closes in a few weeks." wrapped past 2 lines in the friend-tip block; shortened to "Closes in a few weeks." so the block holds 2 lines. Moved the card from `top-[30%]` to `top-[24%]` so it overlaps less of the front (bottom-left) photo underneath.
+
 ---
 
 ## Open questions

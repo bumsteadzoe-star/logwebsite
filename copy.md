@@ -111,7 +111,7 @@ shows what the result actually looks like.
 Sant Ambroeus coffee cup + a museum fashion exhibit) with a soft color glow
 behind it, plus two "with Log" mock rec cards (illustrative), updated
 2026-08-05 — see design-notes.md:
-- Category tag: ACTIVITY (blue) — Place: Museum pop-up — Match: 97% match — Friend tip: Z avatar — "Zoe — a must do before it closes in a few weeks."
+- Category tag: ACTIVITY (blue) — Place: Museum pop-up — Match: 97% match — Friend tip: Z avatar — "Closes in a few weeks."
 - Category tag: CAFE (brown) — Place: Coffee + Bagels — Match: 96% match — Friend tip: M avatar — "Maya — do the Apollo and Sant Ambroeus combo."
 
 ---
