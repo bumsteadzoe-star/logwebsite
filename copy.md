@@ -8,7 +8,7 @@ present-tense claims about unshipped features.
 
 ## Meta
 
-**Page title:** Vouch — find your next favorite place
+**Page title:** Vouch — The knowledge of your network
 **Meta description:** Vouch learns what you like from the places you go and the people you know, then finds what's next — before you think to search.
 **OG image alt:** The Vouch app showing a personalized feed of recommended places
 
@@ -146,7 +146,7 @@ example instead (clearly a UI mockup, not a claimed testimonial).
 
 **Tagline:** Built by people who love finding new places.
 **Links:** Home / Partnerships / Contact
-**Contact:** zoe@logsocial.app
+**Contact:** explore@get-vouch.app
 **Legal:** Log Social, LLC
 
 ---
