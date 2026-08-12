@@ -8,9 +8,9 @@ present-tense claims about unshipped features.
 
 ## Meta
 
-**Page title:** Log — find your next favorite place
-**Meta description:** Log learns what you like from the places you go and the people you know, then finds what's next — before you think to search.
-**OG image alt:** The Log app showing a personalized feed of recommended places
+**Page title:** Vouch — find your next favorite place
+**Meta description:** Vouch learns what you like from the places you go and the people you know, then finds what's next — before you think to search.
+**OG image alt:** The Vouch app showing a personalized feed of recommended places
 
 ---
 
@@ -18,7 +18,7 @@ present-tense claims about unshipped features.
 
 **Eyebrow:** BETA IS LIVE
 **Headline:** Your next favorite place, *before* you go looking for it.
-**Subhead:** Log learns what you like — quietly, in the background.
+**Subhead:** Vouch learns what you like — quietly, in the background.
 **Primary CTA:** Get Early Access
 **Secondary CTA:** none — removed 2026-07-30 so the hero carries one action, not two.
 
@@ -36,7 +36,7 @@ that visual needed to read as two distinct sections, not one merged block.
 
 **Section label:** THE PROBLEM
 **Headline:** Good recommendations shouldn't take *homework*.
-**Body:** Good taste is scattered across screenshots, texts, and half-remembered conversations. Log gathers it quietly in the background, so you're not the one doing the collecting.
+**Body:** Good taste is scattered across screenshots, texts, and half-remembered conversations. Vouch gathers it quietly in the background, so you're not the one doing the collecting.
 
 **Note:** the gap above this section (hero→problem) uses the tighter
 `--spacing-section-tight` value now, not the standard `--spacing-section` —
@@ -55,7 +55,7 @@ content instead of typeset placeholders.
 Was three "specimen" columns (numeral + headline + body + an abstract
 `.stage-dark` visual per step). Removed entirely per explicit request — not
 on the live page anymore. Homepage order is now Hero → Problem → Solution →
-Finds on Log → Final CTA. Kept the rest of this entry's history below for
+Finds on Vouch → Final CTA. Kept the rest of this entry's history below for
 reference only.
 
 The "Section 3 — how it works" entry directly below was already stale before
@@ -74,7 +74,7 @@ tags. This is the site's signature visual — not a 3-icon feature grid.
 
 **Section label:** HOW IT WORKS
 **Headline:** Every recommendation already exists. It's just *scattered*.
-**Body:** Texts, saved posts, notes, voice memos, group chats — the advice is already out there. Log turns it into one feed built around what you actually like.
+**Body:** Texts, saved posts, notes, voice memos, group chats — the advice is already out there. Vouch turns it into one feed built around what you actually like.
 
 **Scattered side (mock fragments, illustrative only):**
 - Text: "hey do you have recs for a good ramen spot? feels like a big ask lol"
@@ -82,16 +82,16 @@ tags. This is the site's signature visual — not a 3-icon feature grid.
 - Saved post: "SAVED · Coffee shops to try"
 - Voice memo: 0:47
 
-**With Log side (mock app card, illustrative only):**
+**With Vouch side (mock app card, illustrative only):**
 - Category tag: DINNER
 - Place: The tasting counter downtown
 - Match: 97% match
 - Friend tip: Z avatar — "Zoe — sit at the counter, ask for the off-menu one."
 
 Steps / features (compact captions under the visual, not a separate numbered block):
-1. **Discover** — Log picks up on the places you save, visit, and talk about, then surfaces what fits — before you ask.
+1. **Discover** — Vouch picks up on the places you save, visit, and talk about, then surfaces what fits — before you ask.
 2. **Share** — Every place you log becomes part of a living map your friends can actually use.
-3. **Experience** — When you're ready to go, Log has already done the narrowing down. Booking and trip planning are in development.
+3. **Experience** — When you're ready to go, Vouch has already done the narrowing down. Booking and trip planning are in development.
 
 ---
 
@@ -105,11 +105,11 @@ shows what the result actually looks like.
 
 **Section label:** THE SOLUTION
 **Headline:** One place, *already* picked.
-**Body:** Not a feed to scroll or a list to compare — just the place Log thinks you'll actually like, and why.
+**Body:** Not a feed to scroll or a list to compare — just the place Vouch thinks you'll actually like, and why.
 
 **Visual:** two-photo offset collage (bagel + smoked salmon takeout with a
 Sant Ambroeus coffee cup + a museum fashion exhibit) with a soft color glow
-behind it, plus two "with Log" mock rec cards (illustrative), updated
+behind it, plus two "with Vouch" mock rec cards (illustrative), updated
 2026-08-05 — see design-notes.md:
 - Category tag: ACTIVITY (blue) — Place: Museum pop-up — Match: 97% match — Friend tip: Z avatar — "Zoe — closes in a few weeks."
 - Category tag: CAFE (brown) — Place: Coffee + Bagels — Match: 96% match — Friend tip: M avatar — "Maya — do the Apollo and Sant Ambroeus combo."
@@ -120,7 +120,7 @@ behind it, plus two "with Log" mock rec cards (illustrative), updated
 
 Cut entirely per explicit request, same day it was expanded to full viewport
 height. Kept here for history only — not on the live page. Final CTA now
-follows directly after "Finds on Log."
+follows directly after "Finds on Vouch."
 
 ---
 
@@ -128,7 +128,7 @@ follows directly after "Finds on Log."
 
 *(only claims that are verified — no invented metrics)*
 
-No dedicated section — Log doesn't have verified user numbers or named
+No dedicated section — Vouch doesn't have verified user numbers or named
 endorsements yet. The "how it works" mock app card carries an illustrative
 example instead (clearly a UI mockup, not a claimed testimonial).
 
@@ -137,7 +137,7 @@ example instead (clearly a UI mockup, not a claimed testimonial).
 ## Final CTA
 
 **Headline:** Have you *logged* it yet?
-**Body:** Join the beta and let Log start learning in the background.
+**Body:** Join the beta and let Vouch start learning in the background.
 **Button:** Get Early Access
 
 ---
@@ -164,17 +164,17 @@ example instead (clearly a UI mockup, not a claimed testimonial).
 
 **Eyebrow:** FOR BUSINESSES & UNIVERSITIES
 **Headline:** Partnering with the places people already *love*.
-**Body:** Log is built on real recommendations from real people. Businesses and universities help make that map richer.
+**Body:** Vouch is built on real recommendations from real people. Businesses and universities help make that map richer.
 
 **Segment 1 — Businesses / places:**
 Label: 01 / BUSINESSES
 Headline: Get found by people who were already coming.
-Body: When someone's friend has already logged your place, Log can surface it at the right moment. Partnership tools for offers and booking are in development.
+Body: When someone's friend has already logged your place, Vouch can surface it at the right moment. Partnership tools for offers and booking are in development.
 
 **Segment 2 — Universities:**
 Label: 02 / UNIVERSITIES
 Headline: Where one class builds a shared map.
-Body: Universities are where taste spreads fastest. Log gives incoming and current students a living map of a place, built by the students who already know it.
+Body: Universities are where taste spreads fastest. Vouch gives incoming and current students a living map of a place, built by the students who already know it.
 
 **Contact form intro:** Tell us about your business or school.
 **Contact form fields:** Name / Organization / Email / Message
@@ -185,7 +185,7 @@ Body: Universities are where taste spreads fastest. Log gives incoming and curre
 ## Waitlist popup
 
 **Headline:** Join the beta.
-**Body:** Be first to try Log. We'll email you when your spot opens up.
+**Body:** Be first to try Vouch. We'll email you when your spot opens up.
 **Form fields:** First name / Last name / Email
 **Submit button:** Get Early Access
 **Success state:** You're on the list. We'll be in touch.
@@ -207,5 +207,5 @@ history only. Actual current copy:
 - **Referral screen headline:** You're on the list!
 - **Referral screen body:** Want in first? Refer 2 friends with great taste.
 - **SMS referral message** (sent via `sms:` deep link): "You have great
-  taste! Sign up for Log, know where to go and what to do based on what you
+  taste! Sign up for Vouch, know where to go and what to do based on what you
   and your network love: {link}"
