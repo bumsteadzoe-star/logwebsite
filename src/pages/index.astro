@@ -51,6 +51,24 @@ const logEntries = [
 		match: 91,
 	},
 	{
+		src: dinnerImg,
+		alt: "A creamy pasta dish with herbs and peas",
+		caption: "Dinner at Toulouse Petite",
+		city: "Seattle, WA",
+		tag: "Dinner",
+		tagClass: "chip-terracotta",
+		match: 96,
+	},
+	{
+		src: punchbowlImg,
+		alt: "A canyon swimming hole surrounded by white rock",
+		caption: "Hike Santa Paula Punch Bowls",
+		city: "Los Angeles, CA",
+		tag: "Nature",
+		tagClass: "chip-olive",
+		match: 89,
+	},
+	{
 		src: museumImg,
 		alt: "The stone facade of Museo Anahuacalli",
 		caption: "Tour through Museo Anahuacalli",
@@ -77,24 +95,6 @@ const logEntries = [
 		tagClass: "chip-purple",
 		match: 94,
 	},
-	{
-		src: dinnerImg,
-		alt: "A creamy pasta dish with herbs and peas",
-		caption: "Dinner at Toulouse Petite",
-		city: "Seattle, WA",
-		tag: "Dinner",
-		tagClass: "chip-terracotta",
-		match: 96,
-	},
-	{
-		src: punchbowlImg,
-		alt: "A canyon swimming hole surrounded by white rock",
-		caption: "Hike Santa Paula Punch Bowls",
-		city: "Los Angeles, CA",
-		tag: "Nature",
-		tagClass: "chip-olive",
-		match: 89,
-	},
 ];
 ---
 
@@ -108,8 +108,7 @@ const logEntries = [
 			<section class="sticky top-0 flex h-dvh items-center justify-center overflow-hidden bg-sage/10 px-4 text-center sm:px-6 lg:px-8">
 				<canvas
 					id="hero-shader-canvas"
-					class="absolute inset-0 -z-10 h-full w-full"
-					style="display: block;"
+					class="absolute inset-0 -z-10 block h-full w-full"
 					aria-hidden="true"
 				></canvas>
 				<div
@@ -660,7 +659,8 @@ void main() {
 						Making the right decision shouldn't be this hard.
 					</h2>
 					<p class="mt-5 max-w-xl text-base text-text/80 sm:text-lg">
-						Finding experiences worth your time looks like this →
+						Whether it's a big trip or a Tuesday night, finding what's worth your time
+						looks like this →
 					</p>
 				</div>
 
@@ -788,7 +788,7 @@ void main() {
 						<div
 							class="group relative overflow-hidden rounded-[var(--radius-lg)]"
 							data-reveal
-							style={`transition-delay: ${Math.min(i, 5) * 60}ms`}
+							style={{ "--reveal-delay": `${Math.min(i, 5) * 60}ms` }}
 						>
 							<Image
 								src={entry.src}

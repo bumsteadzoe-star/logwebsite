@@ -2,16 +2,35 @@
 import "../styles/global.css";
 import Footer from "../components/Footer.astro";
 import WaitlistModal from "../components/WaitlistModal.astro";
+import Analytics from "@vercel/analytics/astro";
 
 interface Props {
 	title?: string;
 	description?: string;
+	ogImage?: string;
 }
 
 const {
-	title = "Vouch — find your next favorite place",
+	title = "Vouch — the knowledge of your best-informed friend",
 	description = "Vouch learns what you like from the places you go and the people you know, then finds what's next — before you think to search.",
+	ogImage = "/og-image.png",
 } = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const ogImageURL = new URL(ogImage, Astro.site);
+
+const organizationSchema = {
+	"@context": "https://schema.org",
+	"@type": "Organization",
+	name: "Vouch",
+	url: "https://www.get-vouch.com/",
+	logo: new URL("/og-image.png", Astro.site).toString(),
+	sameAs: [
+		"https://www.tiktok.com/@the.vouch.network",
+		"https://www.instagram.com/the.vouch.network/",
+		"https://www.linkedin.com/company/get-vouch/",
+	],
+};
 ---
 
 <html lang="en">
@@ -19,19 +38,21 @@ const {
 		<meta charset="utf-8" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="generator" content={Astro.generator} />
 		<meta name="description" content={description} />
+		<link rel="canonical" href={canonicalURL} />
 
 		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="Vouch" />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
-		<meta property="og:url" content="https://www.logsocial.app/" />
-		<meta property="og:image" content="https://www.logsocial.app/og-image.png" />
+		<meta property="og:url" content={canonicalURL} />
+		<meta property="og:image" content={ogImageURL} />
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content={title} />
 		<meta name="twitter:description" content={description} />
-		<meta name="twitter:image" content="https://www.logsocial.app/og-image.png" />
+		<meta name="twitter:image" content={ogImageURL} />
 
 		<!-- Preload the fonts actually used above the fold to prevent layout shift. -->
 		<link
@@ -57,8 +78,11 @@ const {
 		/>
 
 		<title>{title}</title>
+
+		<script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
 	</head>
 	<body class="font-sans">
+		<Analytics />
 		<a
 			href="/"
 			class="glass-badge fixed left-4 top-4 z-40 px-4 py-2 font-wordmark text-lg text-primary transition-transform hover:scale-[1.03] sm:left-6 sm:top-6 sm:text-xl"

@@ -1,0 +1,21 @@
+# Vouch
+
+> Vouch learns what you like from the places you go and the people you know, then
+> surfaces what's next — before you think to search. It's a day-to-day recommendation
+> app for restaurants, coffee shops, and local spots, not just a travel-planning tool.
+
+Vouch builds recommendations from real signals: the places a person visits, saves, and
+talks about, plus what their friends and network already vouch for. Recommendations
+come with a match score and, where available, a tip from a friend who's been there.
+
+## Pages
+
+- [Home](https://www.get-vouch.com/): product overview and early access signup
+- [Partnerships](https://www.get-vouch.com/partnerships): information for businesses
+  and universities
+- [Privacy Policy](https://www.get-vouch.com/privacy)
+- [Terms of Service](https://www.get-vouch.com/terms)
+
+## Contact
+
+explore@get-vouch.com

@@ -3,7 +3,25 @@ const links = [
 	{ href: "/", label: "Home" },
 	{ href: "/privacy", label: "Privacy" },
 	{ href: "/terms", label: "Terms" },
-	{ href: "mailto:explore@logsocial.app", label: "Contact" },
+	{ href: "mailto:explore@get-vouch.com", label: "Contact" },
+];
+
+const socialLinks = [
+	{
+		href: "https://www.tiktok.com/@the.vouch.network",
+		label: "Vouch on TikTok",
+		icon: "tiktok",
+	},
+	{
+		href: "https://www.instagram.com/the.vouch.network/",
+		label: "Vouch on Instagram",
+		icon: "instagram",
+	},
+	{
+		href: "https://www.linkedin.com/company/get-vouch/",
+		label: "Vouch on LinkedIn",
+		icon: "linkedin",
+	},
 ];
 ---
 
@@ -12,6 +30,37 @@ const links = [
 		<div class="max-w-xs">
 			<p class="font-wordmark text-2xl leading-none text-primary">Vouch</p>
 			<p class="mt-2 text-sm text-accent">Built by people who love finding new places.</p>
+			<div class="mt-4 flex items-center gap-4">
+				{
+					socialLinks.map((social) => (
+						<a
+							href={social.href}
+							target="_blank"
+							rel="noopener noreferrer"
+							aria-label={social.label}
+							class="text-text/70 transition-colors hover:text-secondary"
+						>
+							{social.icon === "tiktok" && (
+								<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+									<path d="M16.6 5.82a4.28 4.28 0 0 1-3.16-1.4V15.2a5.1 5.1 0 1 1-4.4-5.05v2.6a2.5 2.5 0 1 0 1.75 2.39V2h2.65a4.28 4.28 0 0 0 3.16 3.82v2z" />
+								</svg>
+							)}
+							{social.icon === "instagram" && (
+								<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+									<rect x="3" y="3" width="18" height="18" rx="5" />
+									<circle cx="12" cy="12" r="4" />
+									<circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none" />
+								</svg>
+							)}
+							{social.icon === "linkedin" && (
+								<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+									<path d="M4.98 3.5C4.98 4.88 3.9 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8.25h4V23h-4V8.25zM8.5 8.25h3.83v2.01h.05c.53-1 1.84-2.05 3.79-2.05 4.06 0 4.81 2.67 4.81 6.14V23h-4v-6.9c0-1.65-.03-3.77-2.3-3.77-2.3 0-2.65 1.8-2.65 3.65V23h-4V8.25z" />
+								</svg>
+							)}
+						</a>
+					))
+				}
+			</div>
 		</div>
 
 		<nav class="flex flex-wrap gap-x-6 gap-y-2" aria-label="Footer">
@@ -27,6 +76,6 @@ const links = [
 
 	<div class="mx-auto mt-10 flex max-w-7xl flex-col gap-2 border-t hairline pt-6 text-xs text-accent sm:flex-row sm:items-center sm:justify-between">
 		<p>&copy; {new Date().getFullYear()} Log Social, LLC. All rights reserved.</p>
-		<p>explore@logsocial.app</p>
+		<p>explore@get-vouch.com</p>
 	</div>
 </footer>
