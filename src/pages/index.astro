@@ -144,16 +144,17 @@ const logEntryMeta = logEntries.map((entry, i) => ({
 		     that turned out to look cramped on phones in practice. Side by
 		     side again from `sm` up.
 
-		     Below `sm` only: section padding is trimmed (the vmin-based
-		     py above left too much air above the text and below the photo
-		     once stacked) and the text block gets its own min-h-dvh +
-		     flex-centering so it sits centered in one phone screen, with
-		     the photo revealed by scrolling — restores the `sm:` layout's
-		     original left-aligned, un-centered spacing untouched. -->
+		     Below `sm` only: section padding is trimmed and the photo gets
+		     a smaller cap so text + photo together fit within one phone
+		     screen (centered as a unit via the section's own flex
+		     items-center) — scrolling past the hero should immediately
+		     reach the network section, not reveal more of the hero itself.
+		     Restores the `sm:` layout's original left-aligned spacing
+		     untouched. -->
 		<section class="flex min-h-dvh items-center bg-sand px-3 pt-[clamp(1rem,4vmin,2rem)] pb-[clamp(1rem,3vmin,2rem)] sm:px-6 sm:py-[clamp(2.5rem,6vmin,5rem)] lg:px-8">
-			<div class="mx-auto grid w-full max-w-7xl grid-cols-1 gap-[clamp(2.5rem,5vmin,4rem)] sm:grid-cols-2 sm:items-center">
+			<div class="mx-auto grid w-full max-w-7xl grid-cols-1 gap-[clamp(1.5rem,5vmin,4rem)] sm:grid-cols-2 sm:items-center">
 				<div
-					class="flex min-h-dvh flex-col items-center justify-center text-center sm:-ml-4 sm:min-h-0 sm:flex-none sm:items-start sm:text-left lg:-ml-6"
+					class="flex flex-col items-center text-center sm:-ml-4 sm:items-start sm:text-left lg:-ml-6"
 					data-reveal
 				>
 					<h1 class="font-display font-normal text-primary text-[clamp(1.6rem,9.5vmin,5.5rem)] leading-[0.94] tracking-[-0.03em]">
@@ -173,7 +174,7 @@ const logEntryMeta = logEntries.map((entry, i) => ({
 				</div>
 
 				<div
-					class="relative overflow-hidden rounded-[var(--radius-xl)] shadow-xl h-[clamp(280px,86vmin,760px)]"
+					class="relative overflow-hidden rounded-[var(--radius-xl)] shadow-xl h-[clamp(220px,55vmin,400px)] sm:h-[clamp(280px,86vmin,760px)]"
 					data-reveal
 					style="--reveal-delay: 120ms"
 				>
