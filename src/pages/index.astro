@@ -142,10 +142,20 @@ const logEntryMeta = logEntries.map((entry, i) => ({
 		     phone width was cramping the two columns side-by-side; reverted
 		     from an earlier "always side-by-side, never stack" call once
 		     that turned out to look cramped on phones in practice. Side by
-		     side again from `sm` up. -->
-		<section class="flex min-h-dvh items-center bg-sand px-3 py-[clamp(2.5rem,6vmin,5rem)] sm:px-6 lg:px-8">
-			<div class="mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-[clamp(1.5rem,4vmin,4rem)] sm:grid-cols-2">
-				<div class="-ml-2 text-left sm:-ml-4 lg:-ml-6" data-reveal>
+		     side again from `sm` up.
+
+		     Below `sm` only: section padding is trimmed (the vmin-based
+		     py above left too much air above the text and below the photo
+		     once stacked) and the text block gets its own min-h-dvh +
+		     flex-centering so it sits centered in one phone screen, with
+		     the photo revealed by scrolling — restores the `sm:` layout's
+		     original left-aligned, un-centered spacing untouched. -->
+		<section class="flex min-h-dvh items-center bg-sand px-3 pt-[clamp(1rem,4vmin,2rem)] pb-[clamp(1rem,3vmin,2rem)] sm:px-6 sm:py-[clamp(2.5rem,6vmin,5rem)] lg:px-8">
+			<div class="mx-auto grid w-full max-w-7xl grid-cols-1 gap-[clamp(2.5rem,5vmin,4rem)] sm:grid-cols-2 sm:items-center">
+				<div
+					class="flex min-h-dvh flex-col items-center justify-center text-center sm:-ml-4 sm:min-h-0 sm:flex-none sm:items-start sm:text-left lg:-ml-6"
+					data-reveal
+				>
 					<h1 class="font-display font-normal text-primary text-[clamp(1.6rem,9.5vmin,5.5rem)] leading-[0.94] tracking-[-0.03em]">
 						The knowledge of your<br />
 						<em class="italic font-bold">best-informed</em> friend.
