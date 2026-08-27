@@ -1,0 +1,355 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import CategoryFilterBar from "../../components/in-the-know/CategoryFilterBar.astro";
+import WeeklyHighlights from "../../components/in-the-know/WeeklyHighlights.astro";
+import PostCard from "../../components/in-the-know/PostCard.astro";
+import { CATEGORY_KEYS } from "../../lib/itk-categories";
+import { fetchPublishedPosts } from "../../lib/itk-data";
+
+const allPosts = await fetchPublishedPosts();
+const isEmpty = allPosts.length === 0;
+const highlightPosts = allPosts.filter((p) => p.weekly_highlight);
+---
+
+<Layout
+	title="Vouch — In the know"
+	description="Lists, features, and events worth knowing about — curated from what our network actually loves."
+>
+	<main>
+		<section class="relative mx-auto max-w-7xl px-4 pb-8 pt-16 text-center sm:px-6 sm:pt-20 lg:px-8" data-reveal>
+			<div class="absolute right-4 top-16 flex items-center gap-4 sm:right-6 sm:top-20">
+				<div class="relative">
+					<button
+						type="button"
+						id="itk-location-toggle"
+						aria-label="Filter by city"
+						aria-expanded="false"
+						aria-controls="itk-location-input-wrap"
+						class="flex items-center gap-1.5 text-text/70 transition-colors hover:text-primary"
+					>
+						<svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<path d="M8 14.2S13 9.6 13 6.2A5 5 0 1 0 3 6.2C3 9.6 8 14.2 8 14.2Z"></path>
+							<circle cx="8" cy="6.2" r="1.7"></circle>
+						</svg>
+						<span id="itk-location-label" class="whitespace-nowrap font-dm-sans text-xs font-medium uppercase tracking-wide sm:text-sm">
+							Everywhere
+						</span>
+					</button>
+
+					<div id="itk-location-input-wrap" class="itk-inline-slot">
+						<input
+							type="text"
+							id="itk-city"
+							placeholder="Search cities"
+							autocomplete="off"
+							aria-label="Search for a city"
+							class="w-full border-b border-accent/30 bg-transparent px-1 py-1 text-sm text-text outline-none placeholder:text-accent/60"
+						/>
+					</div>
+
+					<div id="itk-location-dropdown" class="glass absolute right-0 top-full z-20 mt-2 hidden w-56 flex-col gap-0.5 p-2 text-left">
+						<button type="button" data-city-option="" class="rounded-[var(--radius-sm)] px-3 py-1.5 text-left text-sm text-text/80 transition-colors hover:bg-[color-mix(in_srgb,var(--color-text)_6%,transparent)]">
+							Everywhere
+						</button>
+						<div id="itk-city-options"></div>
+						<p id="itk-city-empty" class="hidden px-3 py-1.5 text-sm text-accent">More cities coming soon!</p>
+					</div>
+				</div>
+
+				<div class="relative">
+					<button
+						type="button"
+						id="itk-search-toggle"
+						aria-label="Search"
+						aria-expanded="false"
+						aria-controls="itk-search-input-wrap"
+						class="flex items-center text-text/70 transition-colors hover:text-primary"
+					>
+						<svg width="16" height="16" viewBox="0 0 17 17" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<circle cx="7.5" cy="7.5" r="5.5"></circle>
+							<path d="M11.5 11.5L15 15"></path>
+						</svg>
+					</button>
+					<div id="itk-search-input-wrap" class="itk-inline-slot">
+						<input
+							type="search"
+							id="itk-search"
+							placeholder="Search"
+							aria-label="Search In the know posts"
+							class="w-full border-b border-accent/30 bg-transparent px-1 py-1 text-sm text-text outline-none placeholder:text-accent/60"
+						/>
+					</div>
+				</div>
+			</div>
+
+			<h1 class="font-wordmark text-4xl text-primary sm:text-5xl">In the know</h1>
+
+			{
+				!isEmpty && (
+					<div class="mt-8">
+						<CategoryFilterBar categories={CATEGORY_KEYS} />
+					</div>
+				)
+			}
+		</section>
+
+		{
+			isEmpty ? (
+				<section class="mx-auto max-w-7xl px-4 pb-[var(--spacing-section)] sm:px-6 lg:px-8">
+					<div class="glass mx-auto max-w-md p-10 text-center">
+						<p class="eyebrow text-secondary">In the know</p>
+						<p class="mt-3 font-display text-2xl text-primary">Coming soon.</p>
+						<p class="mt-2 text-sm text-accent">
+							We're gathering the first places, lists, and events worth knowing about.
+						</p>
+					</div>
+				</section>
+			) : (
+				<section class="mx-auto max-w-7xl px-4 pb-[var(--spacing-section)] sm:px-6 lg:px-8">
+					<div class="mt-2">
+						<WeeklyHighlights
+							highlights={highlightPosts.map((p) => ({
+								slug: p.slug,
+								title: p.title,
+								cover: p.cover_url,
+								coverAlt: p.cover_alt,
+								category: p.category,
+								city: p.city,
+							}))}
+						/>
+					</div>
+
+					<div class="relative mt-8 grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4">
+						{allPosts.map((post) => (
+							<PostCard
+								slug={post.slug}
+								title={post.title}
+								date={new Date(post.date)}
+								category={post.category}
+								city={post.city}
+								cover={post.cover_url}
+								coverAlt={post.cover_alt}
+							/>
+						))}
+					</div>
+					<div id="itk-empty-state" class="glass mx-auto mt-8 hidden max-w-xs p-8 text-center">
+						<p class="font-display text-xl text-primary">Coming soon...</p>
+					</div>
+				</section>
+			)
+		}
+	</main>
+</Layout>
+
+<style>
+	.itk-inline-slot {
+		display: inline-block;
+		max-width: 0;
+		opacity: 0;
+		overflow: hidden;
+		vertical-align: middle;
+		white-space: nowrap;
+		transition:
+			max-width 0.25s ease,
+			opacity 0.2s ease;
+	}
+	.itk-inline-slot.is-open {
+		max-width: 11rem;
+		opacity: 1;
+	}
+</style>
+
+<script>
+	const KNOWN_CITIES = [
+		"New York",
+		"Los Angeles",
+		"Chicago",
+		"Boston",
+		"Austin",
+		"San Francisco",
+		"Seattle",
+		"Miami",
+		"Washington DC",
+		"Denver",
+		"Atlanta",
+		"Philadelphia",
+		"Nashville",
+		"Portland",
+		"San Diego",
+	];
+
+	function initInTheKnowFilters() {
+		const filterBar = document.getElementById("itk-filter-bar");
+		const cards = document.querySelectorAll<HTMLElement>("[data-post-card]");
+		const highlights = document.getElementById("itk-highlights");
+		const highlightItems = document.querySelectorAll<HTMLElement>("[data-highlight-item]");
+		const emptyState = document.getElementById("itk-empty-state");
+		const searchInput = document.getElementById("itk-search") as HTMLInputElement | null;
+		const cityInput = document.getElementById("itk-city") as HTMLInputElement | null;
+		const locationLabel = document.getElementById("itk-location-label");
+		if (!filterBar) return;
+
+		let activeCategory = "All";
+		let activeCity = "";
+
+		const applyFilters = () => {
+			const query = (searchInput?.value ?? "").trim().toLowerCase();
+			const cityQuery = activeCity.trim().toLowerCase();
+			let visibleCount = 0;
+
+			cards.forEach((card) => {
+				const matchesCategory = activeCategory === "All" || card.dataset.category === activeCategory;
+				const matchesQuery = !query || (card.dataset.title ?? "").includes(query);
+				const matchesCity = !cityQuery || (card.dataset.city ?? "").includes(cityQuery);
+				const show = matchesCategory && matchesQuery && matchesCity;
+				card.classList.toggle("hidden", !show);
+				if (show) visibleCount += 1;
+			});
+
+			// Weekly highlights: only ever shown on "All" — pick a specific
+			// category and the highlight row goes away in favor of the plain grid.
+			// A city filter narrows the row the same way it narrows the grid.
+			if (highlights) {
+				let highlightCount = 0;
+				highlightItems.forEach((item) => {
+					const matchesCity = !cityQuery || (item.dataset.city ?? "").includes(cityQuery);
+					const show = activeCategory === "All" && matchesCity;
+					item.classList.toggle("hidden", !show);
+					if (show) highlightCount += 1;
+				});
+				highlights.classList.toggle("hidden", highlightCount === 0);
+			}
+
+			emptyState?.classList.toggle("hidden", visibleCount !== 0);
+		};
+
+		filterBar.querySelectorAll<HTMLButtonElement>("[data-category]").forEach((btn) => {
+			btn.addEventListener("click", () => {
+				activeCategory = btn.dataset.category!;
+				filterBar.querySelectorAll<HTMLButtonElement>("[data-category]").forEach((el) => {
+					const isActive = el === btn;
+					el.setAttribute("aria-pressed", String(isActive));
+					el.classList.toggle("is-active", isActive);
+					el.classList.toggle("text-accent", !isActive);
+				});
+				applyFilters();
+			});
+		});
+
+		searchInput?.addEventListener("input", applyFilters);
+		applyFilters();
+
+		// Search icon — expands an inline field to its right; the row is
+		// right-anchored, so the icons visibly shift left as it opens.
+		const searchToggle = document.getElementById("itk-search-toggle");
+		const searchWrap = document.getElementById("itk-search-input-wrap");
+		function closeSearch() {
+			searchWrap?.classList.remove("is-open");
+			searchToggle?.setAttribute("aria-expanded", "false");
+		}
+		searchToggle?.addEventListener("click", () => {
+			const isOpen = searchWrap?.classList.contains("is-open");
+			closeLocation();
+			searchWrap?.classList.toggle("is-open", !isOpen);
+			searchToggle.setAttribute("aria-expanded", String(!isOpen));
+			if (!isOpen) searchInput?.focus();
+		});
+
+		// Location pin + persistent city label — same inline-expand mechanic,
+		// plus a dropdown of known cities (typing narrows it).
+		const locationToggle = document.getElementById("itk-location-toggle");
+		const locationWrap = document.getElementById("itk-location-input-wrap");
+		const dropdown = document.getElementById("itk-location-dropdown");
+		const optionsWrap = document.getElementById("itk-city-options") as HTMLElement;
+		const emptyCityMsg = document.getElementById("itk-city-empty");
+		let hasTriedGeolocation = false;
+
+		function renderCityOptions(query: string) {
+			const q = query.trim().toLowerCase();
+			const matches = q ? KNOWN_CITIES.filter((c) => c.toLowerCase().includes(q)) : KNOWN_CITIES;
+			optionsWrap.innerHTML = "";
+			matches.forEach((city) => {
+				const btn = document.createElement("button");
+				btn.type = "button";
+				btn.className =
+					"w-full rounded-[var(--radius-sm)] px-3 py-1.5 text-left text-sm text-text/80 transition-colors hover:bg-[color-mix(in_srgb,var(--color-text)_6%,transparent)]";
+				btn.textContent = city;
+				btn.addEventListener("click", () => selectCity(city));
+				optionsWrap.appendChild(btn);
+			});
+			emptyCityMsg?.classList.toggle("hidden", matches.length > 0);
+		}
+
+		function selectCity(city: string) {
+			activeCity = city;
+			if (locationLabel) locationLabel.textContent = city || "Everywhere";
+			if (cityInput) cityInput.value = city;
+			closeLocation();
+			applyFilters();
+		}
+
+		function closeLocation() {
+			locationWrap?.classList.remove("is-open");
+			locationToggle?.setAttribute("aria-expanded", "false");
+			dropdown?.classList.add("hidden");
+			dropdown?.classList.remove("flex");
+		}
+
+		dropdown?.querySelector('[data-city-option=""]')?.addEventListener("click", () => selectCity(""));
+
+		cityInput?.addEventListener("input", () => renderCityOptions(cityInput.value));
+
+		const tryPrefillCurrentCity = () => {
+			if (hasTriedGeolocation || activeCity || !navigator.geolocation) return;
+			hasTriedGeolocation = true;
+			navigator.geolocation.getCurrentPosition(
+				async (position) => {
+					try {
+						const { latitude, longitude } = position.coords;
+						const res = await fetch(
+							`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`,
+						);
+						const data = await res.json();
+						const detected =
+							data?.address?.city ?? data?.address?.town ?? data?.address?.village ?? data?.address?.suburb;
+						const known = KNOWN_CITIES.find((c) => c.toLowerCase() === String(detected).toLowerCase());
+						if (known && !activeCity) selectCity(known);
+					} catch {
+						// Silently leave it on "Everywhere" — the visitor can pick a city.
+					}
+				},
+				() => {
+					// Permission denied or unavailable — leave it on "Everywhere".
+				},
+				{ timeout: 5000 },
+			);
+		};
+
+		locationToggle?.addEventListener("click", () => {
+			const isOpen = locationWrap?.classList.contains("is-open");
+			closeSearch();
+			locationWrap?.classList.toggle("is-open", !isOpen);
+			locationToggle.setAttribute("aria-expanded", String(!isOpen));
+			if (!isOpen) {
+				renderCityOptions("");
+				dropdown?.classList.remove("hidden");
+				dropdown?.classList.add("flex");
+				cityInput?.focus();
+				tryPrefillCurrentCity();
+			} else {
+				closeLocation();
+			}
+		});
+
+		document.addEventListener("click", (event) => {
+			const target = event.target as Node;
+			const locationGroup = locationToggle?.closest(".relative");
+			if (locationGroup && !locationGroup.contains(target)) closeLocation();
+			const searchGroup = searchToggle?.closest(".relative");
+			if (searchGroup && !searchGroup.contains(target)) closeSearch();
+		});
+	}
+
+	initInTheKnowFilters();
+	document.addEventListener("astro:page-load", initInTheKnowFilters);
+</script>

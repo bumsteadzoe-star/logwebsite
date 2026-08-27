@@ -12,6 +12,9 @@
   src: url("/fonts/inter-latin-wght-normal.woff2") format("woff2-variations");
 }
 
+/* Wordmark AND display/heading serif — Playfair Display (2026-08-27, swapped
+   from Instrument Serif per explicit call). A true variable font (400-900),
+   so no weight-range workaround needed for font-medium/500 headings. */
 @font-face {
   font-family: "Playfair Display Variable";
   font-style: normal;
@@ -28,47 +31,79 @@
   src: url("/fonts/playfair-display-latin-wght-italic.woff2") format("woff2-variations");
 }
 
-/* Wordmark only — log_brand.pdf: "DM Serif Text is the wordmark only.
-   Never set UI or body text in it." Never use --font-wordmark elsewhere. */
+/* Instrument Sans (regular) — scoped narrowly to card/list titles and match
+   text (RecCard place name, gallery captions, "% match"), per explicit
+   2026-08-27 call. Does NOT replace --font-sans (Inter stays the site-wide
+   body/UI font) — this is a separate, deliberately limited role. */
 @font-face {
-  font-family: "DM Serif Text";
+  font-family: "Instrument Sans Variable";
   font-style: normal;
   font-display: swap;
-  font-weight: 400;
-  src: url("/fonts/dm-serif-text-latin-400-normal.woff2") format("woff2");
+  font-weight: 400 700;
+  src: url("/fonts/instrument-sans-latin-wght-normal.woff2") format("woff2-variations");
+}
+
+/* DM Sans — variable (400-700), covering two separate roles: Medium
+   uppercase for CTA button labels/category-tag chips (swapped from
+   JetBrains Mono, 2026-08-27), and Regular for the sub-text paragraphs
+   under each headline (swapped from Playfair Display serif, same day). */
+@font-face {
+  font-family: "DM Sans Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400 700;
+  src: url("/fonts/dm-sans-latin-wght-normal.woff2") format("woff2-variations");
 }
 
 @theme {
   /*
-    Color tokens — sourced from log_brand.pdf ("Brand system v1"). Names in
-    the brand book: Ink, Bone, Moss, Stone, plus support tints Sage/Sand/Mist.
-    Never hardcode these hexes elsewhere; use the Tailwind utilities
-    (bg-text, text-secondary, bg-sage, etc.) or the emitted --color-* vars.
+    Color tokens — Vouch brand system v2 (2026-08-26), replacing the prior
+    log_brand.pdf palette (Ink/Bone/Moss/Stone/Sage/Sand/Mist). Names below
+    are the new brand book's own: Ink, Deep Green, Slate, Fog, Paper, White
+    (neutral spine) plus Fresh-Cut, Vintage Green, Fairway Dawn, Claret
+    (brand colors). Never hardcode these hexes elsewhere; use the Tailwind
+    utilities (bg-primary, text-secondary, bg-sage, etc.) or the emitted
+    --color-* vars.
 
-    Deviations from the brand book, both explicit user calls:
-    - --color-bg is white (#FFFFFF), not Bone (#F5F3EC) — 2026-07-30, so the
-      page reads as an everyday utility rather than a warm brochure.
-    - --color-bone is kept as its own token (not the page background) for
-      "type on ink": brand rule is Ink surfaces get Bone-colored text, not
-      pure white.
-    --color-primary is not a brand-book term — it's kept equal to Ink so
-    existing component classes (bg-primary/text-primary) don't need
-    renaming; primary and text are intentionally the same value.
+    Role mapping, per the brand book's "where each colour goes" table:
+    - Fresh-Cut → primary button, nav, footer (--color-primary)
+    - Vintage Green → match %, category chips (--color-sage, kept as the
+      existing chip-token name so .chip doesn't need renaming)
+    - Fairway Dawn → editorial section grounds, AND type-on-dark (the
+      wordmark sits "Fairway Dawn on Fresh-Cut") — covers the old Bone role
+    - Deep Green → links, inline emphasis (--color-secondary)
+    - Claret @ 80% → one live/signal state per screen (--color-claret, new)
+    - Ink → type, mark (--color-text)
+    - Slate → 2° text, metadata (--color-accent)
+    - Fog → hairlines (--color-fog, new)
+    - Paper → app canvas / page background (--color-bg)
+    - White → cards, glass (--color-sand, kept as the existing flat-card
+      token name; distinct from Paper so cards lift off the page background)
+    Ink and Fresh-Cut are intentionally different values now (previously
+    --color-primary was pinned equal to --color-text) — the new brand book
+    treats body type and primary-action color as separate roles.
   */
-  --color-text: #172d06; /* Ink */
-  --color-primary: #172d06; /* Ink — same value as text, see note above */
-  --color-bg: #ffffff; /* override — brand default is Bone #F5F3EC */
-  --color-bone: #f5f3ec; /* Bone — used for "type on ink", not the page bg */
-  --color-secondary: #4a7226; /* Moss — the only link color per brand book */
-  --color-accent: #5a5f50; /* Stone — secondary text, metadata */
-  --color-sage: #c3d6ae; /* Sage — chips, tags */
-  --color-sand: #e8e4d6; /* Sand — cards, borders */
-  --color-mist: #e4ebda; /* Mist — recommended fills */
+  --color-text: #0c0d0e; /* Ink — type, mark */
+  --color-primary: #052f17; /* Fresh-Cut — primary button, nav, footer */
+  /* Paper (#F4F5F6) is the brand book's literal "app canvas" value, but
+     2026-08-26 explicit user call: page background should be pure white to
+     match the hero, not a slightly-grey off-white. Same value as White/
+     --color-sand now. */
+  --color-bg: #ffffff;
+  --color-bone: #faf7ea; /* Fairway Dawn — type-on-dark + editorial grounds */
+  --color-secondary: #3f4a33; /* Deep Green — links, inline emphasis */
+  --color-accent: #5f646a; /* Slate — 2° text, metadata */
+  --color-sage: #687656; /* Vintage Green — match %, category chips */
+  --color-sand: #ffffff; /* White — cards, glass */
+  --color-mist: #faf7ea; /* Fairway Dawn — recommended fills (editorial ground) */
+  --color-fog: #dfe1e3; /* Fog — hairlines */
+  --color-claret: #6b1520; /* Claret — one live/signal state per screen, used at 80% opacity */
 
-  /* Category-tag accents — NOT in log_brand.pdf. Added 2026-08-02 solely for
+  /* Category-tag accents — NOT in the brand book. Added 2026-08-02 solely for
      RecCard's `tagColor` prop (per-category tag color, e.g. "Activity" vs
-     "Cafe"), explicit user request. Keep scoped to .chip-blue/.chip-brown —
-     don't reach for these outside category tags. */
+     "Cafe"), explicit user request. Kept as a deliberate exception — the
+     brand book has no per-category palette. Keep scoped to .chip-blue/
+     .chip-brown — don't reach for these outside category tags. */
   --color-tag-blue: #5f7a99; /* Shopping */
   --color-tag-brown: #96694a; /* Cafe */
   --color-tag-purple: #6e5a87; /* Nightlife — added 2026-08-04 for the "Finds on Log" gallery's category tags, same rationale as above */
@@ -77,18 +112,29 @@
   --color-tag-olive: #6b7a45; /* Nature — deliberately not Sage/Moss, needs to read distinct from the default chip and from Log's own green */
   --color-tag-rose: #a66b7a; /* Beauty */
 
-  /* Type families. DM Serif Text is the wordmark ONLY — never use
-     --font-wordmark for headings, UI, or body copy. */
   --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  /* Display/heading + wordmark serif — Playfair Display (2026-08-27,
+     explicit swap from Instrument Serif). */
   --font-display: "Playfair Display Variable", ui-serif, Georgia, serif;
-  --font-wordmark: "DM Serif Text", ui-serif, Georgia, serif;
+  --font-wordmark: "Playfair Display Variable", ui-serif, Georgia, serif;
+  /* Kept (not part of the type-scale revert) — used only for the hero's
+     avatar-initial badges and RecCard's initial badge, a small unrelated
+     stylistic touch from the hero rebuild. */
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Menlo, Consolas, monospace;
+  /* Card/list titles + match text (RecCard place name, gallery captions,
+     "% match") — explicit 2026-08-27 call, regular weight. Separate from
+     --font-sans (Inter stays site-wide for body/UI). */
+  --font-instrument-sans: "Instrument Sans Variable", ui-sans-serif, system-ui, sans-serif;
+  /* CTA button labels + category-tag chips, uppercase — explicit 2026-08-27
+     call, medium (500) weight. Swapped from JetBrains Mono, same day.
+     Separate from --font-mono above. */
+  --font-dm-sans: "DM Sans Variable", ui-sans-serif, system-ui, sans-serif;
 
-  /* Radius scale — tightened 2026-07-30 to read editorial/utilitarian
-     (Offseason-adjacent) rather than bubbly-glass-app. Pills stay full-round. */
-  --radius-sm: 0.625rem;
-  --radius-md: 0.875rem;
+  /* Radius scale — brand book layout sheet: 8 16 20 22 999. */
+  --radius-sm: 0.5rem;
+  --radius-md: 1rem;
   --radius-lg: 1.25rem;
-  --radius-xl: 1.75rem;
+  --radius-xl: 1.375rem;
 
   /* Section rhythm */
   --spacing-section: clamp(4.5rem, 9vw, 8rem);
@@ -179,18 +225,27 @@
     border-radius: 999px;
   }
 
-  /* Dark-green-tinted glass CTA — the primary "Get Early Access" treatment.
-     Ink (brand book "dark green"), not Moss — reads as the one action to
-     take; white/Bone text keeps it legible on both light and dark sections. */
-  .glass-pill-green {
-    background: color-mix(in srgb, var(--color-primary) 92%, transparent);
+  /* Claret glass CTA — the primary "Get Early Access" treatment. Per the
+     brand book: Claret @ 80% is "one live/signal state per screen" — the
+     one action to take, deliberately the rarest color on the site (~5%),
+     distinct from Fresh-Cut's broader "actions, chrome" role (nav/footer/
+     wordmark text). White text for max contrast on the dark red fill. */
+  .glass-pill-claret {
+    background:
+      linear-gradient(
+        155deg,
+        color-mix(in srgb, var(--color-claret) 70%, white 12%) 0%,
+        color-mix(in srgb, var(--color-claret) 88%, transparent) 55%,
+        color-mix(in srgb, var(--color-claret) 96%, black 10%) 100%
+      );
     backdrop-filter: blur(16px) saturate(200%);
     -webkit-backdrop-filter: blur(16px) saturate(200%);
     box-shadow:
-      inset 1px 1px 0 0 color-mix(in srgb, white 22%, transparent),
-      0 10px 24px -10px color-mix(in srgb, var(--color-primary) 55%, transparent);
+      inset 1px 1px 0 0 color-mix(in srgb, white 35%, transparent),
+      inset 0 -1px 1px 0 color-mix(in srgb, black 15%, transparent),
+      0 10px 24px -10px color-mix(in srgb, var(--color-claret) 55%, transparent);
     border-radius: 999px;
-    color: var(--color-bone);
+    color: var(--color-sand);
   }
 
   /* The dark "stage" a glass card can float on when there's no photo
@@ -214,19 +269,55 @@
   }
 
   /* Flat paper surface for the "before / scattered" side of the
-     signature device — deliberately not glass, using Sand per brand book
-     ("cards, borders"), so the contrast with .glass reads. */
+     signature device — deliberately not glass, using White per brand book
+     ("cards, glass"), so it lifts off the Paper page background. */
   .surface-paper {
     background: var(--color-sand);
-    border: 1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-text) 8%, transparent);
     border-radius: var(--radius-md);
   }
 
-  /* Chip / tag treatment — Sage per brand book ("chips, tags"). */
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-secondary);
+  }
+
+  /* Chip / tag treatment — Vintage Green per brand book ("match %, category
+     chips"). Text flips to Fairway Dawn (light) for contrast against the
+     medium-dark green fill — Ink/Fresh-Cut text read poorly here. */
   .chip {
     background-color: var(--color-sage);
-    color: var(--color-primary);
+    color: var(--color-bone);
     border-radius: 999px;
+  }
+
+  /* Match-score badge — the other "one live state" surface (brand book
+     ratio chart: Claret is the rarest color, ~5%, reserved for exactly this
+     kind of live/dynamic signal). Was incorrectly sharing .chip (Vintage
+     Green, meant for category tags) with the category tag — split out so
+     the two read as visually distinct. */
+  .chip-claret {
+    background-color: var(--color-claret);
+    color: var(--color-sand);
+    border-radius: 999px;
+  }
+
+  /* Match-score badge — explicit color call: Vintage Green (#687656, same
+     value as --color-sage), as a translucent liquid-glass pill rather than
+     a solid fill. Supersedes .chip-claret for this specific badge. */
+  .chip-match {
+    background: color-mix(in srgb, var(--color-sage) 40%, transparent);
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    box-shadow:
+      inset 1px 1px 0 0 color-mix(in srgb, white 35%, transparent),
+      0 4px 12px -6px color-mix(in srgb, var(--color-sage) 45%, transparent);
+    border-radius: 999px;
+    color: var(--color-bone);
   }
 
   /* Category-tag color variants — see --color-tag-blue/-brown note above. */
@@ -272,17 +363,9 @@
     border-radius: 999px;
   }
 
+  /* Brand book layout sheet: "hairline: 1px ink @ 8%". */
   .hairline {
-    border-color: color-mix(in srgb, var(--color-accent) 30%, transparent);
-  }
-
-  .eyebrow {
-    font-family: var(--font-sans);
-    font-weight: 700;
-    font-size: 0.75rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--color-secondary);
+    border-color: color-mix(in srgb, var(--color-text) 8%, transparent);
   }
 
   /* Restrained full-bleed dark section fallback (used only where no photo

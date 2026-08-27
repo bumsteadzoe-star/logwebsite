@@ -1,0 +1,213 @@
+---
+import AdminLayout from "../../layouts/AdminLayout.astro";
+---
+
+<AdminLayout title="Dashboard">
+	<div class="flex items-center justify-between">
+		<h1 class="font-display text-2xl text-primary">Posts</h1>
+		<a
+			href="/admin/posts/editor"
+			class="glass-pill-claret px-4 py-2 text-xs font-dm-sans font-medium uppercase tracking-wide"
+		>
+			+ New post
+		</a>
+	</div>
+
+	<p id="itk-dash-loading" class="mt-8 text-sm text-accent">Loading posts…</p>
+	<p id="itk-dash-empty" class="mt-8 hidden text-sm text-accent">No posts yet — create your first one.</p>
+
+	<div id="itk-dash-list" class="mt-6 hidden flex-col gap-3"></div>
+
+	<template id="itk-dash-row-template">
+		<div class="hairline flex flex-col gap-3 rounded-[var(--radius-md)] border p-4 sm:flex-row sm:items-center sm:justify-between" data-row>
+			<div class="min-w-0 flex-1">
+				<p class="truncate font-instrument-sans text-base text-primary" data-title></p>
+				<p class="eyebrow mt-1 text-accent" data-meta></p>
+			</div>
+			<div class="flex flex-wrap items-center gap-4 sm:gap-5">
+				<label class="flex items-center gap-2 text-xs text-accent">
+					<input type="checkbox" class="itk-switch" data-field="published" />
+					Visible on site
+				</label>
+				<label class="flex items-center gap-2 text-xs text-accent">
+					<input type="checkbox" class="itk-switch" data-field="weekly_highlight" />
+					Weekly highlight
+				</label>
+				<label class="flex items-center gap-2 text-xs text-accent">
+					<input type="checkbox" class="itk-switch" data-field="pinned" />
+					Pinned
+				</label>
+				<div class="hidden items-center gap-1" data-pin-controls>
+					<button type="button" class="text-accent hover:text-primary" data-pin-up aria-label="Move pin up">↑</button>
+					<button type="button" class="text-accent hover:text-primary" data-pin-down aria-label="Move pin down">↓</button>
+				</div>
+				<a href="#" class="text-xs text-secondary hover:underline" data-edit-link>Edit</a>
+				<button type="button" class="text-xs text-claret hover:underline" data-delete-btn>Delete</button>
+			</div>
+		</div>
+	</template>
+</AdminLayout>
+
+<script>
+	import { supabase, requireSession } from "../../lib/admin/client";
+	import { CATEGORY_LABELS, type CategoryKey } from "../../lib/itk-categories";
+
+	interface Row {
+		id: string;
+		title: string;
+		category: CategoryKey;
+		city: string;
+		date: string;
+		published: boolean;
+		weekly_highlight: boolean;
+		pinned: boolean;
+		pin_rank: number | null;
+	}
+
+	async function initDashboard() {
+		const session = await requireSession();
+		if (!session) return;
+
+		const listEl = document.getElementById("itk-dash-list") as HTMLElement;
+		const loadingEl = document.getElementById("itk-dash-loading");
+		const emptyEl = document.getElementById("itk-dash-empty");
+		const template = document.getElementById("itk-dash-row-template") as HTMLTemplateElement;
+
+		async function loadRows(): Promise<Row[]> {
+			const { data, error } = await supabase
+				.from("itk_posts")
+				.select("id, title, category, city, date, published, weekly_highlight, pinned, pin_rank")
+				.order("pinned", { ascending: false })
+				.order("pin_rank", { ascending: true })
+				.order("date", { ascending: false });
+			if (error) {
+				console.error(error);
+				return [];
+			}
+			return data as Row[];
+		}
+
+		function renderRows(rows: Row[]) {
+			listEl.innerHTML = "";
+			for (const row of rows) {
+				const node = template.content.cloneNode(true) as DocumentFragment;
+				const rowEl = node.querySelector("[data-row]") as HTMLElement;
+				rowEl.dataset.id = row.id;
+
+				const titleEl = node.querySelector("[data-title]") as HTMLElement;
+				titleEl.textContent = row.title || "(untitled)";
+
+				const metaEl = node.querySelector("[data-meta]") as HTMLElement;
+				const label = CATEGORY_LABELS[row.category] ?? row.category;
+				const formattedDate = new Date(row.date).toLocaleDateString("en-US", {
+					month: "short",
+					day: "numeric",
+					year: "numeric",
+				});
+				metaEl.textContent = `${label} · ${row.city} · ${formattedDate}`;
+
+				const publishedInput = node.querySelector('[data-field="published"]') as HTMLInputElement;
+				publishedInput.checked = row.published;
+				const highlightInput = node.querySelector('[data-field="weekly_highlight"]') as HTMLInputElement;
+				highlightInput.checked = row.weekly_highlight;
+				const pinnedInput = node.querySelector('[data-field="pinned"]') as HTMLInputElement;
+				pinnedInput.checked = row.pinned;
+
+				const pinControls = node.querySelector("[data-pin-controls]") as HTMLElement;
+				pinControls.classList.toggle("hidden", !row.pinned);
+				pinControls.classList.toggle("flex", row.pinned);
+
+				const editLink = node.querySelector("[data-edit-link]") as HTMLAnchorElement;
+				editLink.href = `/admin/posts/editor?id=${row.id}`;
+
+				async function toggleField(field: "published" | "weekly_highlight" | "pinned", value: boolean) {
+					const updates: Record<string, unknown> = { [field]: value };
+					if (field === "pinned" && value) {
+						// Append to the end of the pinned order.
+						const { data: pinnedRows } = await supabase
+							.from("itk_posts")
+							.select("pin_rank")
+							.eq("pinned", true)
+							.order("pin_rank", { ascending: false })
+							.limit(1);
+						const maxRank = pinnedRows?.[0]?.pin_rank ?? 0;
+						updates.pin_rank = maxRank + 1;
+					}
+					if (field === "pinned" && !value) {
+						updates.pin_rank = null;
+					}
+					const { error } = await supabase.from("itk_posts").update(updates).eq("id", row.id);
+					if (error) {
+						console.error(error);
+						alert(`Couldn't save that change: ${error.message}`);
+						return false;
+					}
+					return true;
+				}
+
+				publishedInput.addEventListener("change", () => toggleField("published", publishedInput.checked));
+				highlightInput.addEventListener("change", () =>
+					toggleField("weekly_highlight", highlightInput.checked),
+				);
+				pinnedInput.addEventListener("change", async () => {
+					const ok = await toggleField("pinned", pinnedInput.checked);
+					if (ok) refresh();
+				});
+
+				const deleteBtn = node.querySelector("[data-delete-btn]") as HTMLButtonElement;
+				deleteBtn.addEventListener("click", async () => {
+					if (!confirm(`Delete "${row.title || "this post"}"? This can't be undone.`)) return;
+					const { error } = await supabase.from("itk_posts").delete().eq("id", row.id);
+					if (error) {
+						alert(`Couldn't delete: ${error.message}`);
+						return;
+					}
+					refresh();
+				});
+
+				listEl.appendChild(node);
+			}
+		}
+
+		async function movePin(rowId: string, direction: "up" | "down") {
+			const rows = await loadRows();
+			const pinned = rows.filter((r) => r.pinned).sort((a, b) => (a.pin_rank ?? 0) - (b.pin_rank ?? 0));
+			const index = pinned.findIndex((r) => r.id === rowId);
+			const swapWith = direction === "up" ? index - 1 : index + 1;
+			if (index === -1 || swapWith < 0 || swapWith >= pinned.length) return;
+
+			const a = pinned[index];
+			const b = pinned[swapWith];
+			await supabase.from("itk_posts").update({ pin_rank: b.pin_rank }).eq("id", a.id);
+			await supabase.from("itk_posts").update({ pin_rank: a.pin_rank }).eq("id", b.id);
+			refresh();
+		}
+
+		listEl.addEventListener("click", (event) => {
+			const target = event.target as HTMLElement;
+			const rowEl = target.closest("[data-row]") as HTMLElement | null;
+			if (!rowEl) return;
+			const rowId = rowEl.dataset.id!;
+			if (target.closest("[data-pin-up]")) movePin(rowId, "up");
+			if (target.closest("[data-pin-down]")) movePin(rowId, "down");
+		});
+
+		async function refresh() {
+			const rows = await loadRows();
+			loadingEl?.classList.add("hidden");
+			if (rows.length === 0) {
+				emptyEl?.classList.remove("hidden");
+				listEl.classList.add("hidden");
+				return;
+			}
+			emptyEl?.classList.add("hidden");
+			listEl.classList.remove("hidden");
+			listEl.classList.add("flex");
+			renderRows(rows);
+		}
+
+		refresh();
+	}
+
+	initDashboard();
+</script>

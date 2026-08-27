@@ -1,0 +1,57 @@
+---
+import { CATEGORY_LABELS, type CategoryKey } from "../../lib/itk-categories";
+
+interface Props {
+	categories: readonly CategoryKey[];
+}
+
+const { categories } = Astro.props;
+---
+
+<nav
+	id="itk-filter-bar"
+	class="flex flex-wrap items-center justify-center gap-x-5 gap-y-2"
+	aria-label="Filter by category"
+>
+	<button
+		type="button"
+		class="itk-cat is-active font-dm-sans text-xs font-medium uppercase tracking-wide transition-colors"
+		data-category="All"
+		aria-pressed="true"
+	>
+		All
+	</button>
+	{
+		categories.map((c) => (
+			<button
+				type="button"
+				class="itk-cat font-dm-sans text-xs font-medium uppercase tracking-wide text-accent transition-colors"
+				data-category={c}
+				aria-pressed="false"
+			>
+				{CATEGORY_LABELS[c]}
+			</button>
+		))
+	}
+</nav>
+
+<style>
+	.itk-cat {
+		position: relative;
+		padding-bottom: 2px;
+	}
+
+	.itk-cat.is-active {
+		color: var(--color-primary);
+	}
+
+	.itk-cat.is-active::after {
+		content: "";
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: -2px;
+		height: 1px;
+		background: var(--color-claret);
+	}
+</style>

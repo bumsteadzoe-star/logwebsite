@@ -1,0 +1,19 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import PostDetailView from "../../components/in-the-know/PostDetailView.astro";
+import { fetchPublishedPosts } from "../../lib/itk-data";
+
+export async function getStaticPaths() {
+	const posts = await fetchPublishedPosts();
+	return posts.map((post) => ({
+		params: { slug: post.slug },
+		props: { post },
+	}));
+}
+
+const { post } = Astro.props;
+---
+
+<Layout title={`Vouch — ${post.title}`} description={post.excerpt}>
+	<PostDetailView post={post} />
+</Layout>

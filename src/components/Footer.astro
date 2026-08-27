@@ -1,4 +1,6 @@
 ---
+import QuoteMark from "./QuoteMark.astro";
+
 const links = [
 	{ href: "/", label: "Home" },
 	{ href: "/privacy", label: "Privacy" },
@@ -28,8 +30,11 @@ const socialLinks = [
 <footer class="border-t hairline px-4 py-12 sm:px-6 lg:px-8">
 	<div class="mx-auto flex max-w-7xl flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
 		<div class="max-w-xs">
-			<p class="font-wordmark text-2xl leading-none text-primary">Vouch</p>
-			<p class="mt-2 text-sm text-accent">Built by people who love finding new places.</p>
+			<p class="inline-flex items-center gap-1.5 font-wordmark text-2xl leading-none text-primary">
+				<QuoteMark class="h-[0.6em] w-auto" />
+				Vouch
+			</p>
+			<p class="mt-2 text-sm text-accent">Your friends know best.</p>
 			<div class="mt-4 flex items-center gap-4">
 				{
 					socialLinks.map((social) => (

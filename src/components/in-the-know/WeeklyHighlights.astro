@@ -1,0 +1,52 @@
+---
+interface Highlight {
+	slug: string;
+	title: string;
+	cover: string;
+	coverAlt: string;
+	category: string;
+	city: string;
+}
+
+interface Props {
+	highlights: Highlight[];
+}
+
+const { highlights } = Astro.props;
+---
+
+<div id="itk-highlights" class="hidden" data-highlights-row>
+	<p class="eyebrow">
+		<span class="mr-1.5 inline-block h-1.5 w-1.5 rounded-full bg-claret align-middle" aria-hidden="true"></span>
+		Weekly highlights
+	</p>
+	<div class="itk-hscroll mt-5 flex justify-center gap-8 overflow-x-auto pb-2 sm:gap-10">
+		{
+			highlights.map((h) => (
+				<a
+					href={`/in-the-know/${h.slug}`}
+					class="flex shrink-0 flex-col items-center gap-3"
+					data-highlight-item
+					data-category={h.category}
+					data-city={h.city.toLowerCase()}
+				>
+					<span class="block h-32 w-32 shrink-0 overflow-hidden rounded-full sm:h-44 sm:w-44 lg:h-52 lg:w-52">
+						<img src={h.cover} alt={h.coverAlt} class="h-full w-full object-cover" loading="lazy" />
+					</span>
+					<span class="max-w-[8.5rem] text-center text-sm leading-snug font-instrument-sans text-text/80 sm:max-w-[10rem] sm:text-base">
+						{h.title}
+					</span>
+				</a>
+			))
+		}
+	</div>
+</div>
+
+<style>
+	.itk-hscroll {
+		scrollbar-width: none;
+	}
+	.itk-hscroll::-webkit-scrollbar {
+		display: none;
+	}
+</style>

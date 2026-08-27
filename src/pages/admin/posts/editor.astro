@@ -1,0 +1,782 @@
+---
+import AdminLayout from "../../../layouts/AdminLayout.astro";
+import { CATEGORY_KEYS, CATEGORY_LABELS } from "../../../lib/itk-categories";
+---
+
+<AdminLayout title="Edit post">
+	<a href="/admin" class="text-sm text-secondary hover:underline">← Back to posts</a>
+
+	<div id="itk-create-gate" class="hairline mt-6 max-w-xl rounded-[var(--radius-md)] border p-6">
+		<p class="font-display text-xl text-primary">New post</p>
+		<p class="mt-1 text-sm text-accent">Give it a title to start — you can fill in everything else after.</p>
+		<input
+			id="itk-new-title"
+			type="text"
+			placeholder="Post title"
+			class="glass-pill mt-4 w-full px-4 py-2.5 text-sm text-text outline-none"
+		/>
+		<button
+			id="itk-create-btn"
+			type="button"
+			class="glass-pill-claret mt-4 px-4 py-2.5 text-xs font-dm-sans font-medium uppercase tracking-wide"
+		>
+			Create draft
+		</button>
+	</div>
+
+	<div id="itk-editor" class="mt-6 hidden flex-col gap-8">
+		<div class="flex items-center justify-between">
+			<h1 class="font-display text-2xl text-primary">Edit post</h1>
+			<span id="itk-save-status" class="text-xs text-accent">Saved</span>
+		</div>
+
+		<div class="hairline flex gap-1 border-b">
+			<button type="button" id="itk-tab-edit" class="itk-tab is-active" aria-pressed="true">Edit</button>
+			<button type="button" id="itk-tab-preview" class="itk-tab" aria-pressed="false">Preview</button>
+		</div>
+		<p class="-mt-4 text-xs text-accent">
+			Preview reflects what's currently in the fields below, including anything not yet saved. This is a close
+			match to the live post template, not a pixel-identical render.
+		</p>
+
+		<div id="itk-preview-pane" class="hidden">
+			<div class="hairline overflow-hidden rounded-[var(--radius-lg)] border">
+				<div id="itk-preview-root"></div>
+			</div>
+		</div>
+
+		<div id="itk-edit-pane" class="flex flex-col gap-8">
+		<section class="hairline flex flex-col gap-4 rounded-[var(--radius-md)] border p-5">
+			<label class="flex flex-col gap-1.5 text-sm">
+				<span class="text-accent">Title</span>
+				<input type="text" data-field="title" class="glass-pill w-full px-4 py-2.5 text-sm text-text outline-none" />
+			</label>
+
+			<label class="flex flex-col gap-1.5 text-sm">
+				<span class="text-accent">Slug (used in the URL)</span>
+				<input type="text" data-field="slug" class="glass-pill w-full px-4 py-2.5 text-sm text-text outline-none" />
+			</label>
+
+			<label class="flex flex-col gap-1.5 text-sm">
+				<span class="text-accent">Excerpt</span>
+				<textarea data-field="excerpt" rows="2" class="glass-pill w-full px-4 py-2.5 text-sm text-text outline-none"></textarea>
+			</label>
+
+			<div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+				<label class="flex flex-col gap-1.5 text-sm">
+					<span class="text-accent">Category</span>
+					<select data-field="category" class="glass-pill w-full px-4 py-2.5 text-sm text-text outline-none">
+						{CATEGORY_KEYS.map((key) => <option value={key}>{CATEGORY_LABELS[key]}</option>)}
+					</select>
+				</label>
+				<label class="flex flex-col gap-1.5 text-sm">
+					<span class="text-accent">City</span>
+					<input type="text" data-field="city" class="glass-pill w-full px-4 py-2.5 text-sm text-text outline-none" />
+				</label>
+				<label class="flex flex-col gap-1.5 text-sm">
+					<span class="text-accent">Date</span>
+					<input type="date" data-field="date" class="glass-pill w-full px-4 py-2.5 text-sm text-text outline-none" />
+				</label>
+			</div>
+
+			<div class="flex flex-col gap-1.5 text-sm">
+				<span class="text-accent">Cover photo</span>
+				<img id="itk-cover-preview" class="hidden h-40 w-full max-w-sm rounded-[var(--radius-md)] object-cover" alt="" />
+				<input id="itk-cover-input" type="file" accept="image/*" class="text-sm text-accent" />
+			</div>
+			<label class="flex flex-col gap-1.5 text-sm">
+				<span class="text-accent">Cover alt text</span>
+				<input type="text" data-field="cover_alt" class="glass-pill w-full px-4 py-2.5 text-sm text-text outline-none" />
+			</label>
+
+			<label class="flex flex-col gap-1.5 text-sm">
+				<span class="text-accent">Body text (blank line = new paragraph)</span>
+				<textarea data-field="body_text" rows="8" class="glass-pill w-full px-4 py-2.5 text-sm text-text outline-none"></textarea>
+			</label>
+		</section>
+
+		<section>
+			<div class="flex items-center justify-between">
+				<h2 class="font-display text-xl text-primary">Places</h2>
+				<button
+					id="itk-add-place"
+					type="button"
+					class="glass-pill px-4 py-2 text-xs font-dm-sans font-medium uppercase tracking-wide"
+				>
+					+ Add a place
+				</button>
+			</div>
+			<p class="mt-1 text-xs text-accent">
+				Leave empty for a simple write-up, add one for a single deep-dive, or several for a numbered list.
+			</p>
+			<div id="itk-places-list" class="mt-4 flex flex-col gap-4"></div>
+		</section>
+		</div>
+	</div>
+
+	<template id="itk-place-template">
+		<div class="hairline flex flex-col gap-3 rounded-[var(--radius-md)] border p-5" data-place>
+			<div class="flex items-center justify-between">
+				<span class="eyebrow text-accent" data-place-label></span>
+				<div class="flex items-center gap-3 text-xs">
+					<button type="button" class="text-accent hover:text-primary" data-move-up>↑</button>
+					<button type="button" class="text-accent hover:text-primary" data-move-down>↓</button>
+					<button type="button" class="text-claret hover:underline" data-remove-place>Remove</button>
+				</div>
+			</div>
+			<input type="text" placeholder="Name" data-field="name" class="glass-pill w-full px-4 py-2.5 text-sm text-text outline-none" />
+			<textarea placeholder="Description" rows="2" data-field="description" class="glass-pill w-full px-4 py-2.5 text-sm text-text outline-none"></textarea>
+			<div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+				<div class="flex flex-col gap-1">
+					<input type="text" placeholder="Address" data-field="address" class="glass-pill w-full px-4 py-2.5 text-sm text-text outline-none" />
+					<a href="#" target="_blank" rel="noopener noreferrer" class="hidden text-xs text-secondary hover:underline" data-maps-preview>Preview on Google Maps ↗</a>
+				</div>
+				<input type="text" placeholder="Phone" data-field="phone" class="glass-pill w-full px-4 py-2.5 text-sm text-text outline-none" />
+				<input type="text" placeholder="Website URL" data-field="website_url" class="glass-pill w-full px-4 py-2.5 text-sm text-text outline-none" />
+				<input type="text" placeholder="Tags, comma separated" data-field="tags" class="glass-pill w-full px-4 py-2.5 text-sm text-text outline-none" />
+				<input type="text" placeholder="Booking label (e.g. Book a table)" data-field="booking_label" class="glass-pill w-full px-4 py-2.5 text-sm text-text outline-none" />
+				<input type="text" placeholder="Booking URL" data-field="booking_url" class="glass-pill w-full px-4 py-2.5 text-sm text-text outline-none" />
+			</div>
+			<div class="flex flex-col gap-2">
+				<span class="text-xs text-accent">Photos</span>
+				<div class="flex flex-wrap gap-2" data-photos></div>
+				<input type="file" accept="image/*" multiple data-add-photo class="text-sm text-accent" />
+			</div>
+		</div>
+	</template>
+
+	<template id="itk-photo-template">
+		<div class="relative h-20 w-20" data-photo>
+			<img class="h-full w-full rounded-[var(--radius-sm)] object-cover" alt="" />
+			<span class="absolute bottom-0.5 left-0.5 hidden rounded-full bg-primary/80 px-1.5 py-0.5 text-[8px] font-dm-sans font-medium uppercase tracking-wide text-sand" data-featured-badge>
+				Featured
+			</span>
+			<div class="absolute -top-1.5 right-1.5 flex gap-1">
+				<button
+					type="button"
+					class="flex h-5 w-5 items-center justify-center rounded-full bg-bg text-[10px] text-primary shadow"
+					data-move-photo-left
+					aria-label="Move photo earlier"
+				>
+					‹
+				</button>
+				<button
+					type="button"
+					class="flex h-5 w-5 items-center justify-center rounded-full bg-bg text-[10px] text-primary shadow"
+					data-move-photo-right
+					aria-label="Move photo later"
+				>
+					›
+				</button>
+			</div>
+			<button
+				type="button"
+				class="absolute -right-1.5 -bottom-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-claret text-[10px] text-sand"
+				data-remove-photo
+				aria-label="Remove photo"
+			>
+				✕
+			</button>
+		</div>
+	</template>
+</AdminLayout>
+
+<script>
+	import { supabase, requireSession, mapsUrlFor } from "../../../lib/admin/client";
+	import { CATEGORY_LABELS, CHIP_BY_CATEGORY, type CategoryKey } from "../../../lib/itk-categories";
+
+	type PlaceRow = {
+		id: string;
+		position: number;
+		name: string;
+		description: string | null;
+		address: string | null;
+		phone: string | null;
+		website_url: string | null;
+		booking_label: string | null;
+		booking_url: string | null;
+		tags: string[];
+		itk_photos: { id: string; url: string; alt_text: string; position: number; storage_path: string }[];
+	};
+
+	function debounce<T extends (...args: never[]) => void>(fn: T, ms: number) {
+		let timer: ReturnType<typeof setTimeout>;
+		return (...args: Parameters<T>) => {
+			clearTimeout(timer);
+			timer = setTimeout(() => fn(...args), ms);
+		};
+	}
+
+	async function initEditor() {
+		const session = await requireSession();
+		if (!session) return;
+
+		const params = new URLSearchParams(window.location.search);
+		let postId = params.get("id");
+
+		const createGate = document.getElementById("itk-create-gate") as HTMLElement;
+		const editorEl = document.getElementById("itk-editor") as HTMLElement;
+		const saveStatus = document.getElementById("itk-save-status") as HTMLElement;
+		const fields = document.querySelectorAll<HTMLElement>("[data-field]");
+		const fieldsMap = new Map<string, HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>();
+		fields.forEach((el) => {
+			if (!el.closest("[data-place]")) {
+				fieldsMap.set(el.dataset.field!, el as HTMLInputElement);
+			}
+		});
+
+		function setStatus(text: string) {
+			saveStatus.textContent = text;
+		}
+
+		const savePost = debounce(async () => {
+			if (!postId) return;
+			setStatus("Saving…");
+			const updates = {
+				title: (fieldsMap.get("title") as HTMLInputElement).value,
+				slug: (fieldsMap.get("slug") as HTMLInputElement).value,
+				excerpt: (fieldsMap.get("excerpt") as HTMLTextAreaElement).value,
+				category: (fieldsMap.get("category") as HTMLSelectElement).value,
+				city: (fieldsMap.get("city") as HTMLInputElement).value,
+				date: (fieldsMap.get("date") as HTMLInputElement).value,
+				cover_alt: (fieldsMap.get("cover_alt") as HTMLInputElement).value,
+				body_text: (fieldsMap.get("body_text") as HTMLTextAreaElement).value,
+			};
+			const { error } = await supabase.from("itk_posts").update(updates).eq("id", postId);
+			setStatus(error ? `Couldn't save: ${error.message}` : "Saved");
+		}, 800);
+
+		fieldsMap.forEach((el) => {
+			el.addEventListener("input", savePost);
+			el.addEventListener("change", savePost);
+		});
+
+		// Cover upload
+		const coverInput = document.getElementById("itk-cover-input") as HTMLInputElement;
+		const coverPreview = document.getElementById("itk-cover-preview") as HTMLImageElement;
+		coverInput.addEventListener("change", async () => {
+			const file = coverInput.files?.[0];
+			if (!file || !postId) return;
+			setStatus("Uploading cover…");
+			const ext = file.name.split(".").pop() || "jpg";
+			const path = `covers/${postId}.${ext}`;
+			const { error: uploadError } = await supabase.storage
+				.from("itk-photos")
+				.upload(path, file, { upsert: true });
+			if (uploadError) {
+				setStatus(`Cover upload failed: ${uploadError.message}`);
+				return;
+			}
+			const { data: publicUrlData } = supabase.storage.from("itk-photos").getPublicUrl(path);
+			const coverUrl = `${publicUrlData.publicUrl}?t=${Date.now()}`;
+			await supabase.from("itk_posts").update({ cover_url: publicUrlData.publicUrl }).eq("id", postId);
+			coverPreview.src = coverUrl;
+			coverPreview.classList.remove("hidden");
+			setStatus("Saved");
+		});
+
+		// --- Places ---
+		const placesList = document.getElementById("itk-places-list") as HTMLElement;
+		const placeTemplate = document.getElementById("itk-place-template") as HTMLTemplateElement;
+		const photoTemplate = document.getElementById("itk-photo-template") as HTMLTemplateElement;
+
+		// Labels ("Place" vs "Place 1"/"Place 2"...) are recomputed from
+		// whatever is currently in the DOM, never from a fresh fetch — so
+		// adding/removing/reordering never touches unrelated blocks and can't
+		// stomp text someone is mid-typing in them.
+		function renumberPlaceLabels() {
+			const blocks = Array.from(placesList.querySelectorAll("[data-place]"));
+			blocks.forEach((el, i) => {
+				const label = el.querySelector("[data-place-label]");
+				if (label) label.textContent = blocks.length > 1 ? `Place ${i + 1}` : "Place";
+			});
+		}
+
+		function renderPlace(place: PlaceRow) {
+			const node = placeTemplate.content.cloneNode(true) as DocumentFragment;
+			const placeEl = node.querySelector("[data-place]") as HTMLElement;
+			placeEl.dataset.id = place.id;
+
+			const setVal = (field: string, value: string) => {
+				(node.querySelector(`[data-field="${field}"]`) as HTMLInputElement).value = value ?? "";
+			};
+			setVal("name", place.name);
+			setVal("description", place.description ?? "");
+			setVal("address", place.address ?? "");
+			setVal("phone", place.phone ?? "");
+			setVal("website_url", place.website_url ?? "");
+			setVal("booking_label", place.booking_label ?? "");
+			setVal("booking_url", place.booking_url ?? "");
+			setVal("tags", (place.tags ?? []).join(", "));
+
+			const mapsPreview = node.querySelector("[data-maps-preview]") as HTMLAnchorElement;
+			function updateMapsPreview(address: string) {
+				if (address) {
+					mapsPreview.href = mapsUrlFor(address);
+					mapsPreview.classList.remove("hidden");
+				} else {
+					mapsPreview.classList.add("hidden");
+				}
+			}
+			updateMapsPreview(place.address ?? "");
+
+			const savePlace = debounce(async () => {
+				const get = (field: string) => (placeEl.querySelector(`[data-field="${field}"]`) as HTMLInputElement).value;
+				const tagsRaw = get("tags");
+				const updates = {
+					name: get("name"),
+					description: get("description") || null,
+					address: get("address") || null,
+					phone: get("phone") || null,
+					website_url: get("website_url") || null,
+					booking_label: get("booking_label") || null,
+					booking_url: get("booking_url") || null,
+					tags: tagsRaw
+						? tagsRaw.split(",").map((t) => t.trim()).filter(Boolean)
+						: [],
+				};
+				updateMapsPreview(updates.address ?? "");
+				setStatus("Saving…");
+				const { error } = await supabase.from("itk_places").update(updates).eq("id", place.id);
+				setStatus(error ? `Couldn't save: ${error.message}` : "Saved");
+			}, 800);
+
+			node.querySelectorAll("[data-field]").forEach((el) => {
+				el.addEventListener("input", savePlace);
+			});
+
+			node.querySelector("[data-remove-place]")?.addEventListener("click", async () => {
+				if (!confirm("Remove this place? Its photos will be removed too.")) return;
+				await supabase.from("itk_places").delete().eq("id", place.id);
+				placeEl.remove();
+				renumberPlaceLabels();
+			});
+			node.querySelector("[data-move-up]")?.addEventListener("click", () => movePlace(placeEl, "up"));
+			node.querySelector("[data-move-down]")?.addEventListener("click", () => movePlace(placeEl, "down"));
+
+			const photosWrap = node.querySelector("[data-photos]") as HTMLElement;
+			renderPhotosForPlace(photosWrap, place.id, place.itk_photos);
+
+			const addPhotoInput = node.querySelector("[data-add-photo]") as HTMLInputElement;
+			addPhotoInput.addEventListener("change", async () => {
+				const files = Array.from(addPhotoInput.files ?? []);
+				for (const file of files) {
+					await uploadPhoto(place.id, file);
+				}
+				addPhotoInput.value = "";
+				const fresh = await fetchPhotosForPlace(place.id);
+				renderPhotosForPlace(photosWrap, place.id, fresh);
+			});
+
+			placesList.appendChild(node);
+		}
+
+		type PhotoRow = { id: string; url: string; alt_text: string; storage_path: string; position: number };
+
+		async function fetchPhotosForPlace(placeId: string): Promise<PhotoRow[]> {
+			const { data, error } = await supabase
+				.from("itk_photos")
+				.select("*")
+				.eq("place_id", placeId)
+				.order("position", { ascending: true });
+			if (error) {
+				console.error(error);
+				return [];
+			}
+			return data as PhotoRow[];
+		}
+
+		// The first photo (lowest position) is the one the public detail page
+		// features prominently, so the whole strip re-renders on every change
+		// to keep the "Featured" badge and left/right controls accurate.
+		function renderPhotosForPlace(wrap: HTMLElement, placeId: string, photos: PhotoRow[]) {
+			wrap.innerHTML = "";
+			photos.forEach((photo, index) => {
+				const node = photoTemplate.content.cloneNode(true) as DocumentFragment;
+				const photoEl = node.querySelector("[data-photo]") as HTMLElement;
+				photoEl.dataset.id = photo.id;
+				const img = node.querySelector("img") as HTMLImageElement;
+				img.src = photo.url;
+				img.alt = photo.alt_text || "";
+
+				if (index === 0) {
+					(node.querySelector("[data-featured-badge]") as HTMLElement).classList.remove("hidden");
+				}
+				const leftBtn = node.querySelector("[data-move-photo-left]") as HTMLButtonElement;
+				const rightBtn = node.querySelector("[data-move-photo-right]") as HTMLButtonElement;
+				leftBtn.disabled = index === 0;
+				leftBtn.classList.toggle("opacity-30", index === 0);
+				rightBtn.disabled = index === photos.length - 1;
+				rightBtn.classList.toggle("opacity-30", index === photos.length - 1);
+
+				leftBtn.addEventListener("click", () => movePhoto(wrap, placeId, index, "left"));
+				rightBtn.addEventListener("click", () => movePhoto(wrap, placeId, index, "right"));
+
+				node.querySelector("[data-remove-photo]")?.addEventListener("click", async () => {
+					await supabase.storage.from("itk-photos").remove([photo.storage_path]);
+					await supabase.from("itk_photos").delete().eq("id", photo.id);
+					const fresh = await fetchPhotosForPlace(placeId);
+					renderPhotosForPlace(wrap, placeId, fresh);
+				});
+				wrap.appendChild(node);
+			});
+		}
+
+		async function movePhoto(wrap: HTMLElement, placeId: string, index: number, direction: "left" | "right") {
+			const photos = await fetchPhotosForPlace(placeId);
+			const swapWith = direction === "left" ? index - 1 : index + 1;
+			if (swapWith < 0 || swapWith >= photos.length) return;
+			const a = photos[index];
+			const b = photos[swapWith];
+			await supabase.from("itk_photos").update({ position: b.position }).eq("id", a.id);
+			await supabase.from("itk_photos").update({ position: a.position }).eq("id", b.id);
+			const fresh = await fetchPhotosForPlace(placeId);
+			renderPhotosForPlace(wrap, placeId, fresh);
+		}
+
+		async function uploadPhoto(placeId: string, file: File) {
+			const existing = await fetchPhotosForPlace(placeId);
+			const nextPosition = existing.length;
+			const ext = file.name.split(".").pop() || "jpg";
+			const path = `places/${placeId}/${crypto.randomUUID()}.${ext}`;
+			const { error: uploadError } = await supabase.storage.from("itk-photos").upload(path, file);
+			if (uploadError) {
+				alert(`Upload failed: ${uploadError.message}`);
+				return;
+			}
+			const { data: publicUrlData } = supabase.storage.from("itk-photos").getPublicUrl(path);
+			const { error } = await supabase
+				.from("itk_photos")
+				.insert({ place_id: placeId, storage_path: path, url: publicUrlData.publicUrl, position: nextPosition });
+			if (error) {
+				alert(`Couldn't save photo: ${error.message}`);
+			}
+		}
+
+		async function fetchPlaces(): Promise<PlaceRow[]> {
+			const { data, error } = await supabase
+				.from("itk_places")
+				.select("*, itk_photos(*)")
+				.eq("post_id", postId)
+				.order("position", { ascending: true });
+			if (error) {
+				console.error(error);
+				return [];
+			}
+			for (const place of data as PlaceRow[]) {
+				place.itk_photos.sort((a, b) => a.position - b.position);
+			}
+			return data as PlaceRow[];
+		}
+
+		// Only called on initial load, when nothing could possibly be mid-typing
+		// yet — every later add/remove/reorder mutates the DOM directly instead
+		// (see renderPlace/movePlace/the add-place handler below) so in-progress
+		// edits in other place blocks are never wiped by a fetch-and-rebuild.
+		async function loadPlaces() {
+			const places = await fetchPlaces();
+			placesList.innerHTML = "";
+			places.forEach((place) => renderPlace(place));
+			renumberPlaceLabels();
+		}
+
+		async function persistPlaceOrder() {
+			const ids = Array.from(placesList.querySelectorAll<HTMLElement>("[data-place]")).map(
+				(el) => el.dataset.id!,
+			);
+			await Promise.all(ids.map((id, i) => supabase.from("itk_places").update({ position: i }).eq("id", id)));
+		}
+
+		function movePlace(placeEl: HTMLElement, direction: "up" | "down") {
+			const sibling =
+				direction === "up" ? placeEl.previousElementSibling : placeEl.nextElementSibling;
+			if (!sibling) return;
+			if (direction === "up") {
+				placesList.insertBefore(placeEl, sibling);
+			} else {
+				placesList.insertBefore(sibling, placeEl);
+			}
+			renumberPlaceLabels();
+			persistPlaceOrder();
+		}
+
+		document.getElementById("itk-add-place")?.addEventListener("click", async () => {
+			const nextPosition = placesList.children.length;
+			const { data, error } = await supabase
+				.from("itk_places")
+				.insert({ post_id: postId, position: nextPosition, name: "" })
+				.select("*, itk_photos(*)")
+				.single();
+			if (error || !data) {
+				alert(`Couldn't add place: ${error?.message}`);
+				return;
+			}
+			renderPlace(data as PlaceRow);
+			renumberPlaceLabels();
+		});
+
+		// --- Loading an existing post, or gating on creating a new one ---
+		async function loadExistingPost(id: string) {
+			const { data, error } = await supabase.from("itk_posts").select("*").eq("id", id).single();
+			if (error || !data) {
+				alert("Couldn't load that post.");
+				window.location.href = "/admin";
+				return;
+			}
+			(fieldsMap.get("title") as HTMLInputElement).value = data.title;
+			(fieldsMap.get("slug") as HTMLInputElement).value = data.slug;
+			(fieldsMap.get("excerpt") as HTMLTextAreaElement).value = data.excerpt;
+			(fieldsMap.get("category") as HTMLSelectElement).value = data.category;
+			(fieldsMap.get("city") as HTMLInputElement).value = data.city;
+			(fieldsMap.get("date") as HTMLInputElement).value = data.date;
+			(fieldsMap.get("cover_alt") as HTMLInputElement).value = data.cover_alt;
+			(fieldsMap.get("body_text") as HTMLTextAreaElement).value = data.body_text;
+			if (data.cover_url) {
+				coverPreview.src = data.cover_url;
+				coverPreview.classList.remove("hidden");
+			}
+			createGate.classList.add("hidden");
+			editorEl.classList.remove("hidden");
+			editorEl.classList.add("flex");
+			loadPlaces();
+		}
+
+		// --- Preview tab: mirrors src/components/in-the-know/PostDetailView.astro.
+		// Reads straight from the live form (not the database), so it reflects
+		// keystrokes that haven't autosaved yet. Keep this in sync by hand if
+		// PostDetailView.astro's markup ever changes — there's no way to reuse
+		// that Astro component directly from client-side JS on a static site.
+		function escapeHtml(str: string) {
+			return str.replace(
+				/[&<>"']/g,
+				(c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!,
+			);
+		}
+
+		function renderPreview() {
+			const root = document.getElementById("itk-preview-root");
+			if (!root) return;
+
+			const title = (fieldsMap.get("title") as HTMLInputElement).value || "Untitled post";
+			const excerpt = (fieldsMap.get("excerpt") as HTMLTextAreaElement).value;
+			const category = (fieldsMap.get("category") as HTMLSelectElement).value as CategoryKey;
+			const city = (fieldsMap.get("city") as HTMLInputElement).value;
+			const date = (fieldsMap.get("date") as HTMLInputElement).value;
+			const bodyText = (fieldsMap.get("body_text") as HTMLTextAreaElement).value;
+			const coverUrl = coverPreview.classList.contains("hidden") ? "" : coverPreview.src;
+			const coverAlt = (fieldsMap.get("cover_alt") as HTMLInputElement).value;
+
+			const chipClass = CHIP_BY_CATEGORY[category] ?? "chip";
+			const categoryLabel = CATEGORY_LABELS[category] ?? category;
+			const formattedDate = date
+				? new Date(`${date}T00:00:00`).toLocaleDateString("en-US", {
+						month: "long",
+						day: "numeric",
+						year: "numeric",
+					})
+				: "";
+			const paragraphs = bodyText
+				.split(/\n\s*\n/)
+				.map((p) => p.trim())
+				.filter(Boolean);
+
+			const placeBlocks = Array.from(placesList.querySelectorAll<HTMLElement>("[data-place]"));
+			const placesHtml = placeBlocks
+				.map((placeEl, i) => {
+					const get = (field: string) =>
+						(placeEl.querySelector(`[data-field="${field}"]`) as HTMLInputElement)?.value ?? "";
+					const name = get("name");
+					const description = get("description");
+					const address = get("address");
+					const phone = get("phone");
+					const websiteUrl = get("website_url");
+					const bookingLabel = get("booking_label");
+					const bookingUrl = get("booking_url");
+					const tags = get("tags")
+						.split(",")
+						.map((t) => t.trim())
+						.filter(Boolean);
+					const photoUrls = Array.from(
+						placeEl.querySelectorAll<HTMLImageElement>("[data-photos] img"),
+					).map((img) => img.src);
+					const textFirst = i % 2 === 0;
+
+					const tagsHtml = tags.length
+						? `<div class="flex flex-wrap gap-2">${tags
+								.map(
+									(t) =>
+										`<span class="rounded-full border border-accent/25 px-2.5 py-1 text-[10px] font-dm-sans font-medium uppercase tracking-wide text-accent">${escapeHtml(t)}</span>`,
+								)
+								.join("")}</div>`
+						: "";
+
+					const detailsRows: string[] = [];
+					if (address) {
+						detailsRows.push(
+							`<a href="${mapsUrlFor(address)}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2.5 px-4 py-3 text-sm text-text/80">${escapeHtml(address)}</a>`,
+						);
+					}
+					if (phone) {
+						detailsRows.push(
+							`<a href="tel:${phone.replace(/[^0-9+]/g, "")}" class="flex items-center gap-2.5 px-4 py-3 text-sm text-text/80">${escapeHtml(phone)}</a>`,
+						);
+					}
+					if (websiteUrl) {
+						detailsRows.push(
+							`<a href="${escapeHtml(websiteUrl)}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2.5 px-4 py-3 text-sm text-text/80">Visit website</a>`,
+						);
+					}
+					if (bookingUrl) {
+						detailsRows.push(
+							`<a href="${escapeHtml(bookingUrl)}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 px-4 py-3 text-sm font-dm-sans font-medium"><span class="glass-pill-claret px-4 py-1.5 text-xs font-medium uppercase tracking-wide">${escapeHtml(bookingLabel || "Book")}</span></a>`,
+						);
+					}
+					const detailsHtml = detailsRows.length
+						? `<div class="hairline divide-y divide-[color-mix(in_srgb,var(--color-text)_8%,transparent)] rounded-[var(--radius-md)] border">${detailsRows.join("")}</div>`
+						: "";
+
+					const photosHtml = photoUrls.length
+						? `<img src="${photoUrls[0]}" alt="" class="aspect-[4/3] w-full rounded-[var(--radius-lg)] object-cover" />` +
+							(photoUrls.length > 1
+								? `<div class="itk-hscroll flex gap-2 overflow-x-auto pb-1">${photoUrls
+										.slice(1)
+										.map(
+											(u) =>
+												`<img src="${u}" alt="" class="h-20 w-20 shrink-0 rounded-[var(--radius-sm)] object-cover" />`,
+										)
+										.join("")}</div>`
+								: "")
+						: "";
+
+					return `
+						<div class="itk-place grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12 ${i > 0 ? "hairline border-t pt-14" : ""}">
+							<div class="flex flex-col gap-4 order-2 ${textFirst ? "lg:order-1" : "lg:order-2"}">
+								<h2 class="font-display text-xl text-primary sm:text-2xl">${escapeHtml(name || "Untitled place")}</h2>
+								${description ? `<p class="text-base leading-relaxed text-text/80">${escapeHtml(description)}</p>` : ""}
+								${tagsHtml}
+								${detailsHtml}
+							</div>
+							<div class="flex flex-col gap-3 order-1 ${textFirst ? "lg:order-2" : "lg:order-1"}">${photosHtml}</div>
+						</div>
+					`;
+				})
+				.join("");
+
+			root.innerHTML = `
+				<main class="pb-16 pt-12 sm:pt-14">
+					<div class="mx-auto flex max-w-4xl items-start gap-3 px-4 sm:px-6 lg:px-8">
+						<div class="glass flex h-10 w-10 shrink-0 items-center justify-center rounded-full">
+							<svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="M10 3.5L5 8l5 4.5"></path></svg>
+						</div>
+						<div class="relative min-w-0 flex-1 overflow-hidden rounded-[var(--radius-lg)]">
+							${
+								coverUrl
+									? `<img src="${coverUrl}" alt="${escapeHtml(coverAlt)}" class="aspect-[21/9] w-full object-cover" />`
+									: `<div class="aspect-[21/9] w-full bg-[color-mix(in_srgb,var(--color-text)_6%,transparent)]"></div>`
+							}
+							<span class="${chipClass} absolute left-3 top-3 px-2.5 py-1 text-[10px] font-dm-sans font-medium uppercase tracking-wide shadow-sm">${escapeHtml(categoryLabel)}</span>
+						</div>
+					</div>
+					<div class="mx-auto max-w-3xl px-4 pt-8 sm:px-6 lg:px-8">
+						<p class="eyebrow text-accent">${escapeHtml(formattedDate)}${formattedDate && city ? " · " : ""}${escapeHtml(city)}</p>
+						<h1 class="mt-2 font-display text-3xl font-medium text-primary sm:text-4xl lg:text-5xl">${escapeHtml(title)}</h1>
+						${excerpt ? `<p class="mt-4 font-instrument-sans text-lg leading-snug text-text/70">${escapeHtml(excerpt)}</p>` : ""}
+						${paragraphs.length ? `<div class="mt-8 text-base leading-relaxed text-text/80">${paragraphs.map((p) => `<p>${escapeHtml(p)}</p>`).join("")}</div>` : ""}
+					</div>
+					${placeBlocks.length ? `<div class="mx-auto mt-14 flex max-w-5xl flex-col gap-16 px-4 sm:px-6 lg:px-8">${placesHtml}</div>` : ""}
+				</main>
+			`;
+		}
+
+		const tabEdit = document.getElementById("itk-tab-edit");
+		const tabPreview = document.getElementById("itk-tab-preview");
+		const editPane = document.getElementById("itk-edit-pane");
+		const previewPane = document.getElementById("itk-preview-pane");
+
+		tabEdit?.addEventListener("click", () => {
+			tabEdit.classList.add("is-active");
+			tabEdit.setAttribute("aria-pressed", "true");
+			tabPreview?.classList.remove("is-active");
+			tabPreview?.setAttribute("aria-pressed", "false");
+			editPane?.classList.remove("hidden");
+			previewPane?.classList.add("hidden");
+		});
+		tabPreview?.addEventListener("click", () => {
+			tabPreview.classList.add("is-active");
+			tabPreview.setAttribute("aria-pressed", "true");
+			tabEdit?.classList.remove("is-active");
+			tabEdit?.setAttribute("aria-pressed", "false");
+			previewPane?.classList.remove("hidden");
+			editPane?.classList.add("hidden");
+			renderPreview();
+		});
+
+		if (postId) {
+			await loadExistingPost(postId);
+		} else {
+			document.getElementById("itk-create-btn")?.addEventListener("click", async () => {
+				const titleInput = document.getElementById("itk-new-title") as HTMLInputElement;
+				const title = titleInput.value.trim();
+				if (!title) {
+					alert("Give it a title first.");
+					return;
+				}
+				const slug = title
+					.toLowerCase()
+					.replace(/[^a-z0-9]+/g, "-")
+					.replace(/(^-|-$)/g, "");
+				const { data, error } = await supabase
+					.from("itk_posts")
+					.insert({
+						title,
+						slug,
+						excerpt: "",
+						category: "Cafe",
+						city: "",
+						date: new Date().toISOString().slice(0, 10),
+						cover_url: "",
+						cover_alt: "",
+						body_text: "",
+						published: false,
+					})
+					.select()
+					.single();
+				if (error || !data) {
+					alert(`Couldn't create post: ${error?.message}`);
+					return;
+				}
+				postId = data.id;
+				window.history.replaceState({}, "", `/admin/posts/editor?id=${postId}`);
+				await loadExistingPost(data.id);
+			});
+		}
+	}
+
+	initEditor();
+</script>
+
+<style>
+	.itk-tab {
+		position: relative;
+		padding: 0.5rem 0.25rem 0.75rem;
+		margin-right: 1.25rem;
+		font-family: var(--font-dm-sans);
+		font-size: 0.75rem;
+		font-weight: 500;
+		text-transform: uppercase;
+		letter-spacing: 0.02em;
+		color: var(--color-accent);
+	}
+	.itk-tab.is-active {
+		color: var(--color-primary);
+	}
+	.itk-tab.is-active::after {
+		content: "";
+		position: absolute;
+		left: 0.25rem;
+		right: 0.25rem;
+		bottom: -1px;
+		height: 1px;
+		background: var(--color-claret);
+	}
+</style>

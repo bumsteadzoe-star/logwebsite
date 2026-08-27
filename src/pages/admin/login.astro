@@ -1,0 +1,83 @@
+---
+import "../../styles/global.css";
+import QuoteMark from "../../components/QuoteMark.astro";
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="robots" content="noindex, nofollow" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Sign in — Vouch Admin</title>
+	</head>
+	<body class="flex min-h-dvh items-center justify-center bg-bg px-4 font-sans text-text">
+		<div class="glass w-full max-w-sm p-8">
+			<p class="inline-flex items-center gap-1 font-wordmark text-xl text-primary">
+				<QuoteMark class="h-[0.6em] w-auto" />
+				Vouch admin
+			</p>
+			<p class="eyebrow mt-1 text-accent">Sign in</p>
+
+			<form id="itk-login-form" class="mt-6 flex flex-col gap-4">
+				<label class="flex flex-col gap-1.5 text-sm">
+					<span class="text-accent">Email</span>
+					<input
+						type="email"
+						name="email"
+						required
+						autocomplete="email"
+						class="glass-pill w-full px-4 py-2.5 text-sm text-text outline-none"
+					/>
+				</label>
+				<label class="flex flex-col gap-1.5 text-sm">
+					<span class="text-accent">Password</span>
+					<input
+						type="password"
+						name="password"
+						required
+						autocomplete="current-password"
+						class="glass-pill w-full px-4 py-2.5 text-sm text-text outline-none"
+					/>
+				</label>
+				<p id="itk-login-error" class="hidden text-sm text-claret" role="alert"></p>
+				<button
+					type="submit"
+					class="glass-pill-claret mt-2 px-4 py-2.5 text-xs font-dm-sans font-medium uppercase tracking-wide"
+				>
+					Sign in
+				</button>
+			</form>
+		</div>
+
+		<script>
+			import { supabase } from "../../lib/admin/client";
+
+			const form = document.getElementById("itk-login-form") as HTMLFormElement;
+			const errorEl = document.getElementById("itk-login-error");
+
+			form.addEventListener("submit", async (event) => {
+				event.preventDefault();
+				errorEl?.classList.add("hidden");
+
+				const formData = new FormData(form);
+				const email = String(formData.get("email"));
+				const password = String(formData.get("password"));
+
+				const { error } = await supabase.auth.signInWithPassword({ email, password });
+				if (error) {
+					if (errorEl) {
+						errorEl.textContent = error.message;
+						errorEl.classList.remove("hidden");
+					}
+					return;
+				}
+				window.location.href = "/admin";
+			});
+
+			// Already signed in? Skip straight to the dashboard.
+			supabase.auth.getSession().then(({ data }) => {
+				if (data.session) window.location.href = "/admin";
+			});
+		</script>
+	</body>
+</html>

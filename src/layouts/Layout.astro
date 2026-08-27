@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import Footer from "../components/Footer.astro";
 import WaitlistModal from "../components/WaitlistModal.astro";
+import QuoteMark from "../components/QuoteMark.astro";
 import Analytics from "@vercel/analytics/astro";
 
 interface Props {
@@ -17,6 +18,9 @@ const {
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+// The corner nav link is redundant once you're already on the section it
+// points to — that page gets its own centered masthead instead.
+const isInTheKnow = Astro.url.pathname.startsWith("/in-the-know");
 const ogImageURL = new URL(ogImage, Astro.site);
 
 const organizationSchema = {
@@ -71,7 +75,7 @@ const organizationSchema = {
 		/>
 		<link
 			rel="preload"
-			href="/fonts/dm-serif-text-latin-400-normal.woff2"
+			href="/fonts/dm-sans-latin-wght-normal.woff2"
 			as="font"
 			type="font/woff2"
 			crossorigin
@@ -85,10 +89,21 @@ const organizationSchema = {
 		<Analytics />
 		<a
 			href="/"
-			class="glass-badge fixed left-4 top-4 z-40 px-4 py-2 font-wordmark text-lg text-primary transition-transform hover:scale-[1.03] sm:left-6 sm:top-6 sm:text-xl"
+			class="fixed left-4 top-4 z-40 inline-flex items-center gap-1 font-wordmark text-lg text-primary drop-shadow-[0_1px_6px_rgba(255,255,255,0.6)] transition-transform hover:scale-[1.03] sm:left-6 sm:top-6 sm:text-xl"
 		>
+			<QuoteMark class="h-[0.6em] w-auto" />
 			Vouch
 		</a>
+		{
+			!isInTheKnow && (
+				<a
+					href="/in-the-know"
+					class="fixed right-4 top-4 z-40 font-dm-sans text-xs font-medium uppercase tracking-wide text-primary drop-shadow-[0_1px_6px_rgba(255,255,255,0.6)] transition-transform hover:scale-[1.03] sm:right-6 sm:top-6 sm:text-sm"
+				>
+					In the know
+				</a>
+			)
+		}
 		<slot />
 		<Footer />
 		<WaitlistModal />

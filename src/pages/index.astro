@@ -1,16 +1,9 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { Image } from "astro:assets";
-import RecCard from "../components/RecCard.astro";
+import NetworkGraph from "../components/NetworkGraph.astro";
 
-import heroBack from "../assets/photos2/bagel.jpg";
-import heroFront from "../assets/photos2/cool.jpg";
-
-import notesItineraryImg from "../assets/problem/notes-itinerary.png";
-import mapsLaImg from "../assets/problem/maps-la.png";
-import chatgptSfImg from "../assets/problem/chatgpt-sf.png";
-import instagramNycImg from "../assets/problem/instagram-nyc.png";
-import voiceMemoImg from "../assets/problem/voice-memo-4.png";
+import headerPhoto from "../assets/hero/headerphoto.jpg";
 import ctaBg from "../assets/photos2/backnew.jpg";
 
 import barImg from "../assets/gallery2/dog2.jpg";
@@ -31,6 +24,7 @@ const logEntries = [
 		tag: "Beauty",
 		tagClass: "chip-rose",
 		match: 90,
+		friend: "Zoe",
 	},
 	{
 		src: thriftImg,
@@ -40,6 +34,7 @@ const logEntries = [
 		tag: "Shopping",
 		tagClass: "chip-blue",
 		match: 97,
+		friend: "Maya",
 	},
 	{
 		src: matchaImg,
@@ -49,6 +44,7 @@ const logEntries = [
 		tag: "Cafe",
 		tagClass: "chip-brown",
 		match: 91,
+		friend: "Jordan",
 	},
 	{
 		src: dinnerImg,
@@ -58,6 +54,7 @@ const logEntries = [
 		tag: "Dinner",
 		tagClass: "chip-terracotta",
 		match: 96,
+		friend: "Priya",
 	},
 	{
 		src: punchbowlImg,
@@ -67,6 +64,7 @@ const logEntries = [
 		tag: "Nature",
 		tagClass: "chip-olive",
 		match: 89,
+		friend: "Sam",
 	},
 	{
 		src: museumImg,
@@ -76,15 +74,17 @@ const logEntries = [
 		tag: "Museum",
 		tagClass: "chip-gold",
 		match: 88,
+		friend: "Nora",
 	},
 	{
 		src: jardinImg,
 		alt: "A statue surrounded by red and orange flowers",
 		caption: "Sit at Jardin du Luxembourg",
 		city: "Paris, France",
-		tag: "Nature",
+		tag: "Event",
 		tagClass: "chip-olive",
 		match: 93,
+		friend: "Liam",
 	},
 	{
 		src: barImg,
@@ -94,681 +94,123 @@ const logEntries = [
 		tag: "Nightlife",
 		tagClass: "chip-purple",
 		match: 94,
+		friend: "Alex",
 	},
 ];
+
+// Degree of separation the rec was surfaced from — randomized once per
+// build (not per-request; this is static frontmatter), so the mix looks
+// natural without needing to hand-author it per entry.
+const degreeLabels = {
+	1: "from your friend",
+	2: "second degree friend",
+	3: "third degree friend",
+};
+const avatarColors = ["bg-primary", "bg-secondary", "bg-sage"];
+const logEntryMeta = logEntries.map((entry, i) => ({
+	degree: Math.floor(Math.random() * 3) + 1,
+	avatarColor: avatarColors[i % avatarColors.length],
+}));
 ---
 
 <Layout>
 	<main>
-		<!-- Hero — a tall spacer wrapping a sticky, full-viewport stage. The
-		     extra height is what "holds" the pinned zoom/fade moment as the
-		     user scrolls; once they scroll past it, the sticky stage releases
-		     naturally (plain CSS sticky behavior, no scroll-jacking/preventDefault). -->
-		<div id="hero-pin" class="relative">
-			<section class="sticky top-0 flex h-dvh items-center justify-center overflow-hidden bg-sage/10 px-4 text-center sm:px-6 lg:px-8">
-				<canvas
-					id="hero-shader-canvas"
-					class="absolute inset-0 -z-10 block h-full w-full"
-					aria-hidden="true"
-				></canvas>
-				<div
-					class="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-1/6 bg-gradient-to-b from-transparent to-bg sm:h-1/3"
-					aria-hidden="true"
-				></div>
+		<!-- Hero — static two-column layout (photo card right, left-aligned
+		     text left). Previously a pinned full-viewport stage with a
+		     scroll-driven zoom on "best-informed" and an animated WebGL
+		     gradient behind it; both removed 2026-08-26 per explicit request
+		     — the word now sits as plain text and the section background is
+		     flat white.
 
-				<div class="hero-text w-full max-w-4xl">
-					<h1 class="font-display text-4xl font-medium leading-[1.1] tracking-tight text-primary sm:text-5xl lg:text-6xl">
-						<span class="hero-fade">The knowledge of your</span><br />
-						<em class="hero-zoom-word italic">best-informed</em>
-						<span class="hero-fade"> friend.</span>
+		     min-h-dvh + flex centering: explicit user call — the hero must
+		     always fill exactly one viewport (you shouldn't see the next
+		     section without scrolling) and stay vertically centered, on any
+		     screen/browser-window size. Sizing uses vmin (not vw) throughout
+		     so it responds to a short/wide window the same as a tall/narrow
+		     one — vw alone would overflow a short viewport.
+
+		     Sizes are the brand type-scale's exact spec value used as the
+		     clamp() ceiling (Display 1 for the H1, Body-lg for the
+		     paragraph, Meta for the caption) — full-size at generous
+		     viewports, fluidly shrinking via vmin below that (the H1/button
+		     vmin coefficients run higher than a literal minimum-to-spec
+		     curve would need, so they reach that ceiling on ordinary screens
+		     instead of only on very large ones — explicit user call, "make
+		     the hero text/button bigger"). Also grid-cols-2 unconditionally
+		     (no lg: prefix) —
+		     explicit user call: the two columns must stay side-by-side at
+		     every viewport width, including phones, shrinking continuously
+		     instead of stacking. Don't revert either of these to the more
+		     usual breakpoint-based approach. -->
+		<section class="flex min-h-dvh items-center bg-sand px-3 py-[clamp(2.5rem,6vmin,5rem)] sm:px-6 lg:px-8">
+			<div class="mx-auto grid w-full max-w-7xl grid-cols-2 items-center gap-[clamp(0.75rem,4vmin,4rem)]">
+				<div class="-ml-2 text-left sm:-ml-4 lg:-ml-6" data-reveal>
+					<h1 class="font-display font-normal text-primary text-[clamp(1.6rem,9.5vmin,5.5rem)] leading-[0.94] tracking-[-0.03em]">
+						The knowledge of your<br />
+						<em class="italic font-bold">best-informed</em> friend.
 					</h1>
-					<p class="hero-fade mx-auto mt-5 max-w-xl text-base text-text/70 sm:text-lg">
-						Never wonder where to go again.<br class="hidden sm:block" /> Vouch surfaces experiences
-						based on you and your network.
+					<p class="font-dm-sans mt-[clamp(0.4rem,2vmin,1.25rem)] max-w-xl text-text/70 text-[clamp(0.65rem,2.2vmin,1.1875rem)] leading-[1.55]">
+						Vouch is the shared brain of where you and your friends go.
 					</p>
 					<button
 						type="button"
 						data-open-waitlist
-						class="hero-fade glass-pill-green mt-7 px-8 py-3.5 text-base font-semibold transition-transform hover:scale-[1.03] active:scale-[0.98]"
+						class="glass-pill-claret mt-[clamp(0.6rem,2.5vmin,1.75rem)] whitespace-nowrap px-[clamp(1rem,4.5vmin,2.75rem)] py-[clamp(0.5rem,2.2vmin,1.125rem)] font-dm-sans font-medium uppercase tracking-wide transition-transform hover:scale-[1.03] active:scale-[0.98] text-[clamp(0.7rem,2.4vmin,1rem)] leading-[1.6]"
 					>
 						Get Early Access
 					</button>
 				</div>
-			</section>
-		</div>
 
-		<style>
-			/* Pinned scroll-zoom is back (2026-08-05) with a much shorter hold
-			   than before: 200vh → 140vh (100vh of extra scroll → 40vh), and
-			   growth/fade now saturate at 80% of that instead of 60% — so the
-			   "locked" pause after the word finishes growing is a brief ~8vh
-			   beat before release, not the ~40vh dead gap that prompted
-			   removing this earlier the same day. */
-			#hero-pin {
-				height: 140vh;
-			}
+				<div
+					class="relative overflow-hidden rounded-[var(--radius-xl)] shadow-xl h-[clamp(280px,86vmin,760px)]"
+					data-reveal
+					style="--reveal-delay: 120ms"
+				>
+					<Image
+						src={headerPhoto}
+						alt="Friends dancing and gathered around a bar mid-motion"
+						class="h-full w-full object-cover grayscale"
+					/>
 
-			.hero-text {
-				animation: hero-fade-up 0.7s ease-out 0.05s both;
-			}
-
-			.hero-fade {
-				opacity: calc(1 - min(var(--hero-progress, 0), 0.8) * 1.25);
-			}
-
-			.hero-zoom-word {
-				display: inline-block;
-				transform-origin: var(--hero-origin-x, 50%) 60%;
-				transform: scale(
-					calc(1 + (var(--hero-max-scale, 3) - 1) * min(var(--hero-progress, 0), 0.8) / 0.8)
-				);
-			}
-
-			@keyframes hero-fade-up {
-				from {
-					opacity: 0;
-					transform: translateY(20px);
-				}
-				to {
-					opacity: 1;
-					transform: translateY(0);
-				}
-			}
-		</style>
-
-		<script>
-			function initHeroZoom() {
-				const wrapper = document.getElementById("hero-pin");
-				const word = document.querySelector<HTMLElement>(".hero-zoom-word");
-				const textBlock = document.querySelector<HTMLElement>(".hero-text");
-				if (!wrapper || !word || !textBlock) return;
-				if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-				// Cap the zoom so "best-informed" stops growing once it's as wide
-				// as the rest of the hero text (the text block's own width) —
-				// never wider than that, never stretching to the screen edges.
-				// Measured live (not a fixed multiplier) so it holds at any
-				// viewport size or font-loading state.
-				const measureMaxScale = () => {
-					const prevTransform = word.style.transform;
-					word.style.transform = "none";
-					const naturalWidth = word.offsetWidth;
-					word.style.transform = prevTransform;
-					// The word is italic — its slanted glyphs visually overhang
-					// past the right edge of its own (upright) layout box, an
-					// overhang that grows with the scale. That's invisible at
-					// small container widths but pushes past the viewport edge
-					// on mobile specifically, where the target width is the
-					// viewport itself with little margin to spare. Pull the
-					// mobile target in a bit so the grown word has room for
-					// that overhang and stays visually centered and contained.
-					const isMobile = window.innerWidth < 640;
-					const targetWidth = textBlock.offsetWidth * (isMobile ? 0.94 : 1);
-					const maxScale = naturalWidth > 0 ? Math.max(targetWidth / naturalWidth, 1) : 1;
-					wrapper.style.setProperty("--hero-max-scale", String(maxScale));
-					// "friend." stays on the same line as the word (2 lines
-					// total, not 3), so the word itself sits left-of-center on
-					// that shared line — growing it from its own true center
-					// would just push it further left. Anchor the growth near
-					// the word's own left edge on mobile instead, so it grows
-					// rightward into the middle of the line rather than
-					// expanding symmetrically off the edge.
-					wrapper.style.setProperty("--hero-origin-x", isMobile ? "15%" : "50%");
-				};
-
-				measureMaxScale();
-				window.addEventListener("resize", measureMaxScale);
-
-				let ticking = false;
-				const update = () => {
-					const scrollable = wrapper.offsetHeight - window.innerHeight;
-					const rect = wrapper.getBoundingClientRect();
-					const progress = scrollable > 0 ? Math.min(Math.max(-rect.top / scrollable, 0), 1) : 0;
-					wrapper.style.setProperty("--hero-progress", String(progress));
-					ticking = false;
-				};
-
-				update();
-				window.addEventListener(
-					"scroll",
-					() => {
-						if (!ticking) {
-							requestAnimationFrame(update);
-							ticking = true;
-						}
-					},
-					{ passive: true },
-				);
-			}
-
-			initHeroZoom();
-			document.addEventListener("astro:page-load", initHeroZoom);
-		</script>
-
-		<!-- Hero background shader — a quiet, near-white/pale-sage noise wash,
-		     ported from a React "Simplex Noise" shader (paper-shaders style,
-		     Apache-2.0) to plain WebGL/TypeScript since this project has no
-		     React/shadcn — same native-port approach used earlier for the
-		     hero's zoom effect. Deliberately not pointer-reactive: the pinned
-		     zoom-word is already this page's one signature interactive
-		     moment, so this stays ambient (slow drift only) rather than
-		     competing with it. Respects prefers-reduced-motion by rendering a
-		     single static frame and skipping the animation loop entirely. -->
-		<script>
-			const HERO_SHADER_VERT = `attribute vec2 a_position;
-void main() {
-  gl_Position = vec4(a_position, 0.0, 1.0);
-}`;
-
-			const HERO_SHADER_FRAG = `#ifdef GL_FRAGMENT_PRECISION_HIGH
-precision highp float;
-#else
-precision mediump float;
-#endif
-
-uniform vec3 u_colors[8];
-uniform vec4 u_scene;
-uniform vec4 u_shape;
-uniform vec4 u_surface;
-uniform vec4 u_finish;
-uniform vec4 u_transform;
-uniform vec4 u_space;
-uniform vec4 u_cursor;
-
-#define u_resolution u_scene.xy
-#define u_time u_scene.z
-#define u_colorCount u_scene.w
-#define u_scale u_shape.x
-#define u_intensity u_shape.y
-#define u_paramA u_shape.z
-#define u_warp u_shape.w
-#define u_detail u_surface.x
-#define u_contrast u_surface.y
-#define u_brightness u_surface.z
-#define u_saturation u_surface.w
-#define u_hue u_finish.x
-#define u_vignette u_finish.y
-#define u_blur u_finish.z
-#define u_grain u_finish.w
-#ifdef GL_FRAGMENT_PRECISION_HIGH
-#define u_seed u_transform.x
-#else
-#define u_seed mod(u_transform.x, 31.0)
-#endif
-#define u_rotate u_transform.y
-#define u_drift u_transform.z
-#define u_oklab u_transform.w
-#define u_offset u_space.xy
-#define u_mouse u_space.zw
-#define u_cursorPresence u_cursor.x
-#define u_cursorEffect u_cursor.y
-#define u_cursorStrength u_cursor.z
-#define u_cursorRadius u_cursor.w
-
-float hash21(vec2 p) {
-#ifndef GL_FRAGMENT_PRECISION_HIGH
-  p = mod(p, 31.0);
-#endif
-  p = fract(p * vec2(234.34, 435.345));
-  p += dot(p, p + 34.23);
-  return fract(p.x * p.y);
-}
-
-float grainHash(vec2 p) {
-  vec3 p3 = fract(vec3(p.xyx) * 0.1031);
-  p3 += dot(p3, p3.yzx + 33.33);
-  return fract((p3.x + p3.y) * p3.z);
-}
-
-float noise(vec2 p) {
-  vec2 i = floor(p);
-  vec2 f = fract(p);
-  vec2 u = f * f * (3.0 - 2.0 * f);
-  return mix(
-    mix(hash21(i), hash21(i + vec2(1.0, 0.0)), u.x),
-    mix(hash21(i + vec2(0.0, 1.0)), hash21(i + vec2(1.0, 1.0)), u.x),
-    u.y);
-}
-
-float fbm(vec2 p) {
-  float v = 0.0;
-  float a = 0.5;
-  for (int i = 0; i < 5; i++) {
-    v += a * noise(p);
-    p = p * 2.03 + vec2(17.0, 9.2);
-    a *= 0.5;
-  }
-  return v;
-}
-
-vec3 srgbToLinear(vec3 c) {
-  return mix(c / 12.92, pow((c + 0.055) / 1.055, vec3(2.4)), step(0.04045, c));
-}
-vec3 linearToSrgb(vec3 c) {
-  return mix(c * 12.92, 1.055 * pow(max(c, vec3(0.0)), vec3(1.0 / 2.4)) - 0.055, step(0.0031308, c));
-}
-vec3 linToOklab(vec3 c) {
-  float l = 0.4122214708 * c.r + 0.5363325363 * c.g + 0.0514459929 * c.b;
-  float m = 0.2119034982 * c.r + 0.6806995451 * c.g + 0.1073969566 * c.b;
-  float s = 0.0883024619 * c.r + 0.2817188376 * c.g + 0.6299787005 * c.b;
-  l = pow(max(l, 0.0), 1.0 / 3.0);
-  m = pow(max(m, 0.0), 1.0 / 3.0);
-  s = pow(max(s, 0.0), 1.0 / 3.0);
-  return vec3(
-    0.2104542553 * l + 0.7936177850 * m - 0.0040720468 * s,
-    1.9779984951 * l - 2.4285922050 * m + 0.4505937099 * s,
-    0.0259040371 * l + 0.7827717662 * m - 0.8086757660 * s);
-}
-vec3 oklabToLin(vec3 c) {
-  float l = c.x + 0.3963377774 * c.y + 0.2158037573 * c.z;
-  float m = c.x - 0.1055613458 * c.y - 0.0638541728 * c.z;
-  float s = c.x - 0.0894841775 * c.y - 1.2914855480 * c.z;
-  l = l * l * l; m = m * m * m; s = s * s * s;
-  return vec3(
-    4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s,
-    -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s,
-    -0.0041960863 * l - 0.7034186147 * m + 1.7076147010 * s);
-}
-vec3 mixColour(vec3 a, vec3 b, float t) {
-  if (u_oklab > 0.5) {
-    vec3 la = linToOklab(srgbToLinear(a));
-    vec3 lb = linToOklab(srgbToLinear(b));
-    return clamp(linearToSrgb(oklabToLin(mix(la, lb, t))), 0.0, 1.0);
-  }
-  return mix(a, b, t);
-}
-
-vec3 palette(float x) {
-  float n = max(u_colorCount - 1.0, 1.0);
-  float f = clamp(x, 0.0, 1.0) * n;
-  vec3 col = u_colors[0];
-  for (int i = 0; i < 7; i++) {
-    if (float(i) < n)
-      col = mixColour(col, u_colors[i + 1], smoothstep(0.0, 1.0, clamp(f - float(i), 0.0, 1.0)));
-  }
-  return col;
-}
-
-vec3 hueRotate(vec3 col, float a) {
-  const mat3 toYIQ = mat3(0.299, 0.596, 0.211, 0.587, -0.274, -0.523, 0.114, -0.322, 0.312);
-  const mat3 toRGB = mat3(1.0, 1.0, 1.0, 0.956, -0.272, -1.106, 0.621, -0.647, 1.703);
-  vec3 yiq = toYIQ * col;
-  float ca = cos(a), sa = sin(a);
-  yiq = vec3(yiq.x, yiq.y * ca - yiq.z * sa, yiq.y * sa + yiq.z * ca);
-  return toRGB * yiq;
-}
-
-vec3 shade(vec2 uv, vec2 p, float t) {
-  vec2 q = p * 0.32;
-  float first = fbm(q - vec2(0.0, t * 0.06) + u_seed);
-  float second = fbm(q * 2.0 + vec2(0.0, t * 0.064) - u_seed * 0.17);
-  float shape = clamp(0.5 * first + 0.5 * second, 0.0, 1.0);
-  float steps = 2.0 + floor(u_intensity * 18.0);
-  float stepped = floor(shape * steps) / steps;
-  float softened = mix(stepped, shape, u_paramA);
-  return palette(softened);
-}
-
-void main() {
-  vec2 uv = gl_FragCoord.xy / u_resolution.xy;
-  vec2 screenUv = uv;
-  vec2 p = (gl_FragCoord.xy - 0.5 * u_resolution.xy) / min(u_resolution.x, u_resolution.y);
-  float cursorMask = 0.0;
-
-  if (u_cursorPresence > 0.001) {
-    vec2 cursor = (0.5 * u_mouse * u_resolution.xy) / min(u_resolution.x, u_resolution.y);
-    vec2 cursorDelta = p - cursor;
-    if (u_cursorEffect < 0.5) {
-      p += cursor * u_cursorPresence * u_cursorStrength * 0.55;
-    } else {
-      float cursorDistance = length(cursorDelta);
-      vec2 cursorDirection = cursorDelta / max(cursorDistance, 0.0001);
-      cursorMask = u_cursorPresence * (1.0 - smoothstep(0.0, u_cursorRadius, cursorDistance));
-      if (u_cursorEffect < 1.5) {
-        p -= cursorDirection * cursorMask * u_cursorStrength * 0.24;
-      } else if (u_cursorEffect < 2.5) {
-        float cursorAngle = cursorMask * u_cursorStrength * 2.2;
-        float cc = cos(cursorAngle), cs = sin(cursorAngle);
-        p = cursor + mat2(cc, -cs, cs, cc) * cursorDelta;
-      } else if (u_cursorEffect < 3.5) {
-        float ripple = sin(cursorDistance / max(u_cursorRadius, 0.001) * 18.0 - u_time * 5.0);
-        p -= cursorDirection * ripple * cursorMask * u_cursorStrength * 0.07;
-      }
-    }
-  }
-
-  uv = p * min(u_resolution.x, u_resolution.y) / u_resolution.xy + 0.5;
-  p *= u_scale;
-  if (abs(u_rotate) > 0.0001) {
-    float cr = cos(u_rotate), sr = sin(u_rotate);
-    p = mat2(cr, -sr, sr, cr) * p;
-  }
-  p += u_offset;
-  if (u_drift > 0.0001)
-    p += u_drift * vec2(sin(u_time * 0.31), cos(u_time * 0.23));
-  if (u_warp > 0.0) {
-    p += u_warp * (vec2(fbm(p * u_detail + u_seed), fbm(p * u_detail + vec2(5.2, 1.3))) - 0.5);
-  }
-  vec3 col;
-  if (u_blur > 0.0) {
-    float e = u_blur;
-    float pe = e * u_scale;
-    vec2 uvE = vec2(e) * min(u_resolution.x, u_resolution.y) / u_resolution.xy;
-    col  = shade(uv, p, u_time) * 0.36;
-    col += shade(uv + vec2(uvE.x, 0.0), p + vec2(pe, 0.0), u_time) * 0.16;
-    col += shade(uv - vec2(uvE.x, 0.0), p - vec2(pe, 0.0), u_time) * 0.16;
-    col += shade(uv + vec2(0.0, uvE.y), p + vec2(0.0, pe), u_time) * 0.16;
-    col += shade(uv - vec2(0.0, uvE.y), p - vec2(0.0, pe), u_time) * 0.16;
-  } else {
-    col = shade(uv, p, u_time);
-  }
-  if (abs(u_contrast - 1.0) > 0.0001)
-    col = (col - 0.5) * u_contrast + 0.5;
-  if (abs(u_saturation - 1.0) > 0.0001) {
-    float luma = dot(col, vec3(0.299, 0.587, 0.114));
-    col = mix(vec3(luma), col, u_saturation);
-  }
-  if (abs(u_hue) > 0.0001)
-    col = hueRotate(col, u_hue);
-  if (abs(u_brightness) > 0.0001)
-    col += u_brightness;
-  if (u_vignette > 0.0001) {
-    float vd = length(screenUv - 0.5) * 1.41421356;
-    col *= 1.0 - u_vignette * smoothstep(0.35, 1.0, vd);
-  }
-  if (u_cursorPresence > 0.001 && u_cursorEffect > 3.5)
-    col += (vec3(0.18) + col * 0.12) * cursorMask * u_cursorStrength;
-  if (u_grain > 0.0001)
-    col += (grainHash(gl_FragCoord.xy + vec2(u_seed * 17.0, u_seed * 31.0)) - 0.5) * u_grain;
-  gl_FragColor = vec4(clamp(col, 0.0, 1.0), 1.0);
-}
-`;
-
-			// Log's palette, near-white progressing to a whisper of Sage — not
-			// the reference component's dark/moody defaults.
-			const HERO_SHADER_UNIFORMS = {
-				// A spread of distinct whites and greens, not one blended wash —
-				// pure white, warm cream-white, cool mint-white, then four
-				// greens stepping from pale sage up to a soft moss accent
-				// (Sage/Moss are Log's actual brand tokens, indices 3 and 6).
-				colors: [
-					[1.0, 1.0, 1.0],
-					[0.957, 0.945, 0.91],
-					[0.929, 0.949, 0.894],
-					[0.863, 0.902, 0.788],
-					[0.765, 0.839, 0.686],
-					[0.624, 0.722, 0.522],
-					[0.498, 0.627, 0.369],
-					[0.498, 0.627, 0.369],
-				] as [number, number, number][],
-				colorCount: 7,
-				scale: 1.2,
-				intensity: 0.28,
-				paramA: 0.5,
-				warp: 0.18,
-				detail: 1.4,
-				contrast: 0.95,
-				brightness: 0.0,
-				saturation: 0.95,
-				hue: 0.0,
-				vignette: 0.06,
-				blur: 0.001,
-				grain: 0.02,
-				seed: 4231.0,
-				rotate: 0.0,
-				offsetX: 0.05,
-				offsetY: 0.1,
-				drift: 0.02,
-				oklab: 1.0,
-				timeScale: -0.12,
-			};
-
-			function initHeroShader() {
-				const canvas = document.getElementById("hero-shader-canvas") as HTMLCanvasElement | null;
-				if (!canvas) return;
-
-				const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-				const gl = canvas.getContext("webgl", { antialias: false });
-				if (!gl) return;
-
-				const compile = (type: number, src: string) => {
-					const s = gl.createShader(type)!;
-					gl.shaderSource(s, src);
-					gl.compileShader(s);
-					return s;
-				};
-				const program = gl.createProgram()!;
-				const vertexShader = compile(gl.VERTEX_SHADER, HERO_SHADER_VERT);
-				const fragmentShader = compile(gl.FRAGMENT_SHADER, HERO_SHADER_FRAG);
-				gl.attachShader(program, vertexShader);
-				gl.attachShader(program, fragmentShader);
-				gl.linkProgram(program);
-				gl.deleteShader(vertexShader);
-				gl.deleteShader(fragmentShader);
-				gl.useProgram(program);
-
-				const buf = gl.createBuffer();
-				gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-				gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
-				const posLoc = gl.getAttribLocation(program, "a_position");
-				gl.enableVertexAttribArray(posLoc);
-				gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
-
-				const uni = {
-					colors: gl.getUniformLocation(program, "u_colors"),
-					scene: gl.getUniformLocation(program, "u_scene"),
-					shape: gl.getUniformLocation(program, "u_shape"),
-					surface: gl.getUniformLocation(program, "u_surface"),
-					finish: gl.getUniformLocation(program, "u_finish"),
-					transform: gl.getUniformLocation(program, "u_transform"),
-					space: gl.getUniformLocation(program, "u_space"),
-					cursor: gl.getUniformLocation(program, "u_cursor"),
-				};
-				gl.uniform3fv(uni.colors, new Float32Array(HERO_SHADER_UNIFORMS.colors.flat()));
-				gl.uniform4f(uni.shape, HERO_SHADER_UNIFORMS.scale, HERO_SHADER_UNIFORMS.intensity, HERO_SHADER_UNIFORMS.paramA, HERO_SHADER_UNIFORMS.warp);
-				gl.uniform4f(uni.surface, HERO_SHADER_UNIFORMS.detail, HERO_SHADER_UNIFORMS.contrast, HERO_SHADER_UNIFORMS.brightness, HERO_SHADER_UNIFORMS.saturation);
-				gl.uniform4f(uni.finish, HERO_SHADER_UNIFORMS.hue, HERO_SHADER_UNIFORMS.vignette, HERO_SHADER_UNIFORMS.blur, HERO_SHADER_UNIFORMS.grain);
-				gl.uniform4f(uni.transform, HERO_SHADER_UNIFORMS.seed, HERO_SHADER_UNIFORMS.rotate, HERO_SHADER_UNIFORMS.drift, HERO_SHADER_UNIFORMS.oklab);
-				gl.uniform4f(uni.cursor, 0, 0, 0, 0.3);
-
-				let bounds = canvas.getBoundingClientRect();
-				let raf = 0;
-				let inView = true;
-				let visible = document.visibilityState === "visible";
-				const start = performance.now();
-
-				const resizeCanvas = () => {
-					const dpr = Math.min(window.devicePixelRatio || 1, 2);
-					const rawWidth = Math.max(1, Math.round(bounds.width * dpr));
-					const rawHeight = Math.max(1, Math.round(bounds.height * dpr));
-					const pixelScale = Math.min(1, Math.sqrt(2_000_000 / Math.max(1, rawWidth * rawHeight)));
-					const width = Math.max(1, Math.round(rawWidth * pixelScale));
-					const height = Math.max(1, Math.round(rawHeight * pixelScale));
-					if (canvas.width !== width || canvas.height !== height) {
-						canvas.width = width;
-						canvas.height = height;
-						gl.viewport(0, 0, width, height);
-					}
-				};
-
-				const renderFrame = (time: number) => {
-					resizeCanvas();
-					gl.uniform4f(uni.scene, canvas.width, canvas.height, time, HERO_SHADER_UNIFORMS.colorCount);
-					gl.uniform4f(uni.space, HERO_SHADER_UNIFORMS.offsetX, HERO_SHADER_UNIFORMS.offsetY, 0, 0);
-					gl.drawArrays(gl.TRIANGLES, 0, 3);
-				};
-
-				if (reduceMotion) {
-					renderFrame(0);
-					return;
-				}
-
-				const requestRender = () => {
-					if (visible && inView && raf === 0) raf = requestAnimationFrame(render);
-				};
-
-				function render(now: number) {
-					raf = 0;
-					if (!visible || !inView) return;
-					renderFrame(((now - start) / 1000) * HERO_SHADER_UNIFORMS.timeScale);
-					requestRender();
-				}
-
-				const updateLayout = () => {
-					bounds = canvas.getBoundingClientRect();
-					requestRender();
-				};
-				window.addEventListener("resize", updateLayout);
-
-				const resizeObserver = new ResizeObserver(updateLayout);
-				resizeObserver.observe(canvas);
-
-				const intersectionObserver = new IntersectionObserver(([entry]) => {
-					inView = entry?.isIntersecting ?? true;
-					if (inView) requestRender();
-					else if (raf !== 0) {
-						cancelAnimationFrame(raf);
-						raf = 0;
-					}
-				});
-				intersectionObserver.observe(canvas);
-
-				document.addEventListener("visibilitychange", () => {
-					visible = document.visibilityState === "visible";
-					if (visible) requestRender();
-					else if (raf !== 0) {
-						cancelAnimationFrame(raf);
-						raf = 0;
-					}
-				});
-
-				requestRender();
-			}
-
-			initHeroShader();
-			document.addEventListener("astro:page-load", initHeroShader);
-		</script>
-
-		<!-- The problem -->
-		<section class="mx-auto max-w-7xl px-4 pt-6 pb-6 sm:px-6 sm:pt-[var(--spacing-section-tight)] sm:pb-[var(--spacing-section-tight)] lg:px-8">
-			<div class="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-12">
-				<div data-reveal>
-					<p class="eyebrow">The problem</p>
-					<h2 class="mt-4 font-display text-[clamp(2rem,4.5vw,3rem)] font-medium leading-[1.1] text-primary">
-						Making the right decision shouldn't be this hard.
-					</h2>
-					<p class="mt-5 max-w-xl text-base text-text/80 sm:text-lg">
-						Whether it's a big trip or a Tuesday night, finding what's worth your time
-						looks like this →
-					</p>
-				</div>
-
-				<!-- Scattered — real screenshots, not mock cards -->
-				<div class="relative h-[560px] sm:h-[600px] lg:h-[640px]" data-reveal>
-					<div class="absolute left-0 top-0 z-10 w-[42%] max-w-[160px] -rotate-6 overflow-hidden rounded-[var(--radius-md)] shadow-lg ring-1 ring-text/5 sm:max-w-[180px]">
-						<Image
-							src={notesItineraryImg}
-							alt="A Notes app itinerary for a Mexico City trip"
-							class="h-auto w-full"
-						/>
-					</div>
-					<div class="absolute left-[18%] top-[14%] z-20 w-[30%] max-w-[115px] rotate-5 overflow-hidden rounded-[var(--radius-md)] shadow-lg ring-1 ring-text/5 sm:max-w-[135px]">
-						<Image
-							src={chatgptSfImg}
-							alt="A ChatGPT conversation asking what to do tonight in San Francisco"
-							class="h-auto w-full"
-						/>
-					</div>
-					<div class="absolute left-[50%] top-[48%] z-40 w-[32%] max-w-[120px] rotate-9 overflow-hidden rounded-[var(--radius-md)] shadow-xl ring-1 ring-text/5 sm:max-w-[140px]">
-						<Image
-							src={mapsLaImg}
-							alt="A Maps guide of the best things to do in Los Angeles"
-							class="h-auto w-full"
-						/>
-					</div>
-					<div class="absolute left-[38%] top-[30%] z-30 w-[40%] max-w-[150px] -rotate-4 overflow-hidden rounded-[var(--radius-md)] shadow-lg ring-1 ring-text/5 sm:max-w-[170px]">
-						<Image
-							src={instagramNycImg}
-							alt="A saved Instagram post titled 'your perfect NYC weekend itinerary'"
-							class="h-auto w-full"
-						/>
-					</div>
-					<div class="absolute left-[24%] top-[72%] z-50 w-[56%] max-w-[195px] -rotate-2 overflow-hidden rounded-[var(--radius-md)] shadow-xl ring-1 ring-text/5 sm:max-w-[225px]">
-						<Image
-							src={voiceMemoImg}
-							alt="A voice memo shared in a group chat"
-							class="h-auto w-full"
-						/>
-					</div>
-				</div>
-			</div>
-		</section>
-
-		<!-- The solution -->
-		<section class="mx-auto max-w-7xl px-4 pb-6 sm:px-6 sm:pb-[var(--spacing-section-tight)] lg:px-8">
-			<div class="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-12">
-				<div class="relative order-2 h-[320px] sm:h-[380px] lg:order-1 lg:h-[420px]" data-reveal>
+					<!-- Duotone accent — CSS-only, no image processing. A
+					     Fresh-Cut→Claret gradient blended with mix-blend-color
+					     tints the grayscale photo's shadows green and
+					     highlights red while preserving its luminance, so it
+					     still reads as black-and-white with color accents
+					     rather than a full color wash. -->
 					<div
-						class="absolute -inset-4 -z-10 rounded-[3rem] bg-gradient-to-br from-secondary/30 via-sage/20 to-accent/25 blur-3xl sm:-inset-8"
+						class="pointer-events-none absolute inset-0 mix-blend-color opacity-60 bg-[linear-gradient(135deg,var(--color-primary),var(--color-claret))]"
 						aria-hidden="true"
 					></div>
 
-					<div class="absolute right-0 top-0 h-[80%] w-[82%] overflow-hidden rounded-[var(--radius-xl)] shadow-xl">
-						<Image
-								src={heroBack}
-								alt="Bagel sandwiches and smoked salmon takeout with a Sant Ambroeus coffee cup"
-								class="h-full w-full object-cover"
-								loading="lazy"
-							/>
-					</div>
-					<div class="absolute bottom-0 left-0 h-[58%] w-[54%] overflow-hidden rounded-[var(--radius-lg)] shadow-xl">
-						<Image
-							src={heroFront}
-							alt="A museum fashion exhibit with mannequins in gowns surrounded by illuminated flowers"
-							class="h-full w-full object-cover"
-							loading="lazy"
-						/>
-					</div>
+					<div
+						class="pointer-events-none absolute inset-x-0 bottom-0 h-[45%] bg-gradient-to-t from-black/55 to-transparent"
+						aria-hidden="true"
+					></div>
 
-					<!-- Activity card straddling the top edge of the left (front) photo -->
-					<div class="absolute left-[2%] top-[24%] w-[44%] max-w-[150px] sm:w-[48%] sm:max-w-[180px]">
-						<RecCard
-							compact
-							tag="Activity"
-							tagColor="blue"
-							place="Museum pop-up"
-							match="97% match"
-							initial="Z"
-							tip={'Zoe — closes in a few weeks.'}
-						/>
+					<div class="absolute inset-x-[4%] bottom-[4%] flex items-center justify-between gap-2">
+						<p class="eyebrow whitespace-nowrap text-sand text-[clamp(0.4rem,1.3vmin,0.75rem)] leading-[1.4] tracking-[0.09em]">
+							Vouched by your friends
+						</p>
+						<div class="flex shrink-0" aria-hidden="true">
+							<span class="flex items-center justify-center rounded-full bg-primary font-mono font-semibold text-bone ring-2 ring-sand h-[clamp(1.1rem,4vmin,2.25rem)] w-[clamp(1.1rem,4vmin,2.25rem)] text-[clamp(0.45rem,1.3vmin,0.75rem)]">
+								M
+							</span>
+							<span class="-ml-2 flex items-center justify-center rounded-full bg-secondary font-mono font-semibold text-bone ring-2 ring-sand h-[clamp(1.1rem,4vmin,2.25rem)] w-[clamp(1.1rem,4vmin,2.25rem)] text-[clamp(0.45rem,1.3vmin,0.75rem)]">
+								Z
+							</span>
+							<span class="-ml-2 flex items-center justify-center rounded-full bg-sage font-mono font-semibold text-bone ring-2 ring-sand h-[clamp(1.1rem,4vmin,2.25rem)] w-[clamp(1.1rem,4vmin,2.25rem)] text-[clamp(0.45rem,1.3vmin,0.75rem)]">
+								J
+							</span>
+						</div>
 					</div>
-
-					<div class="absolute bottom-[6%] right-[3%] w-[44%] max-w-[150px] sm:w-[48%] sm:max-w-[180px]">
-						<RecCard
-							compact
-							tag="Cafe"
-							tagColor="brown"
-							place="Coffee + Bagels"
-							match="96% match"
-							initial="M"
-							tip={"Maya — do the Apollo and Sant Ambroeus combo."}
-						/>
-					</div>
-				</div>
-
-				<div class="order-1 lg:order-2" data-reveal>
-					<p class="eyebrow">Our solution</p>
-					<h3 class="mt-4 font-display text-2xl font-medium leading-tight text-primary sm:text-3xl">
-						We know what you and your network love.
-					</h3>
-					<p class="mt-4 max-w-md text-base text-text/80 sm:text-lg">
-						We show new experiences you actually want to do, validated by who you are — not
-						anonymous sponsored reviews.
-					</p>
 				</div>
 			</div>
 		</section>
+
+		<!-- Problem/solution sections removed 2026-08-27 (explicit request),
+		     replaced with an interactive network graph in that space. -->
+		<NetworkGraph />
 
 		<!-- Example log entries -->
 		<section class="mx-auto max-w-7xl px-4 pb-6 sm:px-6 sm:pb-[var(--spacing-section-tight)] lg:px-8">
@@ -777,79 +219,94 @@ void main() {
 				<h2 class="mt-4 font-display text-[clamp(2rem,4.5vw,3rem)] font-medium leading-[1.1] text-primary">
 					Your next favorite experience.
 				</h2>
-				<p class="mx-auto mt-4 max-w-3xl text-base text-text/80 sm:text-lg">
+				<p class="font-dm-sans mx-auto mt-4 max-w-5xl text-base text-text/80 sm:text-lg">
 					Have confidence in your decisions — find the authentic, hidden favorites buried in your network's recs.
 				</p>
 			</div>
 
 			<div class="mt-10 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4 lg:gap-5">
 				{
-					logEntries.map((entry, i) => (
-						<div
-							class="group relative overflow-hidden rounded-[var(--radius-lg)]"
-							data-reveal
-							style={{ "--reveal-delay": `${Math.min(i, 5) * 60}ms` }}
-						>
-							<Image
-								src={entry.src}
-								alt={entry.alt}
-								class="aspect-[4/5] w-full object-cover transition-transform duration-500 group-hover:scale-105"
-								loading="lazy"
-							/>
-							<span
-								class:list={[
-									entry.tagClass,
-									"absolute left-2 top-2 px-2 py-1 text-[9px] font-bold uppercase tracking-wide shadow-sm sm:left-3 sm:top-3 sm:text-[10px]",
-								]}
+					logEntries.map((entry, i) => {
+						const meta = logEntryMeta[i];
+						return (
+							<div
+								class="group relative overflow-hidden rounded-[var(--radius-lg)]"
+								data-reveal
+								style={{ "--reveal-delay": `${Math.min(i, 5) * 60}ms` }}
 							>
-								{entry.tag}
-							</span>
-							<span class="chip absolute right-2 top-2 px-2 py-1 text-[11px] font-semibold shadow-sm sm:right-3 sm:top-3">
-								{entry.match}% match
-							</span>
-							<div class="glass absolute inset-x-2 bottom-2 px-3 py-2 sm:inset-x-3 sm:bottom-3">
-								<p class="text-xs font-medium text-text sm:text-sm">{entry.caption}</p>
-								<div class="mt-1 flex items-center gap-1 text-[10px] text-text/70 sm:text-xs">
-									<svg width="10" height="10" viewBox="0 0 12 12" fill="none" class="shrink-0" aria-hidden="true">
-										<path
-											d="M6 11c2-2.1 3.5-4 3.5-5.8A3.5 3.5 0 0 0 2.5 5.2C2.5 7 4 8.9 6 11Z"
-											stroke="currentColor"
-											stroke-width="1"
-											stroke-linejoin="round"
-										/>
-										<circle cx="6" cy="5.1" r="1.1" stroke="currentColor" stroke-width="1" />
-									</svg>
-									<span>{entry.city}</span>
+								<Image
+									src={entry.src}
+									alt={entry.alt}
+									class="aspect-[4/5] w-full object-cover transition-transform duration-500 group-hover:scale-105"
+									loading="lazy"
+								/>
+								<span
+									class:list={[
+										entry.tagClass,
+										"absolute left-2 top-2 px-2 py-1 text-[9px] font-dm-sans font-medium uppercase tracking-wide shadow-sm sm:left-3 sm:top-3 sm:text-[10px]",
+									]}
+								>
+									{entry.tag}
+								</span>
+								<span class="chip-match font-instrument-sans absolute right-2 top-2 px-2 py-1 text-[11px] shadow-sm sm:right-3 sm:top-3">
+									{entry.match}% match
+								</span>
+								<div class="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/45 to-transparent" aria-hidden="true" />
+							<div class="absolute inset-x-2 bottom-2 flex items-center justify-end gap-1.5 sm:inset-x-3 sm:bottom-3">
+									<span class="eyebrow whitespace-nowrap text-[8px] text-sand sm:text-[9px]">{degreeLabels[meta.degree]}</span>
+									<div class="relative shrink-0">
+										<span
+											class:list={[
+												meta.avatarColor,
+												"flex h-5 w-5 items-center justify-center rounded-full font-mono text-[8px] font-semibold text-bone ring-2 ring-sand sm:h-6 sm:w-6",
+											]}
+											aria-hidden="true"
+										>
+											{entry.friend[0]}
+										</span>
+										{meta.degree > 1 && (
+											<span
+												class="absolute -bottom-1 -right-1 font-mono text-[10px] font-extrabold leading-none text-claret [text-shadow:0_0_2px_white,0_0_2px_white,0_0_4px_white]"
+												aria-hidden="true"
+											>
+												{meta.degree}°
+											</span>
+										)}
+									</div>
 								</div>
 							</div>
-						</div>
-					))
+						);
+					})
 				}
 			</div>
 		</section>
 
 		<!-- Final CTA -->
 		<section class="relative overflow-hidden">
+			<!-- Source file (src/assets/photos2/backnew.jpg) is now physically
+			     rotated correctly on disk (sips --rotate 270, 2026-08-27) — no
+			     CSS transform needed. The earlier CSS-rotate approach kept
+			     guessing wrong on direction/crop; rotating the actual pixels
+			     once removes that whole class of bug. -->
 			<Image
 				src={ctaBg}
 				alt="A mountain lake at sunset, pink clouds reflected in the still water"
-				class="absolute inset-0 h-full w-full object-cover"
+				class="absolute inset-0 h-full w-full object-cover object-[50%_60%]"
 				loading="lazy"
 			/>
-			<div class="scrim-dark absolute inset-0" aria-hidden="true"></div>
 
 			<div class="relative mx-auto max-w-3xl px-4 py-24 text-center sm:py-32" data-reveal>
 				<p class="eyebrow text-bone/80">Live now</p>
 				<h2 class="mt-4 font-display text-[clamp(2.25rem,5vw,3.5rem)] font-medium leading-[1.1] text-bone">
-					Have you <em class="italic">logged</em> it yet?
+					Have you <em class="italic">vouched</em> for it yet?
 				</h2>
-				<p class="mt-4 text-base text-bone/85 sm:text-lg">
+				<p class="font-dm-sans mt-4 text-base text-bone/85 sm:text-lg">
 					Join the beta and let Vouch start learning in the background.
 				</p>
 				<button
 					type="button"
 					data-open-waitlist
-					class="glass-pill-green mt-8 px-8 py-3.5 text-base font-semibold transition-transform hover:scale-[1.03] active:scale-[0.98]"
+					class="glass-pill-claret mt-8 px-8 py-3.5 text-base font-dm-sans font-medium uppercase tracking-wide transition-transform hover:scale-[1.03] active:scale-[0.98]"
 				>
 					Get Early Access
 				</button>

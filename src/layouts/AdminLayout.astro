@@ -1,0 +1,125 @@
+---
+import "../styles/global.css";
+import QuoteMark from "../components/QuoteMark.astro";
+
+interface Props {
+	title?: string;
+}
+
+const { title = "Admin" } = Astro.props;
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="robots" content="noindex, nofollow" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>{title} — Vouch Admin</title>
+	</head>
+	<body class="min-h-dvh bg-bg font-sans text-text">
+		<div class="hairline border-b">
+			<div class="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3 px-4 py-4 sm:px-6">
+				<a href="/admin" class="inline-flex items-center gap-1 font-wordmark text-lg text-primary">
+					<QuoteMark class="h-[0.6em] w-auto" />
+					Vouch admin
+				</a>
+				<div class="flex items-center gap-4">
+					<span id="itk-publish-status" class="hidden text-xs text-accent"></span>
+					<button
+						type="button"
+						id="itk-publish-btn"
+						class="glass-pill-claret px-4 py-2 text-xs font-dm-sans font-medium uppercase tracking-wide transition-transform hover:scale-[1.02]"
+					>
+						Publish changes to live site
+					</button>
+					<button
+						type="button"
+						id="itk-signout-btn"
+						class="text-xs text-accent transition-colors hover:text-primary"
+					>
+						Sign out
+					</button>
+				</div>
+			</div>
+		</div>
+		<main class="mx-auto max-w-5xl px-4 py-8 sm:px-6">
+			<slot />
+		</main>
+
+		<script>
+			import { supabase, requireSession } from "../lib/admin/client";
+
+			async function initAdminLayout() {
+				const session = await requireSession();
+				if (!session) return;
+
+				document.getElementById("itk-signout-btn")?.addEventListener("click", async () => {
+					await supabase.auth.signOut();
+					window.location.href = "/admin/login";
+				});
+
+				const publishBtn = document.getElementById("itk-publish-btn");
+				const publishStatus = document.getElementById("itk-publish-status");
+				const hookUrl = import.meta.env.PUBLIC_VERCEL_DEPLOY_HOOK_URL;
+
+				publishBtn?.addEventListener("click", async () => {
+					if (!hookUrl) {
+						if (publishStatus) {
+							publishStatus.textContent = "Deploy hook not configured yet.";
+							publishStatus.classList.remove("hidden");
+						}
+						return;
+					}
+					if (publishStatus) {
+						publishStatus.textContent = "Deploying… check back in about a minute.";
+						publishStatus.classList.remove("hidden");
+					}
+					try {
+						await fetch(hookUrl, { method: "POST" });
+						if (publishStatus) publishStatus.textContent = "Deploy started — live in about a minute.";
+					} catch {
+						if (publishStatus) publishStatus.textContent = "Couldn't reach the deploy hook — try again.";
+					}
+				});
+			}
+
+			initAdminLayout();
+		</script>
+
+		<style is:global>
+			.itk-switch {
+				position: relative;
+				display: inline-block;
+				width: 2.25rem;
+				height: 1.25rem;
+				flex-shrink: 0;
+				appearance: none;
+				border-radius: 999px;
+				background: color-mix(in srgb, var(--color-text) 15%, transparent);
+				transition: background-color 0.15s ease;
+				cursor: pointer;
+			}
+			.itk-switch::before {
+				content: "";
+				position: absolute;
+				top: 2px;
+				left: 2px;
+				width: 1rem;
+				height: 1rem;
+				border-radius: 999px;
+				background: var(--color-sand);
+				transition: transform 0.15s ease;
+			}
+			.itk-switch:checked {
+				background: var(--color-secondary);
+			}
+			.itk-switch:checked::before {
+				transform: translateX(1rem);
+			}
+			.itk-switch:focus-visible {
+				outline: 2px solid var(--color-secondary);
+				outline-offset: 2px;
+			}
+		</style>
+	</body>
+</html>

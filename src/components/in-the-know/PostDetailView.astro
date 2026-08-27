@@ -1,0 +1,183 @@
+---
+import { CATEGORY_LABELS, CHIP_BY_CATEGORY } from "../../lib/itk-categories";
+import { mapsUrlFor, type ItkPlace, type ItkPost } from "../../lib/itk-data";
+
+interface Props {
+	post: ItkPost;
+}
+
+const { post } = Astro.props;
+
+const chipClass = CHIP_BY_CATEGORY[post.category] ?? "chip";
+const categoryLabel = CATEGORY_LABELS[post.category] ?? post.category;
+const formattedDate = new Date(post.date).toLocaleDateString("en-US", {
+	month: "long",
+	day: "numeric",
+	year: "numeric",
+});
+const paragraphs = post.body_text
+	.split(/\n\s*\n/)
+	.map((p) => p.trim())
+	.filter(Boolean);
+const places = post.itk_places;
+
+function telHref(phone: string) {
+	return `tel:${phone.replace(/[^0-9+]/g, "")}`;
+}
+---
+
+<main class="pb-[var(--spacing-section)] pt-12 sm:pt-14">
+	<div class="mx-auto flex max-w-4xl items-start gap-3 px-4 sm:px-6 lg:px-8">
+		<a
+			href="/in-the-know"
+			aria-label="Back to In the know"
+			class="glass flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-transform hover:scale-105"
+		>
+			<svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="text-primary" aria-hidden="true">
+				<path d="M10 3.5L5 8l5 4.5"></path>
+			</svg>
+		</a>
+		<div class="relative min-w-0 flex-1 overflow-hidden rounded-[var(--radius-lg)]">
+			<img src={post.cover_url} alt={post.cover_alt} class="aspect-[21/9] w-full object-cover" />
+			<span
+				class:list={[chipClass, "absolute left-3 top-3 px-2.5 py-1 text-[10px] font-dm-sans font-medium uppercase tracking-wide shadow-sm"]}
+			>
+				{categoryLabel}
+			</span>
+		</div>
+	</div>
+
+	<div class="mx-auto max-w-3xl px-4 pt-8 sm:px-6 lg:px-8">
+		<p class="eyebrow text-accent">{formattedDate} · {post.city}</p>
+		<h1 class="mt-2 font-display text-3xl font-medium text-primary sm:text-4xl lg:text-5xl">{post.title}</h1>
+		{post.excerpt && <p class="mt-4 font-instrument-sans text-lg leading-snug text-text/70">{post.excerpt}</p>}
+
+		{paragraphs.length > 0 && (
+			<div class="itk-body mt-8 text-base leading-relaxed text-text/80" data-reveal>
+				{paragraphs.map((p) => <p>{p}</p>)}
+			</div>
+		)}
+	</div>
+
+	{places.length > 0 && (
+		<div class="mx-auto mt-14 flex max-w-5xl flex-col gap-16 px-4 sm:px-6 lg:px-8">
+			{places.map((place: ItkPlace, i: number) => {
+				const textFirst = i % 2 === 0;
+				return (
+					<div
+						class:list={[
+							"itk-place grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12",
+							i > 0 && "hairline border-t pt-14",
+						]}
+					>
+						<div class:list={["order-2 flex flex-col gap-4", textFirst ? "lg:order-1" : "lg:order-2"]}>
+							<h2 class="font-display text-xl text-primary sm:text-2xl">{place.name}</h2>
+
+							{place.description && (
+								<p class="text-base leading-relaxed text-text/80">{place.description}</p>
+							)}
+
+							{place.tags.length > 0 && (
+								<div class="flex flex-wrap gap-2">
+									{place.tags.map((tag) => (
+										<span class="rounded-full border border-accent/25 px-2.5 py-1 text-[10px] font-dm-sans font-medium uppercase tracking-wide text-accent">
+											{tag}
+										</span>
+									))}
+								</div>
+							)}
+
+							{(place.address || place.phone || place.website_url || place.booking_url) && (
+								<div class="hairline divide-y divide-[color-mix(in_srgb,var(--color-text)_8%,transparent)] rounded-[var(--radius-md)] border">
+									{place.address && (
+										<a
+											href={mapsUrlFor(place.address)}
+											target="_blank"
+											rel="noopener noreferrer"
+											class="flex items-center gap-2.5 px-4 py-3 text-sm text-text/80 transition-colors hover:text-primary"
+										>
+											<svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" class="shrink-0 text-accent" aria-hidden="true">
+												<path d="M8 14.5s5-4.42 5-8.25a5 5 0 1 0-10 0c0 3.83 5 8.25 5 8.25Z" stroke-linejoin="round"></path>
+												<circle cx="8" cy="6.25" r="1.75"></circle>
+											</svg>
+											{place.address}
+										</a>
+									)}
+									{place.phone && (
+										<a
+											href={telHref(place.phone)}
+											class="flex items-center gap-2.5 px-4 py-3 text-sm text-text/80 transition-colors hover:text-primary"
+										>
+											<svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" class="shrink-0 text-accent" aria-hidden="true">
+												<path d="M3.5 2.5h2l1 3-1.5 1.2a8 8 0 0 0 4.3 4.3l1.2-1.5 3 1v2a1.5 1.5 0 0 1-1.6 1.5A11.5 11.5 0 0 1 2 3.6a1.5 1.5 0 0 1 1.5-1.1Z" stroke-linejoin="round"></path>
+											</svg>
+											{place.phone}
+										</a>
+									)}
+									{place.website_url && (
+										<a
+											href={place.website_url}
+											target="_blank"
+											rel="noopener noreferrer"
+											class="flex items-center gap-2.5 px-4 py-3 text-sm text-text/80 transition-colors hover:text-primary"
+										>
+											<svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" class="shrink-0 text-accent" aria-hidden="true">
+												<circle cx="8" cy="8" r="6"></circle>
+												<path d="M2 8h12M8 2c1.7 1.8 2.6 3.9 2.6 6S9.7 12.2 8 14c-1.7-1.8-2.6-3.9-2.6-6S6.3 3.8 8 2Z"></path>
+											</svg>
+											Visit website
+										</a>
+									)}
+									{place.booking_url && (
+										<a
+											href={place.booking_url}
+											target="_blank"
+											rel="noopener noreferrer"
+											class="flex items-center justify-center gap-2 px-4 py-3 text-sm font-dm-sans font-medium"
+										>
+											<span class="glass-pill-claret px-4 py-1.5 text-xs font-medium uppercase tracking-wide">
+												{place.booking_label || "Book"}
+											</span>
+										</a>
+									)}
+								</div>
+							)}
+						</div>
+
+						<div class:list={["order-1 flex flex-col gap-3", textFirst ? "lg:order-2" : "lg:order-1"]}>
+							{place.itk_photos.length > 0 && (
+								<img
+									src={place.itk_photos[0].url}
+									alt={place.itk_photos[0].alt_text}
+									loading="lazy"
+									class="aspect-[4/3] w-full rounded-[var(--radius-lg)] object-cover"
+								/>
+							)}
+							{place.itk_photos.length > 1 && (
+								<div class="itk-hscroll flex gap-2 overflow-x-auto pb-1">
+									{place.itk_photos.slice(1).map((photo) => (
+										<img
+											src={photo.url}
+											alt={photo.alt_text}
+											loading="lazy"
+											class="h-20 w-20 shrink-0 rounded-[var(--radius-sm)] object-cover"
+										/>
+									))}
+								</div>
+							)}
+						</div>
+					</div>
+				);
+			})}
+		</div>
+	)}
+</main>
+
+<style>
+	.itk-hscroll {
+		scrollbar-width: none;
+	}
+	.itk-hscroll::-webkit-scrollbar {
+		display: none;
+	}
+</style>

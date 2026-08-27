@@ -1,0 +1,369 @@
+---
+// Interactive network graph — replaces the old "problem"/"solution" sections.
+// Hybrid rendering: SVG draws only the connecting lines; the nodes are real
+// HTML elements (friend photos) positioned at the same percentage
+// coordinates.
+//
+// Layout is randomized on every build (Math.random() in frontmatter, so it's
+// fixed-per-build not fixed-per-request) rather than a physics/force sim —
+// deterministic-enough, no runtime layout library, consistent with this
+// project's existing "no framework, hand-rolled" pattern (see the hero's
+// former WebGL shader). 2026-08-27: reworked several times — organic
+// variation (jittered angles/radii, variable branch counts) plus extra
+// cross-links between peers so it reads as a real mesh, not a strict tree;
+// then a monochrome pass per reference images the user shared; then swapped
+// the colored initial-avatars for the user's actual friend photos, and
+// calmed the animation down (dropped the bouncy spring-overshoot entrance
+// and the uniform pulsing "breathe" loop — both read as generic/AI-made).
+
+import { Image } from "astro:assets";
+import photo1 from "../assets/network/301910262_483474119894528_749236013868843350_n.jpg";
+import photo2 from "../assets/network/323307289_2770410676424143_8685258934460346113_n.jpg";
+import photo3 from "../assets/network/413357306_1479978636191552_160775654165492666_n.jpg";
+import photo4 from "../assets/network/416318319_1198695668200966_2810514173777041305_n.jpg";
+import photo5 from "../assets/network/434455677_1451708355429222_4458534118925010285_n.jpg";
+import photo6 from "../assets/network/446113989_1524643864860628_7981743424584493800_n.jpg";
+import photo7 from "../assets/network/470944107_1148076153629035_7537612021808133239_n.jpg";
+import photo8 from "../assets/network/472063232_604251638646719_366681107382792192_n.jpg";
+import photo9 from "../assets/network/488827202_2639130409609293_878371919111183411_n.jpg";
+import photo10 from "../assets/network/491453890_18335878948089166_8380002776302589829_n.jpg";
+import photo11 from "../assets/network/531554627_18055098434612194_6565805596382069934_n.jpg";
+import photo12 from "../assets/network/589211476_18419074024136529_7611834409632737964_n.jpg";
+import photo13 from "../assets/network/615336984_18549974179015323_7496466813699190029_n.jpg";
+import photo14 from "../assets/network/642957054_18307060708283376_7080319197970724566_n.jpg";
+import photo15 from "../assets/network/652761998_18574047448036099_6639032293559067193_n.jpg";
+import photo16 from "../assets/network/659028616_18433579186141774_8384824410675841175_n.jpg";
+import photo17 from "../assets/network/684282306_18588487918014390_509482712720110792_n.jpg";
+import photo18 from "../assets/network/728580103_18597061630000505_3800404519192094077_n.jpg";
+import photo19 from "../assets/network/730022152_18603712525029711_3195705400693925128_n.jpg";
+import photo20 from "../assets/network/762404400_18543467014074075_8327657804684861579_n.jpg";
+
+const friendPhotos = [
+	photo1, photo2, photo3, photo4, photo5, photo6, photo7, photo8, photo9, photo10,
+	photo11, photo12, photo13, photo14, photo15, photo16, photo17, photo18, photo19, photo20,
+];
+
+interface Node {
+	id: string;
+	x: number;
+	y: number;
+	size: number;
+	isMe: boolean;
+	depth: 0 | 1 | 2;
+	angle: number;
+	radius: number;
+	delay: number;
+	photo: (typeof friendPhotos)[number] | null;
+	parentId: string | null;
+}
+
+// Size now scales continuously with distance from center (closer = bigger),
+// per explicit request, rather than a random range per ring tier. A little
+// jitter is layered on top so it doesn't look mechanically uniform.
+const MAX_RADIUS = 58;
+const SIZE_MAX = 5.5;
+const SIZE_MIN = 0.9;
+const sizeForRadius = (radius: number) => {
+	const t = Math.min(radius / MAX_RADIUS, 1);
+	const base = SIZE_MAX - t * (SIZE_MAX - SIZE_MIN);
+	return Math.max(SIZE_MIN, base * rand(0.85, 1.15));
+};
+
+let nodeCounter = 0;
+const nextPhoto = () => {
+	const i = nodeCounter++;
+	return { photo: friendPhotos[i % friendPhotos.length] };
+};
+
+interface Edge {
+	from: Node;
+	to: Node;
+	delay: number;
+	faint?: boolean;
+}
+
+const rand = (min: number, max: number) => min + Math.random() * (max - min);
+const pick = <T,>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
+
+const CENTER = { x: 50, y: 50 };
+
+const centerNode: Node = {
+	id: "me",
+	x: CENTER.x,
+	y: CENTER.y,
+	size: SIZE_MAX,
+	isMe: true,
+	depth: 0,
+	angle: 0,
+	radius: 0,
+	delay: 0,
+	photo: pick(friendPhotos),
+	parentId: null,
+};
+
+const ring1Count = 7 + Math.floor(Math.random() * 4); // 7-10, varies per build
+const ring1: Node[] = Array.from({ length: ring1Count }, (_, i) => {
+	const baseAngle = (i / ring1Count) * Math.PI * 2;
+	const angle = baseAngle + rand(-0.5, 0.5);
+	const radius = rand(19, 33);
+	return {
+		id: `r1-${i}`,
+		x: CENTER.x + Math.cos(angle) * radius,
+		y: CENTER.y + Math.sin(angle) * radius,
+		size: sizeForRadius(radius),
+		isMe: false,
+		depth: 1 as const,
+		angle,
+		radius,
+		delay: rand(0, 0.6),
+		parentId: "me",
+		...nextPhoto(),
+	};
+});
+
+const ring2: Node[] = ring1.flatMap((parent) => {
+	const childCount = 1 + Math.floor(Math.random() * 4); // 1-4, varies per node
+	return Array.from({ length: childCount }, (_, j) => {
+		const angle = parent.angle + rand(-1.2, 1.2);
+		const radius = parent.radius + rand(11, 25);
+		return {
+			id: `${parent.id}-c${j}`,
+			x: CENTER.x + Math.cos(angle) * radius,
+			y: CENTER.y + Math.sin(angle) * radius,
+			size: sizeForRadius(radius),
+			isMe: false,
+			depth: 2 as const,
+			angle,
+			radius,
+			delay: rand(0.5, 1.6),
+			parentId: parent.id,
+			...nextPhoto(),
+		};
+	});
+});
+
+const allNodes = [centerNode, ...ring1, ...ring2];
+const byId = new Map(allNodes.map((n) => [n.id, n]));
+
+const treeEdges: Edge[] = [
+	...ring1.map((n) => ({ from: centerNode, to: n, delay: rand(0, 0.4) })),
+	...ring2.map((n) => ({ from: byId.get(n.parentId!)!, to: n, delay: rand(0.4, 1.2) })),
+];
+
+// Extended friends who know each other — random links between peers that
+// aren't parent/child, so the graph reads as a real interconnected mesh
+// rather than a clean tree.
+const peers = [...ring1, ...ring2];
+const extraEdgeCount = 8 + Math.floor(Math.random() * 7); // 8-14
+const extraEdges: Edge[] = [];
+for (let k = 0; k < extraEdgeCount; k++) {
+	const a = pick(peers);
+	const b = pick(peers);
+	if (a.id === b.id) continue;
+	extraEdges.push({ from: a, to: b, delay: rand(1, 2.2), faint: true });
+}
+
+const edges = [...treeEdges, ...extraEdges];
+---
+
+<section class="mx-auto max-w-7xl px-4 pt-[var(--spacing-section)] pb-[var(--spacing-section)] sm:px-6 lg:px-8">
+	<div class="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-16">
+		<div
+			id="network-graph"
+			class="relative order-2 mx-auto aspect-square w-full max-w-xl select-none lg:order-1"
+			data-reveal
+		>
+		<svg
+			viewBox="0 0 100 100"
+			preserveAspectRatio="none"
+			class="pointer-events-none absolute inset-0 h-full w-full overflow-visible"
+			aria-hidden="true"
+		>
+			{
+				edges.map((edge) => (
+					<line
+						x1={edge.from.x}
+						y1={edge.from.y}
+						x2={edge.to.x}
+						y2={edge.to.y}
+						stroke="var(--color-text)"
+						stroke-width={edge.faint ? 0.1 : edge.from.depth === 0 ? 0.22 : 0.15}
+						stroke-linecap="round"
+						class="network-edge"
+						data-from={edge.from.id}
+						data-to={edge.to.id}
+						style={`opacity: ${edge.faint ? 0.22 : 0.4}`}
+					/>
+				))
+			}
+		</svg>
+
+		{
+			allNodes.map((node) => (
+				<div
+					class:list={["network-node absolute overflow-hidden rounded-full", node.isMe && "network-node--me"]}
+					style={`left: ${node.x}%; top: ${node.y}%; width: ${node.size}%; aspect-ratio: 1; --node-delay: ${node.delay}s;`}
+				>
+					<Image
+						src={node.photo!}
+						alt=""
+						class:list={[
+							"network-node-avatar h-full w-full rounded-full object-cover",
+							node.isMe ? "ring-2 ring-claret" : "ring-1 ring-sand",
+						]}
+						data-node-id={node.id}
+						data-parent-id={node.parentId ?? ""}
+					/>
+				</div>
+			))
+		}
+		</div>
+
+		<div class="order-1 lg:order-2" data-reveal>
+			<p class="eyebrow">The network effect</p>
+			<h2 class="mt-4 font-display text-[clamp(2rem,4.5vw,3rem)] font-medium leading-[1.1] text-primary">
+				You're at the center of it.
+			</h2>
+			<p class="font-dm-sans mt-4 max-w-md text-base text-text/80 sm:text-lg">
+				Every rec you get has traveled through people you trust — and every place you love
+				becomes something someone else discovers next.
+			</p>
+		</div>
+	</div>
+</section>
+
+<style>
+	/* Solid, static lines — no dash pattern, no motion (explicit request). */
+	.network-edge {
+		transition: opacity 0.25s ease, stroke 0.25s ease, stroke-width 0.25s ease;
+	}
+
+	/* Hover-to-highlight-path: JS toggles .is-active on the hovered node's
+	   chain back to the center, and .is-dimmed on everything else. The
+	   !important on opacity is needed because each line already carries an
+	   inline opacity (its base faint/normal value), which otherwise beats a
+	   plain class rule. */
+	.network-edge.is-active {
+		stroke: var(--color-claret) !important;
+		stroke-width: 0.35 !important;
+		opacity: 0.95 !important;
+	}
+
+	.network-edge.is-dimmed {
+		opacity: 0.06 !important;
+	}
+
+	.network-node-avatar {
+		transition: opacity 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+		cursor: pointer;
+	}
+
+	.network-node-avatar.is-dimmed {
+		opacity: 0.2;
+	}
+
+	.network-node-avatar.is-active {
+		transform: scale(1.15);
+		box-shadow:
+			0 0 0 2px var(--color-claret),
+			0 2px 10px color-mix(in srgb, var(--color-claret) 55%, transparent);
+	}
+
+	/* Simple fade/settle entrance — no spring overshoot, no idle pulsing
+	   loop. Both read as generic/AI-demo-ish once the nodes became real
+	   photos rather than solid-color placeholders. */
+	.network-node {
+		opacity: 0;
+		transform: translate(-50%, -50%) scale(0.7);
+		animation: network-node-in 0.5s ease-out forwards;
+		animation-delay: var(--node-delay, 0s);
+	}
+
+	.network-node-avatar {
+		box-shadow: 0 1px 3px color-mix(in srgb, var(--color-text) 25%, transparent);
+	}
+
+	.network-node--me {
+		z-index: 10;
+		box-shadow: 0 2px 10px color-mix(in srgb, var(--color-claret) 45%, transparent);
+	}
+
+	@keyframes network-node-in {
+		to {
+			opacity: 1;
+			transform: translate(-50%, -50%) scale(1);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.network-edge,
+		.network-node {
+			animation: none;
+			opacity: 1;
+			transform: translate(-50%, -50%) scale(1);
+		}
+	}
+</style>
+
+<script>
+	// Hover a node → highlight the chain of tree edges back to the center
+	// ("the path it took to get there"), dimming everything else.
+	function initNetworkGraph() {
+		const container = document.getElementById("network-graph");
+		if (!container) return;
+
+		const nodeEls = Array.from(container.querySelectorAll<HTMLElement>("[data-node-id]"));
+		const edgeEls = Array.from(container.querySelectorAll<SVGLineElement>("[data-from][data-to]"));
+
+		const parentOf = new Map<string, string>();
+		nodeEls.forEach((el) => {
+			const id = el.dataset.nodeId!;
+			const parent = el.dataset.parentId;
+			if (parent) parentOf.set(id, parent);
+		});
+
+		const pathToRoot = (id: string) => {
+			const chain = [id];
+			let current = id;
+			while (parentOf.has(current)) {
+				current = parentOf.get(current)!;
+				chain.push(current);
+			}
+			return chain;
+		};
+
+		const clear = () => {
+			nodeEls.forEach((el) => el.classList.remove("is-active", "is-dimmed"));
+			edgeEls.forEach((el) => el.classList.remove("is-active", "is-dimmed"));
+		};
+
+		const highlight = (id: string) => {
+			const chain = pathToRoot(id);
+			const onChain = new Set(chain);
+
+			nodeEls.forEach((el) => {
+				const isOn = onChain.has(el.dataset.nodeId!);
+				el.classList.toggle("is-active", isOn);
+				el.classList.toggle("is-dimmed", !isOn);
+			});
+
+			edgeEls.forEach((el) => {
+				const a = el.dataset.from!;
+				const b = el.dataset.to!;
+				const onPath = chain.some(
+					(node, i) => i < chain.length - 1 && ((chain[i] === a && chain[i + 1] === b) || (chain[i] === b && chain[i + 1] === a)),
+				);
+				el.classList.toggle("is-active", onPath);
+				el.classList.toggle("is-dimmed", !onPath);
+			});
+		};
+
+		nodeEls.forEach((el) => {
+			el.addEventListener("pointerenter", () => highlight(el.dataset.nodeId!));
+			el.addEventListener("pointerleave", clear);
+		});
+	}
+
+	initNetworkGraph();
+	document.addEventListener("astro:page-load", initNetworkGraph);
+</script>

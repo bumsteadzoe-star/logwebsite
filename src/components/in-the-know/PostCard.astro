@@ -1,0 +1,46 @@
+---
+import { CATEGORY_LABELS, CHIP_BY_CATEGORY, type CategoryKey } from "../../lib/itk-categories";
+
+interface Props {
+	slug: string;
+	title: string;
+	date: Date;
+	category: CategoryKey;
+	city: string;
+	cover: string;
+	coverAlt: string;
+	class?: string;
+}
+
+const { slug, title, date, category, city, cover, coverAlt, class: className = "" } = Astro.props;
+
+const chipClass = CHIP_BY_CATEGORY[category] ?? "chip";
+const categoryLabel = CATEGORY_LABELS[category] ?? category;
+
+const formattedDate = date.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+---
+
+<a
+	href={`/in-the-know/${slug}`}
+	class:list={["group block", className]}
+	data-post-card
+	data-category={category}
+	data-city={city.toLowerCase()}
+	data-title={title.toLowerCase()}
+>
+	<div class="relative aspect-square overflow-hidden rounded-[var(--radius-lg)]">
+		<img
+			src={cover}
+			alt={coverAlt}
+			class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+			loading="lazy"
+		/>
+		<span
+			class:list={[chipClass, "absolute left-2 top-2 px-2.5 py-1 text-[10px] font-dm-sans font-medium uppercase tracking-wide shadow-sm sm:left-3 sm:top-3"]}
+		>
+			{categoryLabel}
+		</span>
+	</div>
+	<p class="eyebrow mt-3 text-accent">{formattedDate} · {city}</p>
+	<p class="mt-1 font-instrument-sans text-lg leading-snug text-primary">{title}</p>
+</a>
