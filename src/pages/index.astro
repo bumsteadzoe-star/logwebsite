@@ -136,14 +136,15 @@ const logEntryMeta = logEntries.map((entry, i) => ({
 		     vmin coefficients run higher than a literal minimum-to-spec
 		     curve would need, so they reach that ceiling on ordinary screens
 		     instead of only on very large ones — explicit user call, "make
-		     the hero text/button bigger"). Also grid-cols-2 unconditionally
-		     (no lg: prefix) —
-		     explicit user call: the two columns must stay side-by-side at
-		     every viewport width, including phones, shrinking continuously
-		     instead of stacking. Don't revert either of these to the more
-		     usual breakpoint-based approach. -->
+		     the hero text/button bigger").
+
+		     Stacks to one column below `sm` (text on top, photo below) —
+		     phone width was cramping the two columns side-by-side; reverted
+		     from an earlier "always side-by-side, never stack" call once
+		     that turned out to look cramped on phones in practice. Side by
+		     side again from `sm` up. -->
 		<section class="flex min-h-dvh items-center bg-sand px-3 py-[clamp(2.5rem,6vmin,5rem)] sm:px-6 lg:px-8">
-			<div class="mx-auto grid w-full max-w-7xl grid-cols-2 items-center gap-[clamp(0.75rem,4vmin,4rem)]">
+			<div class="mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-[clamp(1.5rem,4vmin,4rem)] sm:grid-cols-2">
 				<div class="-ml-2 text-left sm:-ml-4 lg:-ml-6" data-reveal>
 					<h1 class="font-display font-normal text-primary text-[clamp(1.6rem,9.5vmin,5.5rem)] leading-[0.94] tracking-[-0.03em]">
 						The knowledge of your<br />
