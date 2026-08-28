@@ -63,7 +63,7 @@ import { RATING_VALUES } from "../../../lib/itk-ratings";
 				<textarea data-field="excerpt" rows="2" class="glass-pill w-full px-4 py-2.5 text-sm text-text outline-none"></textarea>
 			</label>
 
-			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+			<div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
 				<label class="flex flex-col gap-1.5 text-sm">
 					<span class="text-accent">Category</span>
 					<select data-field="category" class="glass-pill w-full px-4 py-2.5 text-sm text-text outline-none">
@@ -77,13 +77,6 @@ import { RATING_VALUES } from "../../../lib/itk-ratings";
 				<label class="flex flex-col gap-1.5 text-sm">
 					<span class="text-accent">Date</span>
 					<input type="date" data-field="date" class="glass-pill w-full px-4 py-2.5 text-sm text-text outline-none" />
-				</label>
-				<label class="flex flex-col gap-1.5 text-sm">
-					<span class="text-accent">Rating</span>
-					<select data-field="rating" class="glass-pill w-full px-4 py-2.5 text-sm text-text outline-none">
-						<option value="">No rating</option>
-						{RATING_VALUES.map((value) => <option value={value}>{value}</option>)}
-					</select>
 				</label>
 			</div>
 
@@ -133,6 +126,13 @@ import { RATING_VALUES } from "../../../lib/itk-ratings";
 				</div>
 			</div>
 			<input type="text" placeholder="Name" data-field="name" class="glass-pill w-full px-4 py-2.5 text-sm text-text outline-none" />
+			<label class="flex flex-col gap-1.5 text-sm">
+				<span class="text-accent">Rating</span>
+				<select data-field="rating" class="glass-pill w-full max-w-[14rem] px-4 py-2.5 text-sm text-text outline-none">
+					<option value="">No rating</option>
+					{RATING_VALUES.map((value) => <option value={value}>{value}</option>)}
+				</select>
+			</label>
 			<textarea placeholder="Description" rows="2" data-field="description" class="glass-pill w-full px-4 py-2.5 text-sm text-text outline-none"></textarea>
 			<div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
 				<div class="flex flex-col gap-1">
@@ -198,6 +198,7 @@ import { RATING_VALUES } from "../../../lib/itk-ratings";
 		id: string;
 		position: number;
 		name: string;
+		rating: Rating | null;
 		description: string | null;
 		address: string | null;
 		phone: string | null;
@@ -250,7 +251,6 @@ import { RATING_VALUES } from "../../../lib/itk-ratings";
 				date: (fieldsMap.get("date") as HTMLInputElement).value,
 				cover_alt: (fieldsMap.get("cover_alt") as HTMLInputElement).value,
 				body_text: (fieldsMap.get("body_text") as HTMLTextAreaElement).value,
-				rating: (fieldsMap.get("rating") as HTMLSelectElement).value || null,
 			};
 			const { error } = await supabase.from("itk_posts").update(updates).eq("id", postId);
 			setStatus(error ? `Couldn't save: ${error.message}` : "Saved");
@@ -311,6 +311,7 @@ import { RATING_VALUES } from "../../../lib/itk-ratings";
 				(node.querySelector(`[data-field="${field}"]`) as HTMLInputElement).value = value ?? "";
 			};
 			setVal("name", place.name);
+			setVal("rating", place.rating ?? "");
 			setVal("description", place.description ?? "");
 			setVal("address", place.address ?? "");
 			setVal("phone", place.phone ?? "");
@@ -335,6 +336,7 @@ import { RATING_VALUES } from "../../../lib/itk-ratings";
 				const tagsRaw = get("tags");
 				const updates = {
 					name: get("name"),
+					rating: get("rating") || null,
 					description: get("description") || null,
 					address: get("address") || null,
 					phone: get("phone") || null,
@@ -541,7 +543,6 @@ import { RATING_VALUES } from "../../../lib/itk-ratings";
 			(fieldsMap.get("date") as HTMLInputElement).value = data.date;
 			(fieldsMap.get("cover_alt") as HTMLInputElement).value = data.cover_alt;
 			(fieldsMap.get("body_text") as HTMLTextAreaElement).value = data.body_text;
-			(fieldsMap.get("rating") as HTMLSelectElement).value = data.rating ?? "";
 			if (data.cover_url) {
 				coverPreview.src = data.cover_url;
 				coverPreview.classList.remove("hidden");
@@ -576,7 +577,6 @@ import { RATING_VALUES } from "../../../lib/itk-ratings";
 			const bodyText = (fieldsMap.get("body_text") as HTMLTextAreaElement).value;
 			const coverUrl = coverPreview.classList.contains("hidden") ? "" : coverPreview.src;
 			const coverAlt = (fieldsMap.get("cover_alt") as HTMLInputElement).value;
-			const rating = ((fieldsMap.get("rating") as HTMLSelectElement).value || null) as Rating | null;
 
 			const chipClass = CHIP_BY_CATEGORY[category] ?? "chip";
 			const categoryLabel = CATEGORY_LABELS[category] ?? category;
@@ -598,6 +598,7 @@ import { RATING_VALUES } from "../../../lib/itk-ratings";
 					const get = (field: string) =>
 						(placeEl.querySelector(`[data-field="${field}"]`) as HTMLInputElement)?.value ?? "";
 					const name = get("name");
+					const rating = (get("rating") || null) as Rating | null;
 					const description = get("description");
 					const address = get("address");
 					const phone = get("phone");
@@ -663,7 +664,14 @@ import { RATING_VALUES } from "../../../lib/itk-ratings";
 					return `
 						<div class="itk-place grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12 ${i > 0 ? "hairline border-t pt-14" : ""}">
 							<div class="flex flex-col gap-4 order-2 ${textFirst ? "lg:order-1" : "lg:order-2"}">
-								<h2 class="font-display text-xl text-primary sm:text-2xl">${escapeHtml(name || "Untitled place")}</h2>
+								<div class="flex flex-wrap items-center gap-3">
+									<h2 class="font-display text-xl text-primary sm:text-2xl">${escapeHtml(name || "Untitled place")}</h2>
+									${
+										rating
+											? `<span class="${RATING_CHIP_CLASS[rating]} px-2.5 py-1 text-[10px] font-dm-sans font-medium uppercase tracking-wide">${escapeHtml(rating)}</span>`
+											: ""
+									}
+								</div>
 								${description ? `<p class="text-base leading-relaxed text-text/80">${escapeHtml(description)}</p>` : ""}
 								${tagsHtml}
 								${detailsHtml}
@@ -687,11 +695,6 @@ import { RATING_VALUES } from "../../../lib/itk-ratings";
 									: `<div class="aspect-[21/9] w-full bg-[color-mix(in_srgb,var(--color-text)_6%,transparent)]"></div>`
 							}
 							<span class="${chipClass} absolute left-3 top-3 px-2.5 py-1 text-[10px] font-dm-sans font-medium uppercase tracking-wide shadow-sm">${escapeHtml(categoryLabel)}</span>
-							${
-								rating
-									? `<span class="${RATING_CHIP_CLASS[rating]} absolute right-3 top-3 px-2.5 py-1 text-[10px] font-dm-sans font-medium uppercase tracking-wide shadow-sm">${escapeHtml(rating)}</span>`
-									: ""
-							}
 						</div>
 					</div>
 					<div class="mx-auto max-w-3xl px-4 pt-8 sm:px-6 lg:px-8">

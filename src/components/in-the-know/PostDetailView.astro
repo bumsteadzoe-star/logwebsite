@@ -45,13 +45,6 @@ function telHref(phone: string) {
 			>
 				{categoryLabel}
 			</span>
-			{post.rating && (
-				<span
-					class:list={[RATING_CHIP_CLASS[post.rating], "absolute right-3 top-3 px-2.5 py-1 text-[10px] font-dm-sans font-medium uppercase tracking-wide shadow-sm"]}
-				>
-					{post.rating}
-				</span>
-			)}
 		</div>
 	</div>
 
@@ -79,7 +72,16 @@ function telHref(phone: string) {
 						]}
 					>
 						<div class:list={["order-2 flex flex-col gap-4", textFirst ? "lg:order-1" : "lg:order-2"]}>
-							<h2 class="font-display text-xl text-primary sm:text-2xl">{place.name}</h2>
+							<div class="flex flex-wrap items-center gap-3">
+								<h2 class="font-display text-xl text-primary sm:text-2xl">{place.name}</h2>
+								{place.rating && (
+									<span
+										class:list={[RATING_CHIP_CLASS[place.rating], "px-2.5 py-1 text-[10px] font-dm-sans font-medium uppercase tracking-wide"]}
+									>
+										{place.rating}
+									</span>
+								)}
+							</div>
 
 							{place.description && (
 								<p class="text-base leading-relaxed text-text/80">{place.description}</p>

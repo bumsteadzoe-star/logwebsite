@@ -19,6 +19,7 @@ export interface ItkPlace {
 	booking_label: string | null;
 	booking_url: string | null;
 	tags: string[];
+	rating: Rating | null;
 	itk_photos: ItkPhoto[];
 }
 
@@ -33,7 +34,6 @@ export interface ItkPost {
 	cover_url: string;
 	cover_alt: string;
 	body_text: string;
-	rating: Rating | null;
 	published: boolean;
 	weekly_highlight: boolean;
 	pinned: boolean;
