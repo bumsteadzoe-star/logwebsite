@@ -1,6 +1,7 @@
 ---
 import AdminLayout from "../../../layouts/AdminLayout.astro";
 import { CATEGORY_KEYS, CATEGORY_LABELS } from "../../../lib/itk-categories";
+import { RATING_VALUES } from "../../../lib/itk-ratings";
 ---
 
 <AdminLayout title="Edit post">
@@ -62,7 +63,7 @@ import { CATEGORY_KEYS, CATEGORY_LABELS } from "../../../lib/itk-categories";
 				<textarea data-field="excerpt" rows="2" class="glass-pill w-full px-4 py-2.5 text-sm text-text outline-none"></textarea>
 			</label>
 
-			<div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
 				<label class="flex flex-col gap-1.5 text-sm">
 					<span class="text-accent">Category</span>
 					<select data-field="category" class="glass-pill w-full px-4 py-2.5 text-sm text-text outline-none">
@@ -76,6 +77,13 @@ import { CATEGORY_KEYS, CATEGORY_LABELS } from "../../../lib/itk-categories";
 				<label class="flex flex-col gap-1.5 text-sm">
 					<span class="text-accent">Date</span>
 					<input type="date" data-field="date" class="glass-pill w-full px-4 py-2.5 text-sm text-text outline-none" />
+				</label>
+				<label class="flex flex-col gap-1.5 text-sm">
+					<span class="text-accent">Rating</span>
+					<select data-field="rating" class="glass-pill w-full px-4 py-2.5 text-sm text-text outline-none">
+						<option value="">No rating</option>
+						{RATING_VALUES.map((value) => <option value={value}>{value}</option>)}
+					</select>
 				</label>
 			</div>
 
@@ -184,6 +192,7 @@ import { CATEGORY_KEYS, CATEGORY_LABELS } from "../../../lib/itk-categories";
 <script>
 	import { supabase, requireSession, mapsUrlFor } from "../../../lib/admin/client";
 	import { CATEGORY_LABELS, CHIP_BY_CATEGORY, type CategoryKey } from "../../../lib/itk-categories";
+	import { RATING_CHIP_CLASS, type Rating } from "../../../lib/itk-ratings";
 
 	type PlaceRow = {
 		id: string;
@@ -241,6 +250,7 @@ import { CATEGORY_KEYS, CATEGORY_LABELS } from "../../../lib/itk-categories";
 				date: (fieldsMap.get("date") as HTMLInputElement).value,
 				cover_alt: (fieldsMap.get("cover_alt") as HTMLInputElement).value,
 				body_text: (fieldsMap.get("body_text") as HTMLTextAreaElement).value,
+				rating: (fieldsMap.get("rating") as HTMLSelectElement).value || null,
 			};
 			const { error } = await supabase.from("itk_posts").update(updates).eq("id", postId);
 			setStatus(error ? `Couldn't save: ${error.message}` : "Saved");
@@ -531,6 +541,7 @@ import { CATEGORY_KEYS, CATEGORY_LABELS } from "../../../lib/itk-categories";
 			(fieldsMap.get("date") as HTMLInputElement).value = data.date;
 			(fieldsMap.get("cover_alt") as HTMLInputElement).value = data.cover_alt;
 			(fieldsMap.get("body_text") as HTMLTextAreaElement).value = data.body_text;
+			(fieldsMap.get("rating") as HTMLSelectElement).value = data.rating ?? "";
 			if (data.cover_url) {
 				coverPreview.src = data.cover_url;
 				coverPreview.classList.remove("hidden");
@@ -565,6 +576,7 @@ import { CATEGORY_KEYS, CATEGORY_LABELS } from "../../../lib/itk-categories";
 			const bodyText = (fieldsMap.get("body_text") as HTMLTextAreaElement).value;
 			const coverUrl = coverPreview.classList.contains("hidden") ? "" : coverPreview.src;
 			const coverAlt = (fieldsMap.get("cover_alt") as HTMLInputElement).value;
+			const rating = ((fieldsMap.get("rating") as HTMLSelectElement).value || null) as Rating | null;
 
 			const chipClass = CHIP_BY_CATEGORY[category] ?? "chip";
 			const categoryLabel = CATEGORY_LABELS[category] ?? category;
@@ -675,6 +687,11 @@ import { CATEGORY_KEYS, CATEGORY_LABELS } from "../../../lib/itk-categories";
 									: `<div class="aspect-[21/9] w-full bg-[color-mix(in_srgb,var(--color-text)_6%,transparent)]"></div>`
 							}
 							<span class="${chipClass} absolute left-3 top-3 px-2.5 py-1 text-[10px] font-dm-sans font-medium uppercase tracking-wide shadow-sm">${escapeHtml(categoryLabel)}</span>
+							${
+								rating
+									? `<span class="${RATING_CHIP_CLASS[rating]} absolute right-3 top-3 px-2.5 py-1 text-[10px] font-dm-sans font-medium uppercase tracking-wide shadow-sm">${escapeHtml(rating)}</span>`
+									: ""
+							}
 						</div>
 					</div>
 					<div class="mx-auto max-w-3xl px-4 pt-8 sm:px-6 lg:px-8">

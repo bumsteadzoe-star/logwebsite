@@ -1,4 +1,5 @@
 import type { CategoryKey } from "./itk-categories";
+import type { Rating } from "./itk-ratings";
 
 export interface ItkPhoto {
 	id: string;
@@ -32,6 +33,7 @@ export interface ItkPost {
 	cover_url: string;
 	cover_alt: string;
 	body_text: string;
+	rating: Rating | null;
 	published: boolean;
 	weekly_highlight: boolean;
 	pinned: boolean;
