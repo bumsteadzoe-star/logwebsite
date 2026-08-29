@@ -2,38 +2,27 @@
 import Layout from "../layouts/Layout.astro";
 
 const sections = [
-	{ id: "our-services", title: "1. Our Services" },
-	{ id: "intellectual-property-rights", title: "2. Intellectual Property Rights" },
-	{ id: "user-representations", title: "3. User Representations" },
-	{ id: "user-registration", title: "4. User Registration" },
-	{ id: "prohibited-activities", title: "5. Prohibited Activities" },
-	{ id: "user-generated-contributions", title: "6. User Generated Contributions" },
-	{ id: "contribution-license", title: "7. Contribution License" },
-	{ id: "guidelines-for-reviews", title: "8. Guidelines for Reviews" },
-	{ id: "mobile-application-license", title: "9. Mobile Application License" },
-	{ id: "third-party-websites-and-content", title: "10. Third-Party Websites and Content" },
-	{ id: "services-management", title: "11. Services Management" },
-	{ id: "privacy-policy", title: "12. Privacy Policy" },
-	{ id: "dmca-notice-and-policy", title: "13. DMCA Notice and Policy" },
-	{ id: "term-and-termination", title: "14. Term and Termination" },
-	{ id: "modifications-and-interruptions", title: "15. Modifications and Interruptions" },
-	{ id: "governing-law", title: "16. Governing Law" },
-	{ id: "dispute-resolution", title: "17. Dispute Resolution" },
-	{ id: "corrections", title: "18. Corrections" },
-	{ id: "disclaimer", title: "19. Disclaimer" },
-	{ id: "limitations-of-liability", title: "20. Limitations of Liability" },
-	{ id: "indemnification", title: "21. Indemnification" },
-	{ id: "user-data", title: "22. User Data" },
-	{ id: "electronic-communications", title: "23. Electronic Communications" },
-	{ id: "california-users-and-residents", title: "24. California Users and Residents" },
-	{ id: "miscellaneous", title: "25. Miscellaneous" },
-	{ id: "community-guidelines", title: "26. Community Guidelines" },
-	{ id: "section-230", title: "27. Section 230 and Platform Immunity" },
-	{ id: "apple-app-store", title: "28. Apple App Store" },
-	{ id: "location-data", title: "29. Location Data" },
-	{ id: "authentic-reviews", title: "30. Authentic Reviews and FTC Compliance" },
-	{ id: "waitlist-sms", title: "31. Waitlist and SMS Communications" },
-	{ id: "contact-us", title: "32. Contact Us" },
+	{ id: "agreement-to-terms", title: "1. Agreement to Terms" },
+	{ id: "eligibility", title: "2. Eligibility" },
+	{ id: "your-account", title: "3. Your Account" },
+	{ id: "what-vouch-is", title: "4. What Vouch Is — And What It Is Not" },
+	{ id: "license-to-use", title: "5. License to Use the Service" },
+	{ id: "your-content", title: "6. Your Content" },
+	{ id: "acceptable-use", title: "7. Acceptable Use" },
+	{ id: "contacts-and-invitations", title: "8. Contacts, Invitations, and Other People's Information" },
+	{ id: "third-party-services", title: "9. Third-Party Services, Links, and Bookings" },
+	{ id: "intellectual-property", title: "10. Our Intellectual Property" },
+	{ id: "ai-assisted-features", title: "11. AI-Assisted Features" },
+	{ id: "reporting-and-copyright", title: "12. Reporting and Copyright" },
+	{ id: "termination", title: "13. Termination" },
+	{ id: "disclaimer-of-warranties", title: "14. Disclaimer of Warranties" },
+	{ id: "limitation-of-liability", title: "15. Limitation of Liability" },
+	{ id: "indemnification", title: "16. Indemnification" },
+	{ id: "dispute-resolution", title: "17. Dispute Resolution — Arbitration and Class Action Waiver" },
+	{ id: "governing-law-and-venue", title: "18. Governing Law and Venue" },
+	{ id: "apple-and-google", title: "19. Apple and Google" },
+	{ id: "general", title: "20. General" },
+	{ id: "contact", title: "21. Contact" },
 ];
 ---
 
@@ -47,7 +36,7 @@ const sections = [
 			<h1 class="mt-4 font-display text-[clamp(2rem,5vw,3rem)] font-medium leading-[1.1] text-primary">
 				Terms of Service
 			</h1>
-			<p class="mt-3 text-sm text-accent">Last updated April 29, 2026</p>
+			<p class="mt-3 text-sm text-accent">Effective Date: August 28, 2026 · Last updated August 28, 2026</p>
 		</section>
 
 		<section class="mx-auto max-w-3xl px-4 pb-10 sm:px-6 lg:px-8" data-reveal>
@@ -64,862 +53,733 @@ const sections = [
 		<section class="mx-auto max-w-3xl px-4 pb-[var(--spacing-section)] sm:px-6 lg:px-8">
 			<div class="grid gap-10 border-t hairline pt-10">
 				<div>
-					<h2 class="font-display text-xl font-medium text-primary">Agreement to Our Legal Terms</h2>
+					<p class="text-sm text-accent"><strong class="text-primary">Operated by Log Social, LLC</strong></p>
+				</div>
+
+				<div id="agreement-to-terms">
+					<h2 class="font-display text-xl font-medium text-primary">1. Agreement to Terms</h2>
 					<p class="mt-3 text-base leading-relaxed text-text/80">
-						We are Log Social ("Company," "we," "us," "our"), a company registered in Alaska,
-						United States at 4123 Hampton Drive, 9B, Anchorage, AK 99501.
+						These Terms of Service ("Terms") form a binding contract between you and
+						<strong>Log Social, LLC</strong>, an Alaska limited liability company (Alaska Entity
+						#10361849) ("Log Social," "we," "us," or "our"), governing your access to and use of the
+						Vouch mobile application, Vouch, and all related services, features, and content we provide
+						(collectively, the "Service").
 					</p>
 					<p class="mt-3 text-base leading-relaxed text-text/80">
-						We operate the mobile application Vouch (the "App"), as well as any other related
-						products and services that refer or link to these legal terms (the "Legal Terms")
-						(collectively, the "Services").
+						By creating an account, accessing, or using the Service, you agree to these Terms and to our
+						<a href="/privacy" class="text-secondary underline">Privacy Policy</a>, which is incorporated
+						by reference. <strong>If you do not agree, do not use the Service.</strong>
 					</p>
 					<p class="mt-3 text-base leading-relaxed text-text/80">
-						Vouch is a social discovery platform that lets you capture, organize, share, and discover
-						real world experiences from your trusted network.
+						The Service is provided under the brand name "Vouch." Log Social, LLC is the operating
+						entity and the party to this agreement.
+					</p>
+				</div>
+
+				<div id="eligibility">
+					<h2 class="font-display text-xl font-medium text-primary">2. Eligibility</h2>
+					<p class="mt-3 text-base leading-relaxed text-text/80">
+						<strong>You must be at least 18 years old to use the Service.</strong> By using the
+						Service, you represent and warrant that you are 18 or older.
 					</p>
 					<p class="mt-3 text-base leading-relaxed text-text/80">
-						You can contact us by email at
+						The Service is not directed to and may not be used by anyone under 18. We do not knowingly
+						collect personal information from anyone under 18. If we learn that a user is under 18, we
+						will terminate the account and delete the associated data. To report an underage user,
+						contact us at
+						<a href="mailto:explore@get-vouch.com" class="text-secondary underline">explore@get-vouch.com</a>.
+					</p>
+					<p class="mt-3 text-base leading-relaxed text-text/80">
+						You further represent that: (a) you have the legal capacity to enter this agreement; (b)
+						you are not barred from using the Service under applicable law; (c) you are not located in
+						a country subject to a U.S. Government embargo or designated as a "terrorist supporting"
+						country; and (d) you are not listed on any U.S. Government list of prohibited or restricted
+						parties.
+					</p>
+				</div>
+
+				<div id="your-account">
+					<h2 class="font-display text-xl font-medium text-primary">3. Your Account</h2>
+					<p class="mt-3 text-base leading-relaxed text-text/80">
+						To use most features you must create an account. You agree to provide accurate, current,
+						and complete information and to keep it updated.
+					</p>
+					<p class="mt-3 text-base leading-relaxed text-text/80">
+						You are responsible for safeguarding your credentials and for all activity under your
+						account. Notify us immediately at
+						<a href="mailto:explore@get-vouch.com" class="text-secondary underline">explore@get-vouch.com</a>
+						if you suspect unauthorized access. We are not liable for losses arising from unauthorized
+						use of your account.
+					</p>
+					<p class="mt-3 text-base leading-relaxed text-text/80">
+						You may not: create an account for anyone else without authorization; sell, transfer, or
+						share your account; use another person's account; or create an account after we have
+						suspended or terminated a prior account of yours.
+					</p>
+					<p class="mt-3 text-base leading-relaxed text-text/80">
+						Usernames are publicly visible. We may reclaim or require you to change a username that we
+						determine, in our reasonable discretion, infringes a third party's rights, impersonates
+						another person, or violates Section 7.
+					</p>
+				</div>
+
+				<div id="what-vouch-is">
+					<h2 class="font-display text-xl font-medium text-primary">4. What Vouch Is — And What It Is Not</h2>
+					<p class="mt-3 text-base leading-relaxed text-text/80">
+						Vouch lets you log places and experiences you have visited, share them with people you
+						connect with, and see places logged by others. <strong>The Service is a platform for
+						user-generated opinions and recommendations. It is not a professional advisory
+						service.</strong>
+					</p>
+					<h3 class="mt-4 text-base font-semibold text-primary">4.1 Recommendations are opinions, not advice</h3>
+					<p class="mt-2 text-base leading-relaxed text-text/80">
+						Content on the Service reflects the personal views and experiences of individual users. We
+						do not verify, endorse, or guarantee the accuracy of any recommendation, rating, review,
+						description, or business information. We do not inspect, vet, or certify any business,
+						venue, event, or location appearing on the Service.
+					</p>
+					<h3 class="mt-5 text-base font-semibold text-primary">4.2 Real-world activity carries real-world risk</h3>
+					<p class="mt-2 text-base leading-relaxed text-text/80">
+						The Service may lead you to physical locations, businesses, events, and activities.
+						<strong>You do so entirely at your own risk.</strong> We do not control and are not
+						responsible for the condition, safety, legality, accessibility, quality, or suitability of
+						any place or activity, nor for the conduct of any person you encounter. You are solely
+						responsible for evaluating your own safety, exercising judgment about where you go and
+						when, and complying with all applicable laws, including local laws in any country you
+						visit.
+					</p>
+					<h3 class="mt-5 text-base font-semibold text-primary">4.3 Business information may be inaccurate</h3>
+					<p class="mt-2 text-base leading-relaxed text-text/80">
+						Place details — including addresses, hours, categories, and contact information — are
+						sourced from third parties and from users, and may be outdated, incomplete, or wrong. Verify
+						independently before relying on it.
+					</p>
+					<h3 class="mt-5 text-base font-semibold text-primary">4.4 The Service is not a booking or payment service</h3>
+					<p class="mt-2 text-base leading-relaxed text-text/80">
+						We do not process payments, take reservations, or act as merchant of record for any
+						transaction. See Section 9.
+					</p>
+					<h3 class="mt-5 text-base font-semibold text-primary">4.5 We may change the Service</h3>
+					<p class="mt-2 text-base leading-relaxed text-text/80">
+						We may add, modify, suspend, or discontinue any part of the Service at any time, with or
+						without notice. We are not liable to you for doing so.
+					</p>
+				</div>
+
+				<div id="license-to-use">
+					<h2 class="font-display text-xl font-medium text-primary">5. License to Use the Service</h2>
+					<p class="mt-3 text-base leading-relaxed text-text/80">
+						Subject to your compliance with these Terms, we grant you a limited, personal, non-exclusive,
+						non-transferable, non-sublicensable, revocable license to download and use the Service for
+						your own personal, non-commercial purposes.
+					</p>
+					<p class="mt-3 text-base leading-relaxed text-text/80">
+						We reserve all rights not expressly granted. This license does not permit you to sell,
+						resell, sublicense, or commercially exploit the Service or its content.
+					</p>
+				</div>
+
+				<div id="your-content">
+					<h2 class="font-display text-xl font-medium text-primary">6. Your Content</h2>
+					<h3 class="mt-4 text-base font-semibold text-primary">6.1 What "Your Content" means</h3>
+					<p class="mt-2 text-base leading-relaxed text-text/80">
+						"Your Content" means anything you submit, upload, post, or transmit through the Service —
+						including photos, captions, ratings, reviews, journals, trips, lists, comments, place logs,
+						and profile information.
+					</p>
+					<h3 class="mt-5 text-base font-semibold text-primary">6.2 You own it</h3>
+					<p class="mt-2 text-base leading-relaxed text-text/80">
+						You retain all ownership rights in Your Content. These Terms do not transfer ownership to
+						us.
+					</p>
+					<h3 class="mt-5 text-base font-semibold text-primary">6.3 The license you grant us</h3>
+					<p class="mt-2 text-base leading-relaxed text-text/80">
+						You grant Log Social a worldwide, non-exclusive, royalty-free license to host, store, cache,
+						reproduce, resize, reformat, adapt, publish, transmit, and display Your Content <strong>solely
+						for the purposes of operating, providing, securing, and improving the Service</strong>,
+						including:
+					</p>
+					<p class="mt-3 text-base leading-relaxed text-text/80">
+						(a) displaying Your Content to the audience you have selected through your privacy settings;
+						(b) creating technical modifications necessary for storage, transmission, and display
+						(including resizing, compression, and format conversion); (c) processing Your Content
+						through automated systems and third-party service providers — including cloud hosting,
+						content delivery, and artificial intelligence and machine learning providers — for the
+						features described in Section 11; (d) making backup and disaster-recovery copies.
+					</p>
+					<p class="mt-3 text-base leading-relaxed text-text/80">
+						This license is <strong>sublicensable only to our service providers</strong> for the
+						purposes above, and is <strong>assignable only in connection with a merger, acquisition, or
+						sale of substantially all of our assets</strong> as described in Section 20.3.
+					</p>
+					<p class="mt-3 text-base leading-relaxed text-text/80">
+						<strong>We will not sell Your Content.</strong> We will not license Your Content to third
+						parties for their own independent commercial purposes.
+					</p>
+					<h3 class="mt-5 text-base font-semibold text-primary">6.4 Marketing use is allowed</h3>
+					<p class="mt-2 text-base leading-relaxed text-text/80">
+						We may use Your Content in our advertising or promotional materials without your
+						<strong>separate, affirmative consent</strong>, obtained at the time of use. You may
+						withdraw from usage at any time by contacting
 						<a href="mailto:explore@get-vouch.com" class="text-secondary underline">explore@get-vouch.com</a>,
-						or by mail to 4123 Hampton Drive, 9B, Anchorage, AK 99501, United States.
+						and we will cease new uses within a reasonable period, though we cannot recall materials
+						already distributed.
+					</p>
+					<h3 class="mt-5 text-base font-semibold text-primary">6.5 The license ends when you delete</h3>
+					<p class="mt-2 text-base leading-relaxed text-text/80">
+						The license in Section 6.3 terminates when you delete Your Content or your account, except
+						that: (a) copies may persist in backup archives until routine deletion cycles purge them,
+						during which they will not be actively processed; (b) Your Content that others have
+						independently saved, screenshotted, or reshared is beyond our control; and (c) aggregated or
+						de-identified data that no longer identifies you or Your Content may be retained.
+					</p>
+					<h3 class="mt-5 text-base font-semibold text-primary">6.6 Your representations</h3>
+					<p class="mt-2 text-base leading-relaxed text-text/80">For each item of Your Content, you represent and warrant that:</p>
+					<p class="mt-3 text-base leading-relaxed text-text/80">
+						(a) you own it or have all rights necessary to grant the license in Section 6.3; (b) it does
+						not infringe or violate any third party's intellectual property, privacy, publicity, or
+						other rights; (c) any review, rating, or statement of fact reflects your <strong>genuine,
+						first-hand experience</strong> and is not false, deceptive, or paid for by any third party;
+						(d) you have obtained any consent required from any person appearing or identifiable in it;
+						and (e) it does not violate Section 7 or any applicable law.
+					</p>
+					<h3 class="mt-5 text-base font-semibold text-primary">6.7 We are not obligated to store it</h3>
+					<p class="mt-2 text-base leading-relaxed text-text/80">
+						We do not guarantee the retention, backup, or availability of Your Content. <strong>Keep
+						your own copies of anything important to you.</strong>
+					</p>
+					<h3 class="mt-5 text-base font-semibold text-primary">6.8 We may remove it</h3>
+					<p class="mt-2 text-base leading-relaxed text-text/80">
+						We may remove, restrict, or refuse to display any of Your Content at any time, for any
+						reason or no reason, without notice or liability. We are not obligated to monitor, review,
+						or moderate content, and any moderation we do perform does not create an obligation to
+						continue.
+					</p>
+				</div>
+
+				<div id="acceptable-use">
+					<h2 class="font-display text-xl font-medium text-primary">7. Acceptable Use</h2>
+					<p class="mt-3 text-base leading-relaxed text-text/80">You agree not to, and not to permit anyone else to:</p>
+
+					<h3 class="mt-4 text-base font-semibold text-primary">Content and conduct</h3>
+					<ul class="mt-3 list-disc space-y-2 pl-5 text-base leading-relaxed text-text/80">
+						<li>Post content that is unlawful, defamatory, harassing, threatening, abusive, hateful, obscene, sexually explicit, or that promotes violence or discrimination;</li>
+						<li>Post false, misleading, or deceptive reviews or ratings, including reviews of places you have not visited, reviews written in exchange for compensation, or reviews intended to manipulate a business's reputation;</li>
+						<li>Impersonate any person or entity, or misrepresent your affiliation with any person or entity;</li>
+						<li>Post another person's private or identifying information without their consent;</li>
+						<li>Stalk, harass, threaten, or intimidate any person, or use the Service to track or locate any person without their knowledge and consent;</li>
+						<li>Post content involving anyone under 18 in any sexualized manner, or use the Service in any way that endangers a minor;</li>
+					</ul>
+
+					<h3 class="mt-5 text-base font-semibold text-primary">Technical</h3>
+					<ul class="mt-3 list-disc space-y-2 pl-5 text-base leading-relaxed text-text/80">
+						<li>Access the Service by any automated means, including scraping, crawling, or bots, except as permitted by our robots.txt;</li>
+						<li>Attempt to gain unauthorized access to any account, system, or data, or probe, scan, or test the vulnerability of any system;</li>
+						<li>Circumvent, disable, or interfere with any security, rate-limiting, or access-control feature, including any privacy or visibility setting;</li>
+						<li>Access the Service through any interface other than our official applications and website, or reverse engineer, decompile, or disassemble any part of the Service;</li>
+						<li>Introduce malware or any code intended to disrupt or damage the Service;</li>
+						<li>Impose an unreasonable load on our infrastructure;</li>
+					</ul>
+
+					<h3 class="mt-5 text-base font-semibold text-primary">Commercial and data</h3>
+					<ul class="mt-3 list-disc space-y-2 pl-5 text-base leading-relaxed text-text/80">
+						<li>Use the Service for any commercial purpose not expressly authorized, including advertising, solicitation, or promoting a business without our prior written consent;</li>
+						<li>Collect, harvest, or compile data about other users, including their content, locations, or connections, for any purpose;</li>
+						<li>Use the Service or its content to train, fine-tune, or develop any machine learning model without our prior written consent;</li>
+						<li>Sell, rent, or transfer access to the Service or to any account.</li>
+					</ul>
+					<p class="mt-3 text-base leading-relaxed text-text/80">
+						Violation may result in immediate suspension or termination under Section 13, and may expose
+						you to civil or criminal liability. We reserve the right to investigate and to cooperate
+						with law enforcement.
+					</p>
+				</div>
+
+				<div id="contacts-and-invitations">
+					<h2 class="font-display text-xl font-medium text-primary">8. Contacts, Invitations, and Other People's Information</h2>
+					<p class="mt-3 text-base leading-relaxed text-text/80">
+						If you choose to grant the Service access to your device contacts to find people you know,
+						<strong>you represent and warrant that you have the right to do so</strong> and that your
+						use is consistent with any obligations you owe to those individuals.
 					</p>
 					<p class="mt-3 text-base leading-relaxed text-text/80">
-						These Legal Terms constitute a legally binding agreement made between you, whether
-						personally or on behalf of an entity ("you"), and Log Social, concerning your access to
-						and use of the Services. You agree that by accessing the Services, you have read,
-						understood, and agreed to be bound by all of these Legal Terms. IF YOU DO NOT AGREE
-						WITH ALL OF THESE LEGAL TERMS, THEN YOU ARE EXPRESSLY PROHIBITED FROM USING THE
-						SERVICES AND YOU MUST DISCONTINUE USE IMMEDIATELY.
+						If you invite someone to the Service, any resulting message is composed and sent by you,
+						from your own device and phone number or account — <strong>not by us</strong>. You are
+						solely responsible for the messages you send and for complying with all applicable laws
+						governing them, including the Telephone Consumer Protection Act and anti-spam laws.
+						<strong>Do not send invitations to anyone who has not agreed to receive messages from
+						you.</strong>
 					</p>
 					<p class="mt-3 text-base leading-relaxed text-text/80">
-						We will provide you with prior notice of any scheduled changes to the Services you are
-						using. The modified Legal Terms will become effective upon posting or notifying you by
-						explore@get-vouch.com, as stated in the email message. By continuing to use the
-						Services after the effective date of any changes, you agree to be bound by the modified
+						Our handling of contact information is described in our Privacy Policy.
+					</p>
+				</div>
+
+				<div id="third-party-services">
+					<h2 class="font-display text-xl font-medium text-primary">9. Third-Party Services, Links, and Bookings</h2>
+					<h3 class="mt-4 text-base font-semibold text-primary">9.1 Third-party content and services</h3>
+					<p class="mt-2 text-base leading-relaxed text-text/80">
+						The Service integrates content and functionality from third parties, including mapping and
+						place data providers. Their content is provided as-is. We do not control it and are not
+						responsible for it. Your use of certain features may be subject to those providers' own
 						terms.
 					</p>
-					<p class="mt-3 text-base leading-relaxed text-text/80">
-						The Services are intended for users who are at least 18 years old. Persons under the
-						age of 18 are not permitted to use or register for the Services.
-					</p>
-					<p class="mt-3 text-base leading-relaxed text-text/80">
-						We recommend that you print a copy of these Legal Terms for your records.
-					</p>
-				</div>
-
-				<div id="our-services">
-					<h2 class="font-display text-xl font-medium text-primary">1. Our Services</h2>
-					<p class="mt-3 text-base leading-relaxed text-text/80">
-						The information provided when using the Services is not intended for distribution to or
-						use by any person or entity in any jurisdiction or country where such distribution or
-						use would be contrary to law or regulation or which would subject us to any
-						registration requirement within such jurisdiction or country. Accordingly, those
-						persons who choose to access the Services from other locations do so on their own
-						initiative and are solely responsible for compliance with local laws, if and to the
-						extent local laws are applicable.
-					</p>
-					<p class="mt-3 text-base leading-relaxed text-text/80">
-						The Services are not tailored to comply with industry-specific regulations (Health
-						Insurance Portability and Accountability Act (HIPAA), Federal Information Security
-						Management Act (FISMA), etc.), so if your interactions would be subjected to such laws,
-						you may not use the Services. You may not use the Services in a way that would violate
-						the Gramm-Leach-Bliley Act (GLBA).
-					</p>
-				</div>
-
-				<div id="intellectual-property-rights">
-					<h2 class="font-display text-xl font-medium text-primary">2. Intellectual Property Rights</h2>
-					<h3 class="mt-4 text-base font-semibold text-primary">Our intellectual property</h3>
+					<h3 class="mt-5 text-base font-semibold text-primary">9.2 Booking and reservations happen elsewhere</h3>
 					<p class="mt-2 text-base leading-relaxed text-text/80">
-						We are the owner or the licensee of all intellectual property rights in our Services,
-						including all source code, databases, functionality, software, website designs, audio,
-						video, text, photographs, and graphics in the Services (collectively, the "Content"),
-						as well as the trademarks, service marks, and logos contained therein (the "Marks").
+						Where the Service links to a third-party booking, reservation, or ticketing provider,
+						<strong>you leave the Service and transact directly with that provider.</strong> They are
+						the merchant of record. We are not a party to your transaction and are not responsible for
+						pricing, availability, confirmation, fulfillment, cancellation, refunds, chargebacks, or any
+						dispute arising from it. Their terms and privacy policy govern.
 					</p>
-					<p class="mt-3 text-base leading-relaxed text-text/80">
-						Our Content and Marks are protected by copyright and trademark laws (and various other
-						intellectual property rights and unfair competition laws) and treaties in the United
-						States and around the world.
-					</p>
-					<p class="mt-3 text-base leading-relaxed text-text/80">
-						The Content and Marks are provided in or through the Services "AS IS" for your
-						personal, non-commercial use or internal business purpose only.
-					</p>
-					<h3 class="mt-5 text-base font-semibold text-primary">Your use of our Services</h3>
+					<h3 class="mt-5 text-base font-semibold text-primary">9.3 Affiliate relationships</h3>
 					<p class="mt-2 text-base leading-relaxed text-text/80">
-						Subject to your compliance with these Legal Terms, including the "PROHIBITED
-						ACTIVITIES" section below, we grant you a non-exclusive, non-transferable, revocable
-						license to: access the Services; and download or print a copy of any portion of the
-						Content to which you have properly gained access, solely for your personal,
-						non-commercial use or internal business purpose.
+						Certain links in the Service direct you to third-party booking, reservation, and ticketing
+						providers. We may earn a commission if you make a booking or purchase after following one
+						of these links. This costs you nothing additional — you pay the same price you would pay
+						going to that provider directly.
 					</p>
 					<p class="mt-3 text-base leading-relaxed text-text/80">
-						Except as set out in this section or elsewhere in our Legal Terms, no part of the
-						Services and no Content or Marks may be copied, reproduced, aggregated, republished,
-						uploaded, posted, publicly displayed, encoded, translated, transmitted, distributed,
-						sold, licensed, or otherwise exploited for any commercial purpose whatsoever, without
-						our express prior written permission.
+						<strong>Where these links appear.</strong> Commissioned links appear only within designated
+						booking sections of the Service, which are accompanied by a visible disclosure stating that
+						we may earn a commission. They are never presented as, or intermixed with, recommendations
+						from other users. Our affiliate partners may change from time to time without notice to
+						you.
 					</p>
 					<p class="mt-3 text-base leading-relaxed text-text/80">
-						If you wish to make any use of the Services, Content, or Marks other than as set out in
-						this section or elsewhere in our Legal Terms, please address your request to:
-						explore@get-vouch.com. If we ever grant you the permission to post, reproduce, or
-						publicly display any part of our Services or Content, you must identify us as the
-						owners or licensors of the Services, Content, or Marks and ensure that any copyright or
-						proprietary notice appears or is visible on posting, reproducing, or displaying our
-						Content.
+						<strong>Commission does not influence recommendations.</strong> Place recommendations on the
+						Service come from users, based on places they have visited. We do not accept payment for
+						placement, ranking, inclusion, or promotion in any recommendation, feed, search result, or
+						suggestion, and no business can pay to appear in or affect them. No commission arrangement
+						affects which places are shown to you or the order in which they appear.
 					</p>
 					<p class="mt-3 text-base leading-relaxed text-text/80">
-						We reserve all rights not expressly granted to you in and to the Services, Content, and
-						Marks.
+						<strong>We do not share your information with affiliate partners.</strong> We do not
+						transmit your name, account identifier, email address, phone number, or precise location to
+						any affiliate partner. Only account-level attribution parameters identifying Log Social —
+						not you — and your destination or search terms are included in the link. We do not set or
+						permit affiliate tracking cookies or pixels on our own properties.
 					</p>
 					<p class="mt-3 text-base leading-relaxed text-text/80">
-						Any breach of these Intellectual Property Rights will constitute a material breach of
-						our Legal Terms and your right to use our Services will terminate immediately.
+						<strong>You transact with the provider, not with us.</strong> When you follow an affiliate
+						link you leave the Service. The third-party provider is the merchant of record, and Section
+						9.2 governs that transaction. Verify pricing, availability, and cancellation terms with the
+						provider before booking. We are not responsible for pricing, availability, confirmation,
+						fulfillment, cancellation, refunds, or any dispute arising from it. That provider's terms
+						and privacy policy apply once you arrive, and it may collect information about you and set
+						its own cookies under its own policies, which we do not control.
 					</p>
-				</div>
-
-				<div id="user-representations">
-					<h2 class="font-display text-xl font-medium text-primary">3. User Representations</h2>
-					<p class="mt-3 text-base leading-relaxed text-text/80">
-						By using the Services, you represent and warrant that: (1) all registration information
-						you submit will be true, accurate, current, and complete; (2) you will maintain the
-						accuracy of such information and promptly update such registration information as
-						necessary; (3) you have the legal capacity and you agree to comply with these Legal
-						Terms; (4) you are not a minor in the jurisdiction in which you reside; (5) you will not
-						access the Services through automated or non-human means, whether through a bot, script
-						or otherwise; (6) you will not use the Services for any illegal or unauthorized purpose;
-						and (7) your use of the Services will not violate any applicable law or regulation.
-					</p>
-					<p class="mt-3 text-base leading-relaxed text-text/80">
-						If you provide any information that is untrue, inaccurate, not current, or incomplete,
-						we have the right to suspend or terminate your account and refuse any and all current
-						or future use of the Services (or any portion thereof).
-					</p>
-				</div>
-
-				<div id="user-registration">
-					<h2 class="font-display text-xl font-medium text-primary">4. User Registration</h2>
-					<p class="mt-3 text-base leading-relaxed text-text/80">
-						You may be required to register to use the Services. You agree to keep your password
-						confidential and will be responsible for all use of your account and password. We
-						reserve the right to remove, reclaim, or change a username you select if we determine,
-						in our sole discretion, that such username is inappropriate, obscene, or otherwise
-						objectionable.
-					</p>
-				</div>
-
-				<div id="prohibited-activities">
-					<h2 class="font-display text-xl font-medium text-primary">5. Prohibited Activities</h2>
-					<p class="mt-3 text-base leading-relaxed text-text/80">
-						You may not access or use the Services for any purpose other than that for which we
-						make the Services available. The Services may not be used in connection with any
-						commercial endeavors except those that are specifically endorsed or approved by us.
-					</p>
-					<p class="mt-3 text-base leading-relaxed text-text/80">As a user of the Services, you agree not to:</p>
-					<ul class="mt-3 list-disc space-y-2 pl-5 text-base leading-relaxed text-text/80">
-						<li>Systematically retrieve data or other content from the Services to create or compile, directly or indirectly, a collection, compilation, database, or directory without written permission from us.</li>
-						<li>Trick, defraud, or mislead us and other users, especially in any attempt to learn sensitive account information such as user passwords.</li>
-						<li>Circumvent, disable, or otherwise interfere with security-related features of the Services, including features that prevent or restrict the use or copying of any Content or enforce limitations on the use of the Services and/or the Content contained therein.</li>
-						<li>Disparage, tarnish, or otherwise harm, in our opinion, us and/or the Services.</li>
-						<li>Use any information obtained from the Services in order to harass, abuse, or harm another person.</li>
-						<li>Make improper use of our support services or submit false reports of abuse or misconduct.</li>
-						<li>Use the Services in a manner inconsistent with any applicable laws or regulations.</li>
-						<li>Engage in unauthorized framing of or linking to the Services.</li>
-						<li>Upload or transmit (or attempt to upload or to transmit) viruses, Trojan horses, or other material, including excessive use of capital letters and spamming (continuous posting of repetitive text), that interferes with any party's uninterrupted use and enjoyment of the Services or modifies, impairs, disrupts, alters, or interferes with the use, features, functions, operation, or maintenance of the Services.</li>
-						<li>Engage in any automated use of the system, such as using scripts to send comments or messages, or using any data mining, robots, or similar data gathering and extraction tools.</li>
-						<li>Delete the copyright or other proprietary rights notice from any Content.</li>
-						<li>Attempt to impersonate another user or person or use the username of another user.</li>
-						<li>Upload or transmit (or attempt to upload or to transmit) any material that acts as a passive or active information collection or transmission mechanism, including without limitation, clear graphics interchange formats ("gifs"), 1×1 pixels, web bugs, cookies, or other similar devices (sometimes referred to as "spyware" or "passive collection mechanisms" or "pcms").</li>
-						<li>Interfere with, disrupt, or create an undue burden on the Services or the networks or services connected to the Services.</li>
-						<li>Harass, annoy, intimidate, or threaten any of our employees or agents engaged in providing any portion of the Services to you.</li>
-						<li>Attempt to bypass any measures of the Services designed to prevent or restrict access to the Services, or any portion of the Services.</li>
-						<li>Copy or adapt the Services' software, including but not limited to Flash, PHP, HTML, JavaScript, or other code.</li>
-						<li>Except as permitted by applicable law, decipher, decompile, disassemble, or reverse engineer any of the software comprising or in any way making up a part of the Services.</li>
-						<li>Except as may be the result of standard search engine or Internet browser usage, use, launch, develop, or distribute any automated system, including without limitation, any spider, robot, cheat utility, scraper, or offline reader that accesses the Services, or use or launch any unauthorized script or other software.</li>
-						<li>Use a buying agent or purchasing agent to make purchases on the Services.</li>
-						<li>Make any unauthorized use of the Services, including collecting usernames and/or email addresses of users by electronic or other means for the purpose of sending unsolicited email, or creating user accounts by automated means or under false pretenses.</li>
-						<li>Use the Services as part of any effort to compete with us or otherwise use the Services and/or the Content for any revenue-generating endeavor or commercial enterprise.</li>
-					</ul>
-				</div>
-
-				<div id="user-generated-contributions">
-					<h2 class="font-display text-xl font-medium text-primary">6. User Generated Contributions</h2>
-					<p class="mt-3 text-base leading-relaxed text-text/80">
-						The Services may invite you to chat, contribute to, or participate in blogs, message
-						boards, online forums, and other functionality, and may provide you with the
-						opportunity to create, submit, post, display, transmit, perform, publish, distribute,
-						or broadcast content and materials to us or on the Services, including but not limited
-						to text, writings, video, audio, photographs, graphics, comments, suggestions, or
-						personal information or other material (collectively, "Contributions"). Contributions
-						may be viewable by other users of the Services and through third-party websites. As
-						such, any Contributions you transmit may be treated as non-confidential and
-						non-proprietary. When you create or make available any Contributions, you thereby
-						represent and warrant that:
-					</p>
-					<ul class="mt-3 list-disc space-y-2 pl-5 text-base leading-relaxed text-text/80">
-						<li>The creation, distribution, transmission, public display, or performance, and the accessing, downloading, or copying of your Contributions do not and will not infringe the proprietary rights, including but not limited to the copyright, patent, trademark, trade secret, or moral rights of any third party.</li>
-						<li>You are the creator and owner of or have the necessary licenses, rights, consents, releases, and permissions to use and to authorize us, the Services, and other users of the Services to use your Contributions in any manner contemplated by the Services and these Legal Terms.</li>
-						<li>You have the written consent, release, and/or permission of each and every identifiable individual person in your Contributions to use the name or likeness of each and every such identifiable individual person to enable inclusion and use of your Contributions in any manner contemplated by the Services and these Legal Terms.</li>
-						<li>Your Contributions are not false, inaccurate, or misleading.</li>
-						<li>Your Contributions are not unsolicited or unauthorized advertising, promotional materials, pyramid schemes, chain letters, spam, mass mailings, or other forms of solicitation.</li>
-						<li>Your Contributions are not obscene, lewd, lascivious, filthy, violent, harassing, libelous, slanderous, or otherwise objectionable (as determined by us).</li>
-						<li>Your Contributions do not ridicule, mock, disparage, intimidate, or abuse anyone.</li>
-						<li>Your Contributions are not used to harass or threaten (in the legal sense of those terms) any other person and to promote violence against a specific person or class of people.</li>
-						<li>Your Contributions do not violate any applicable law, regulation, or rule.</li>
-						<li>Your Contributions do not violate the privacy or publicity rights of any third party.</li>
-						<li>Your Contributions do not violate any applicable law concerning minors, or otherwise intended to protect the health or well-being of minors.</li>
-						<li>Your Contributions do not include any offensive comments that are connected to race, national origin, gender, sexual preference, or physical handicap.</li>
-						<li>Your Contributions do not otherwise violate, or link to material that violates, any provision of these Legal Terms, or any applicable law or regulation.</li>
-					</ul>
-					<p class="mt-3 text-base leading-relaxed text-text/80">
-						Any use of the Services in violation of the foregoing violates these Legal Terms and
-						may result in, among other things, termination or suspension of your rights to use the
-						Services.
-					</p>
-				</div>
-
-				<div id="contribution-license">
-					<h2 class="font-display text-xl font-medium text-primary">7. Contribution License</h2>
-					<p class="mt-3 text-base leading-relaxed text-text/80">
-						By posting your Contributions to any part of the Services, you automatically grant, and
-						you represent and warrant that you have the right to grant, to us an unrestricted,
-						unlimited, irrevocable, perpetual, non-exclusive, transferable, royalty-free,
-						fully-paid, worldwide right, and license to host, use, copy, reproduce, disclose, sell,
-						resell, publish, broadcast, retitle, archive, store, cache, publicly perform, publicly
-						display, reformat, translate, transmit, excerpt (in whole or in part), and distribute
-						such Contributions (including, without limitation, your image and voice) for any
-						purpose, commercial, advertising, or otherwise, and to prepare derivative works of, or
-						incorporate into other works, such Contributions, and grant and authorize sublicenses
-						of the foregoing. The use and distribution may occur in any media formats and through
-						any media channels.
-					</p>
-					<p class="mt-3 text-base leading-relaxed text-text/80">
-						This license will apply to any form, media, or technology now known or hereafter
-						developed, and includes our use of your name, company name, and franchise name, as
-						applicable, and any of the trademarks, service marks, trade names, logos, and personal
-						and commercial images you provide. You waive all moral rights in your Contributions,
-						and you warrant that moral rights have not otherwise been asserted in your
-						Contributions.
-					</p>
-					<p class="mt-3 text-base leading-relaxed text-text/80">
-						We do not assert any ownership over your Contributions. You retain full ownership of
-						all of your Contributions and any intellectual property rights or other proprietary
-						rights associated with your Contributions. We are not liable for any statements or
-						representations in your Contributions provided by you in any area on the Services. You
-						are solely responsible for your Contributions to the Services and you expressly agree
-						to exonerate us from any and all responsibility and to refrain from any legal action
-						against us regarding your Contributions.
-					</p>
-					<p class="mt-3 text-base leading-relaxed text-text/80">
-						We have the right, in our sole and absolute discretion, (1) to edit, redact, or
-						otherwise change any Contributions; (2) to re-categorize any Contributions to place
-						them in more appropriate locations on the Services; and (3) to pre-screen or delete any
-						Contributions at any time and for any reason, without notice. We have no obligation to
-						monitor your Contributions.
-					</p>
-				</div>
-
-				<div id="guidelines-for-reviews">
-					<h2 class="font-display text-xl font-medium text-primary">8. Guidelines for Reviews</h2>
-					<p class="mt-3 text-base leading-relaxed text-text/80">
-						We may provide you areas on the Services to leave reviews or ratings. When posting a
-						review, you must comply with the following criteria: (1) you should have firsthand
-						experience with the person/entity being reviewed; (2) your reviews should not contain
-						offensive profanity, or abusive, racist, offensive, or hateful language; (3) your
-						reviews should not contain discriminatory references based on religion, race, gender,
-						national origin, age, marital status, sexual orientation, or disability; (4) your
-						reviews should not contain references to illegal activity; (5) you should not be
-						affiliated with competitors if posting negative reviews; (6) you should not make any
-						conclusions as to the legality of conduct; (7) you may not post any false or misleading
-						statements; and (8) you may not organize a campaign encouraging others to post reviews,
-						whether positive or negative.
-					</p>
-					<p class="mt-3 text-base leading-relaxed text-text/80">
-						We may accept, reject, or remove reviews in our sole discretion. We have absolutely no
-						obligation to screen reviews or to delete reviews, even if anyone considers reviews
-						objectionable or inaccurate. Reviews are not endorsed by us, and do not necessarily
-						represent our opinions or the views of any of our affiliates or partners. We do not
-						assume liability for any review or for any claims, liabilities, or losses resulting
-						from any review. By posting a review, you hereby grant to us a perpetual, non-exclusive,
-						worldwide, royalty-free, fully paid, assignable, and sublicensable right and license to
-						reproduce, modify, translate, transmit by any means, display, perform, and/or
-						distribute all content relating to review.
-					</p>
-				</div>
-
-				<div id="mobile-application-license">
-					<h2 class="font-display text-xl font-medium text-primary">9. Mobile Application License</h2>
-					<h3 class="mt-4 text-base font-semibold text-primary">Use License</h3>
+					<h3 class="mt-5 text-base font-semibold text-primary">9.4 Connected accounts</h3>
 					<p class="mt-2 text-base leading-relaxed text-text/80">
-						If you access the Services via the App, then we grant you a revocable, non-exclusive,
-						non-transferable, limited right to install and use the App on wireless electronic
-						devices owned or controlled by you, and to access and use the App on such devices
-						strictly in accordance with the terms and conditions of this mobile application
-						license contained in these Legal Terms. You shall not: (1) except as permitted by
-						applicable law, decompile, reverse engineer, disassemble, attempt to derive the source
-						code of, or decrypt the App; (2) make any modification, adaptation, improvement,
-						enhancement, translation, or derivative work from the App; (3) violate any applicable
-						laws, rules, or regulations in connection with your access or use of the App; (4)
-						remove, alter, or obscure any proprietary notice (including any notice of copyright or
-						trademark) posted by us or the licensors of the App; (5) use the App for any
-						revenue-generating endeavor, commercial enterprise, or other purpose for which it is
-						not designed or intended; (6) make the App available over a network or other
-						environment permitting access or use by multiple devices or users at the same time; (7)
-						use the App for creating a product, service, or software that is, directly or
-						indirectly, competitive with or in any way a substitute for the App; (8) use the App to
-						send automated queries to any website or to send any unsolicited commercial email; or
-						(9) use any proprietary information or any of our interfaces or our other intellectual
-						property in the design, development, manufacture, licensing, or distribution of any
-						applications, accessories, or devices for use with the App.
+						If you connect a third-party account, you authorize us to access information from it as
+						described at the time of connection and in our Privacy Policy. You may disconnect at any
+						time. Our use of information received from Google APIs adheres to the
+						<a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener noreferrer" class="text-secondary underline">Google API Services User Data Policy</a>,
+						including the Limited Use requirements.
 					</p>
-					<h3 class="mt-5 text-base font-semibold text-primary">Apple and Android Devices</h3>
+				</div>
+
+				<div id="intellectual-property">
+					<h2 class="font-display text-xl font-medium text-primary">10. Our Intellectual Property</h2>
+					<p class="mt-3 text-base leading-relaxed text-text/80">
+						The Service — including its software, design, text, graphics, logos, and all other content
+						other than Your Content and third-party content — is owned by Log Social or its licensors
+						and protected by intellectual property law. "Vouch," "Log Social," and our logos are our
+						trademarks. You may not use them without our prior written permission.
+					</p>
+					<p class="mt-3 text-base leading-relaxed text-text/80">
+						<strong>Feedback.</strong> If you send us suggestions, ideas, or feedback about the Service,
+						you grant us an unrestricted, perpetual, irrevocable, royalty-free right to use it for any
+						purpose without compensation or attribution. Do not send us anything you consider
+						confidential.
+					</p>
+				</div>
+
+				<div id="ai-assisted-features">
+					<h2 class="font-display text-xl font-medium text-primary">11. AI-Assisted Features</h2>
+					<p class="mt-3 text-base leading-relaxed text-text/80">
+						Parts of the Service use artificial intelligence, including to generate suggested captions,
+						summaries, profile descriptions, and recommendations, and to analyze photos you provide in
+						order to identify places and categorize experiences.
+					</p>
+					<h3 class="mt-4 text-base font-semibold text-primary">11.1 Output may be wrong</h3>
 					<p class="mt-2 text-base leading-relaxed text-text/80">
-						The following terms apply when you use the App obtained from either the Apple Store or
-						Google Play (each an "App Distributor") to access the Services: (1) the license granted
-						to you for our App is limited to a non-transferable license to use the application on
-						a device that utilizes the Apple iOS or Android operating systems, as applicable, and
-						in accordance with the usage rules set forth in the applicable App Distributor's terms
-						of service; (2) we are responsible for providing any maintenance and support services
-						with respect to the App as specified in the terms and conditions of this mobile
-						application license contained in these Legal Terms or as otherwise required under
-						applicable law, and you acknowledge that each App Distributor has no obligation
-						whatsoever to furnish any maintenance and support services with respect to the App; (3)
-						in the event of any failure of the App to conform to any applicable warranty, you may
-						notify the applicable App Distributor, and the App Distributor, in accordance with its
-						terms and policies, may refund the purchase price, if any, paid for the App, and to the
-						maximum extent permitted by applicable law, the App Distributor will have no other
-						warranty obligation whatsoever with respect to the App; (4) you represent and warrant
-						that (i) you are not located in a country that is subject to a US government embargo,
-						or that has been designated by the US government as a "terrorist supporting" country
-						and (ii) you are not listed on any US government list of prohibited or restricted
-						parties; (5) you must comply with applicable third-party terms of agreement when using
-						the App, e.g., if you have a VoIP application, then you must not be in violation of
-						their wireless data service agreement when using the App; and (6) you acknowledge and
-						agree that the App Distributors are third-party beneficiaries of the terms and
-						conditions in this mobile application license contained in these Legal Terms, and that
-						each App Distributor will have the right (and will be deemed to have accepted the
-						right) to enforce the terms and conditions in this mobile application license contained
-						in these Legal Terms against you as a third-party beneficiary thereof.
+						AI-generated output may be inaccurate, incomplete, misleading, or inappropriate. <strong>We
+						do not warrant the accuracy of any AI-generated output.</strong> Review it before relying on
+						it or publishing it.
 					</p>
-				</div>
-
-				<div id="third-party-websites-and-content">
-					<h2 class="font-display text-xl font-medium text-primary">10. Third-Party Websites and Content</h2>
-					<p class="mt-3 text-base leading-relaxed text-text/80">
-						The Services may contain (or you may be sent via the App) links to other websites
-						("Third-Party Websites") as well as articles, photographs, text, graphics, pictures,
-						designs, music, sound, video, information, applications, software, and other content or
-						items belonging to or originating from third parties ("Third-Party Content"). Such
-						Third-Party Websites and Third-Party Content are not investigated, monitored, or
-						checked for accuracy, appropriateness, or completeness by us, and we are not
-						responsible for any Third-Party Websites accessed through the Services or any
-						Third-Party Content posted on, available through, or installed from the Services,
-						including the content, accuracy, offensiveness, opinions, reliability, privacy
-						practices, or other policies of or contained in the Third-Party Websites or the
-						Third-Party Content. Inclusion of, linking to, or permitting the use or installation of
-						any Third-Party Websites or any Third-Party Content does not imply approval or
-						endorsement thereof by us. If you decide to leave the Services and access the
-						Third-Party Websites or to use or install any Third-Party Content, you do so at your
-						own risk, and you should be aware these Legal Terms no longer govern. You should review
-						the applicable terms and policies, including privacy and data gathering practices, of
-						any website to which you navigate from the Services or relating to any applications you
-						use or install from the Services. Any purchases you make through Third-Party Websites
-						will be through other websites and from other companies, and we take no responsibility
-						whatsoever in relation to such purchases which are exclusively between you and the
-						applicable third party. You agree and acknowledge that we do not endorse the products
-						or services offered on Third-Party Websites and you shall hold us blameless from any
-						harm caused by your purchase of such products or services. Additionally, you shall hold
-						us blameless from any losses sustained by you or harm caused to you relating to or
-						resulting in any way from any Third-Party Content or any contact with Third-Party
-						Websites.
-					</p>
-				</div>
-
-				<div id="services-management">
-					<h2 class="font-display text-xl font-medium text-primary">11. Services Management</h2>
-					<p class="mt-3 text-base leading-relaxed text-text/80">
-						We reserve the right, but not the obligation, to: (1) monitor the Services for
-						violations of these Legal Terms; (2) take appropriate legal action against anyone who,
-						in our sole discretion, violates the law or these Legal Terms, including without
-						limitation, reporting such user to law enforcement authorities; (3) in our sole
-						discretion and without limitation, refuse, restrict access to, limit the availability
-						of, or disable (to the extent technologically feasible) any of your Contributions or
-						any portion thereof; (4) in our sole discretion and without limitation, notice, or
-						liability, to remove from the Services or otherwise disable all files and content that
-						are excessive in size or are in any way burdensome to our systems; and (5) otherwise
-						manage the Services in a manner designed to protect our rights and property and to
-						facilitate the proper functioning of the Services.
-					</p>
-				</div>
-
-				<div id="privacy-policy">
-					<h2 class="font-display text-xl font-medium text-primary">12. Privacy Policy</h2>
-					<p class="mt-3 text-base leading-relaxed text-text/80">
-						We care about data privacy and security. Please review our
-						<a href="/privacy" class="text-secondary underline">Privacy Policy</a>. By using the
-						Services, you agree to be bound by our Privacy Policy, which is incorporated into these
-						Legal Terms. Please be advised the Services are hosted in the United States. If you
-						access the Services from any other region of the world with laws or other requirements
-						governing personal data collection, use, or disclosure that differ from applicable laws
-						in the United States, then through your continued use of the Services, you are
-						transferring your data to the United States, and you expressly consent to have your
-						data transferred to and processed in the United States.
-					</p>
-				</div>
-
-				<div id="dmca-notice-and-policy">
-					<h2 class="font-display text-xl font-medium text-primary">13. Digital Millennium Copyright Act (DMCA) Notice and Policy</h2>
-					<h3 class="mt-4 text-base font-semibold text-primary">Notifications</h3>
+					<h3 class="mt-5 text-base font-semibold text-primary">11.2 You are responsible for what you publish</h3>
 					<p class="mt-2 text-base leading-relaxed text-text/80">
-						We respect the intellectual property rights of others. If you believe that any material
-						available on or through the Services infringes upon any copyright you own or control,
-						please immediately notify our Designated Copyright Agent using the contact information
-						provided below (a "Notification"). A copy of your Notification will be sent to the
-						person who posted or stored the material addressed in the Notification. Please be
-						advised that pursuant to federal law you may be held liable for damages if you make
-						material misrepresentations in a Notification. Thus, if you are not sure that material
-						located on or linked to by the Services infringes your copyright, you should consider
-						first contacting an attorney.
+						Where the Service generates draft content for you, you have the opportunity to review and
+						edit it before it is posted. Once you publish it, it becomes Your Content under Section 6
+						and you are responsible for it, including its accuracy.
 					</p>
-					<p class="mt-3 text-base leading-relaxed text-text/80">
-						All Notifications should meet the requirements of DMCA 17 U.S.C. § 512(c)(3) and
-						include the following information:
-					</p>
-					<p class="mt-3 text-base leading-relaxed text-text/80">
-						(1) A physical or electronic signature of a person authorized to act on behalf of the
-						owner of an exclusive right that is allegedly infringed; (2) identification of the
-						copyrighted work claimed to have been infringed, or, if multiple copyrighted works on
-						the Services are covered by the Notification, a representative list of such works on
-						the Services; (3) identification of the material that is claimed to be infringing or to
-						be the subject of infringing activity and that is to be removed or access to which is
-						to be disabled, and information reasonably sufficient to permit us to locate the
-						material; (4) information reasonably sufficient to permit us to contact the complaining
-						party, such as an address, telephone number, and, if available, an email address at
-						which the complaining party may be contacted; (5) a statement that the complaining
-						party has a good faith belief that use of the material in the manner complained of is
-						not authorized by the copyright owner, its agent, or the law; and (6) a statement that
-						the information in the notification is accurate, and under penalty of perjury, that the
-						complaining party is authorized to act on behalf of the owner of an exclusive right that
-						is allegedly infringed upon.
-					</p>
-					<h3 class="mt-5 text-base font-semibold text-primary">Counter Notification</h3>
+					<h3 class="mt-5 text-base font-semibold text-primary">11.3 Third-party AI providers</h3>
 					<p class="mt-2 text-base leading-relaxed text-text/80">
-						If you believe your own copyrighted material has been removed from the Services as a
-						result of a mistake or misidentification, you may submit a written counter notification
-						to our Designated Copyright Agent using the contact information provided below (a
-						"Counter Notification").
+						AI features are powered in part by third-party providers, and your input is transmitted to
+						them for processing. See our Privacy Policy for details.
 					</p>
-					<p class="mt-3 text-base leading-relaxed text-text/80">
-						To be an effective Counter Notification under the DMCA, your Counter Notification must
-						include substantially the following:
-					</p>
-					<p class="mt-3 text-base leading-relaxed text-text/80">
-						(1) identification of the material that has been removed or disabled and the location
-						at which the material appeared before it was removed or disabled; (2) a statement that
-						you consent to the jurisdiction of the Federal District Court in which your address is
-						located, or if your address is outside the United States, for any judicial district in
-						which we are located; (3) a statement that you will accept service of process from the
-						party that filed the Notification or the party's agent; (4) your name, address, and
-						telephone number; (5) a statement under penalty of perjury that you have a good faith
-						belief that the material in question was removed or disabled as a result of a mistake
-						or misidentification of the material to be removed or disabled; and (6) your physical
-						or electronic signature.
-					</p>
-					<p class="mt-3 text-base leading-relaxed text-text/80">
-						If you send us a valid, written Counter Notification meeting the requirements described
-						above, we will restore your removed or disabled material, unless we first receive
-						notice from the party filing the Notification informing us that such party has filed a
-						court action to restrain you from engaging in infringing activity related to the
-						material in question. Please note that if you materially misrepresent that the disabled
-						or removed content was removed by mistake or misidentification, you may be liable for
-						damages, including costs and attorney's fees. Filing a false Counter Notification
-						constitutes perjury.
-					</p>
-					<h3 class="mt-5 text-base font-semibold text-primary">Designated Copyright Agent</h3>
+					<h3 class="mt-5 text-base font-semibold text-primary">11.4 No automated decisions with legal effect</h3>
 					<p class="mt-2 text-base leading-relaxed text-text/80">
-						Zoe Bumstead<br />
-						Attn: Copyright Agent<br />
-						4123 Hampton Drive, 9B<br />
-						Anchorage, AK 99501<br />
-						United States<br />
-						explore@get-vouch.com
+						We do not use AI to make decisions producing legal or similarly significant effects
+						concerning you.
 					</p>
 				</div>
 
-				<div id="term-and-termination">
-					<h2 class="font-display text-xl font-medium text-primary">14. Term and Termination</h2>
-					<p class="mt-3 text-base leading-relaxed text-text/80">
-						These Legal Terms shall remain in full force and effect while you use the Services.
-						WITHOUT LIMITING ANY OTHER PROVISION OF THESE LEGAL TERMS, WE RESERVE THE RIGHT TO, IN
-						OUR SOLE DISCRETION AND WITHOUT NOTICE OR LIABILITY, DENY ACCESS TO AND USE OF THE
-						SERVICES (INCLUDING BLOCKING CERTAIN IP ADDRESSES), TO ANY PERSON FOR ANY REASON OR FOR
-						NO REASON, INCLUDING WITHOUT LIMITATION FOR BREACH OF ANY REPRESENTATION, WARRANTY, OR
-						COVENANT CONTAINED IN THESE LEGAL TERMS OR OF ANY APPLICABLE LAW OR REGULATION. WE MAY
-						TERMINATE YOUR USE OR PARTICIPATION IN THE SERVICES OR DELETE YOUR ACCOUNT AND ANY
-						CONTENT OR INFORMATION THAT YOU POSTED AT ANY TIME, WITHOUT WARNING, IN OUR SOLE
-						DISCRETION.
-					</p>
-					<p class="mt-3 text-base leading-relaxed text-text/80">
-						If we terminate or suspend your account for any reason, you are prohibited from
-						registering and creating a new account under your name, a fake or borrowed name, or the
-						name of any third party, even if you may be acting on behalf of the third party. In
-						addition to terminating or suspending your account, we reserve the right to take
-						appropriate legal action, including without limitation pursuing civil, criminal, and
-						injunctive redress.
-					</p>
-				</div>
-
-				<div id="modifications-and-interruptions">
-					<h2 class="font-display text-xl font-medium text-primary">15. Modifications and Interruptions</h2>
-					<p class="mt-3 text-base leading-relaxed text-text/80">
-						We reserve the right to change, modify, or remove the contents of the Services at any
-						time or for any reason at our sole discretion without notice. However, we have no
-						obligation to update any information on our Services. We will not be liable to you or
-						any third party for any modification, price change, suspension, or discontinuance of
-						the Services.
-					</p>
-					<p class="mt-3 text-base leading-relaxed text-text/80">
-						We cannot guarantee the Services will be available at all times. We may experience
-						hardware, software, or other problems or need to perform maintenance related to the
-						Services, resulting in interruptions, delays, or errors. We reserve the right to
-						change, revise, update, suspend, discontinue, or otherwise modify the Services at any
-						time or for any reason without notice to you. You agree that we have no liability
-						whatsoever for any loss, damage, or inconvenience caused by your inability to access or
-						use the Services during any downtime or discontinuance of the Services. Nothing in
-						these Legal Terms will be construed to obligate us to maintain and support the Services
-						or to supply any corrections, updates, or releases in connection therewith.
-					</p>
-				</div>
-
-				<div id="governing-law">
-					<h2 class="font-display text-xl font-medium text-primary">16. Governing Law</h2>
-					<p class="mt-3 text-base leading-relaxed text-text/80">
-						These Legal Terms and your use of the Services are governed by and construed in
-						accordance with the laws of the State of Alaska applicable to agreements made and to be
-						entirely performed within the State of Alaska, without regard to its conflict of law
-						principles.
-					</p>
-				</div>
-
-				<div id="dispute-resolution">
-					<h2 class="font-display text-xl font-medium text-primary">17. Dispute Resolution</h2>
-					<h3 class="mt-4 text-base font-semibold text-primary">Informal Negotiations</h3>
+				<div id="reporting-and-copyright">
+					<h2 class="font-display text-xl font-medium text-primary">12. Reporting and Copyright</h2>
+					<h3 class="mt-4 text-base font-semibold text-primary">12.1 Reporting content</h3>
 					<p class="mt-2 text-base leading-relaxed text-text/80">
-						To expedite resolution and control the cost of any dispute, controversy, or claim
-						related to these Legal Terms (each a "Dispute" and collectively, the "Disputes")
-						brought by either you or us (individually, a "Party" and collectively, the "Parties"),
-						the Parties agree to first attempt to negotiate any Dispute (except those Disputes
-						expressly provided below) informally for at least sixty (60) days before initiating
-						arbitration. Such informal negotiations commence upon written notice from one Party to
-						the other Party.
+						You may report content that violates these Terms using the in-app reporting tools or by
+						contacting
+						<a href="mailto:explore@get-vouch.com" class="text-secondary underline">explore@get-vouch.com</a>
+						or within the app. <strong>We are not obligated to remove reported content</strong>, and
+						reporting does not guarantee any particular outcome or response time.
 					</p>
-					<h3 class="mt-5 text-base font-semibold text-primary">Binding Arbitration</h3>
+					<h3 class="mt-5 text-base font-semibold text-primary">12.2 Copyright — DMCA</h3>
 					<p class="mt-2 text-base leading-relaxed text-text/80">
-						If the Parties are unable to resolve a Dispute through informal negotiations, the
-						Dispute (except those Disputes expressly excluded below) will be finally and
-						exclusively resolved by binding arbitration. YOU UNDERSTAND THAT WITHOUT THIS
-						PROVISION, YOU WOULD HAVE THE RIGHT TO SUE IN COURT AND HAVE A JURY TRIAL. The
-						arbitration shall be commenced and conducted under the Commercial Arbitration Rules of
-						the American Arbitration Association ("AAA") and, where appropriate, the AAA's
-						Supplementary Procedures for Consumer Related Disputes ("AAA Consumer Rules"), both of
-						which are available at the American Arbitration Association (AAA) website. Your
-						arbitration fees and your share of arbitrator compensation shall be governed by the AAA
-						Consumer Rules and, where appropriate, limited by the AAA Consumer Rules. If such costs
-						are determined by the arbitrator to be excessive, we will pay all arbitration fees and
-						expenses. The arbitration may be conducted in person, through the submission of
-						documents, by phone, or online. The arbitrator will make a decision in writing, but
-						need not provide a statement of reasons unless requested by either Party. The
-						arbitrator must follow applicable law, and any award may be challenged if the
-						arbitrator fails to do so. Except where otherwise required by the applicable AAA rules
-						or applicable law, the arbitration will take place in Anchorage County, Alaska. Except
-						as otherwise provided herein, the Parties may litigate in court to compel arbitration,
-						stay proceedings pending arbitration, or to confirm, modify, vacate, or enter judgment
-						on the award entered by the arbitrator.
+						If you believe content on the Service infringes your copyright, send a written notice to
+						our designated agent containing all elements required by 17 U.S.C. §512(c)(3): your
+						physical or electronic signature; identification of the copyrighted work; identification of
+						the material claimed to be infringing and information sufficient to locate it; your contact
+						information; a statement that you have a good faith belief the use is unauthorized; and a
+						statement, under penalty of perjury, that the information is accurate and you are
+						authorized to act.
 					</p>
 					<p class="mt-3 text-base leading-relaxed text-text/80">
-						If for any reason, a Dispute proceeds in court rather than arbitration, the Dispute
-						shall be commenced or prosecuted in the state and federal courts located in Anchorage
-						County, Alaska, and the Parties hereby consent to, and waive all defenses of lack of
-						personal jurisdiction, and forum non conveniens with respect to venue and jurisdiction
-						in such state and federal courts. Application of the United Nations Convention on
-						Contracts for the International Sale of Goods and the Uniform Computer Information
-						Transaction Act (UCITA) are excluded from these Legal Terms.
+						<strong>Designated Copyright Agent</strong><br />
+						Log Social, LLC Attn: Copyright Agent, Zoe Bumstead<br />
+						<a href="mailto:explore@logsocial.app" class="text-secondary underline">explore@logsocial.app</a>
 					</p>
 					<p class="mt-3 text-base leading-relaxed text-text/80">
-						In no event shall any Dispute brought by either Party related in any way to the
-						Services be commenced more than one (1) years after the cause of action arose. If this
-						provision is found to be illegal or unenforceable, then neither Party will elect to
-						arbitrate any Dispute falling within that portion of this provision found to be illegal
-						or unenforceable and such Dispute shall be decided by a court of competent jurisdiction
-						within the courts listed for jurisdiction above, and the Parties agree to submit to the
-						personal jurisdiction of that court.
+						We will respond to valid notices as required by the DMCA and may terminate repeat infringers.
+						Counter-notices may be submitted under 17 U.S.C. §512(g)(3). <strong>Misrepresentations in a
+						notice may subject you to liability under 17 U.S.C. §512(f).</strong>
 					</p>
-					<h3 class="mt-5 text-base font-semibold text-primary">Restrictions</h3>
+					<h3 class="mt-5 text-base font-semibold text-primary">12.3 Disputes about reviews</h3>
 					<p class="mt-2 text-base leading-relaxed text-text/80">
-						The Parties agree that any arbitration shall be limited to the Dispute between the
-						Parties individually. To the full extent permitted by law, (a) no arbitration shall be
-						joined with any other proceeding; (b) there is no right or authority for any Dispute to
-						be arbitrated on a class-action basis or to utilize class action procedures; and (c)
-						there is no right or authority for any Dispute to be brought in a purported
-						representative capacity on behalf of the general public or any other persons.
+						If you are a business owner who believes a review is false or unlawful, contact us at
+						<a href="mailto:explore@get-vouch.com" class="text-secondary underline">explore@get-vouch.com</a>.
+						We will review the report but, consistent with Section 6.8, <strong>we are under no
+						obligation to remove any review</strong>, and we do not adjudicate factual disputes between
+						users and businesses.
 					</p>
 				</div>
 
-				<div id="corrections">
-					<h2 class="font-display text-xl font-medium text-primary">18. Corrections</h2>
-					<p class="mt-3 text-base leading-relaxed text-text/80">
-						There may be information on the Services that contains typographical errors,
-						inaccuracies, or omissions, including descriptions, pricing, availability, and various
-						other information. We reserve the right to correct any errors, inaccuracies, or
-						omissions and to change or update the information on the Services at any time, without
-						prior notice.
+				<div id="termination">
+					<h2 class="font-display text-xl font-medium text-primary">13. Termination</h2>
+					<h3 class="mt-4 text-base font-semibold text-primary">13.1 By you</h3>
+					<p class="mt-2 text-base leading-relaxed text-text/80">
+						You may stop using the Service and delete your account at any time through the in-app
+						settings. Deletion is permanent and, except as described in Section 6.5, removes your
+						content and account data.
+					</p>
+					<h3 class="mt-5 text-base font-semibold text-primary">13.2 By us</h3>
+					<p class="mt-2 text-base leading-relaxed text-text/80">
+						We may suspend or terminate your access at any time, with or without notice, <strong>for any
+						reason or no reason</strong>, including if we believe you have violated these Terms, if
+						required by law, or if continued provision to you would create risk or legal exposure for us
+						or others.
+					</p>
+					<h3 class="mt-5 text-base font-semibold text-primary">13.3 Effect</h3>
+					<p class="mt-2 text-base leading-relaxed text-text/80">
+						On termination, your license under Section 5 ends immediately. Sections 6.5, 6.6, 10, 14,
+						15, 16, 17, 18, and 20 survive.
 					</p>
 				</div>
 
-				<div id="disclaimer">
-					<h2 class="font-display text-xl font-medium text-primary">19. Disclaimer</h2>
+				<div id="disclaimer-of-warranties">
+					<h2 class="font-display text-xl font-medium text-primary">14. Disclaimer of Warranties</h2>
 					<p class="mt-3 text-base leading-relaxed text-text/80">
-						THE SERVICES ARE PROVIDED ON AN AS-IS AND AS-AVAILABLE BASIS. YOU AGREE THAT YOUR USE
-						OF THE SERVICES WILL BE AT YOUR SOLE RISK. TO THE FULLEST EXTENT PERMITTED BY LAW, WE
-						DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED, IN CONNECTION WITH THE SERVICES AND YOUR
-						USE THEREOF, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
-						FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT. WE MAKE NO WARRANTIES OR
-						REPRESENTATIONS ABOUT THE ACCURACY OR COMPLETENESS OF THE SERVICES' CONTENT OR THE
-						CONTENT OF ANY WEBSITES OR MOBILE APPLICATIONS LINKED TO THE SERVICES AND WE WILL
-						ASSUME NO LIABILITY OR RESPONSIBILITY FOR ANY (1) ERRORS, MISTAKES, OR INACCURACIES OF
-						CONTENT AND MATERIALS, (2) PERSONAL INJURY OR PROPERTY DAMAGE, OF ANY NATURE
-						WHATSOEVER, RESULTING FROM YOUR ACCESS TO AND USE OF THE SERVICES, (3) ANY UNAUTHORIZED
-						ACCESS TO OR USE OF OUR SECURE SERVERS AND/OR ANY AND ALL PERSONAL INFORMATION AND/OR
-						FINANCIAL INFORMATION STORED THEREIN, (4) ANY INTERRUPTION OR CESSATION OF TRANSMISSION
-						TO OR FROM THE SERVICES, (5) ANY BUGS, VIRUSES, TROJAN HORSES, OR THE LIKE WHICH MAY BE
-						TRANSMITTED TO OR THROUGH THE SERVICES BY ANY THIRD PARTY, AND/OR (6) ANY ERRORS OR
-						OMISSIONS IN ANY CONTENT AND MATERIALS OR FOR ANY LOSS OR DAMAGE OF ANY KIND INCURRED
-						AS A RESULT OF THE USE OF ANY CONTENT POSTED, TRANSMITTED, OR OTHERWISE MADE AVAILABLE
-						VIA THE SERVICES. WE DO NOT WARRANT, ENDORSE, GUARANTEE, OR ASSUME RESPONSIBILITY FOR
-						ANY PRODUCT OR SERVICE ADVERTISED OR OFFERED BY A THIRD PARTY THROUGH THE SERVICES, ANY
-						HYPERLINKED WEBSITE, OR ANY WEBSITE OR MOBILE APPLICATION FEATURED IN ANY BANNER OR
-						OTHER ADVERTISING, AND WE WILL NOT BE A PARTY TO OR IN ANY WAY BE RESPONSIBLE FOR
-						MONITORING ANY TRANSACTION BETWEEN YOU AND ANY THIRD-PARTY PROVIDERS OF PRODUCTS OR
-						SERVICES. AS WITH THE PURCHASE OF A PRODUCT OR SERVICE THROUGH ANY MEDIUM OR IN ANY
-						ENVIRONMENT, YOU SHOULD USE YOUR BEST JUDGMENT AND EXERCISE CAUTION WHERE APPROPRIATE.
+						THE SERVICE IS PROVIDED "AS IS" AND "AS AVAILABLE," WITH ALL FAULTS AND WITHOUT WARRANTY OF
+						ANY KIND. TO THE MAXIMUM EXTENT PERMITTED BY LAW, LOG SOCIAL AND ITS OFFICERS, MEMBERS,
+						EMPLOYEES, AGENTS, AND LICENSORS DISCLAIM ALL WARRANTIES, EXPRESS, IMPLIED, OR STATUTORY,
+						INCLUDING THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE,
+						TITLE, ACCURACY, AND NON-INFRINGEMENT.
+					</p>
+					<p class="mt-3 text-base leading-relaxed text-text/80">
+						WE DO NOT WARRANT THAT: THE SERVICE WILL BE UNINTERRUPTED, SECURE, TIMELY, OR ERROR-FREE;
+						THAT DEFECTS WILL BE CORRECTED; THAT THE SERVICE IS FREE OF HARMFUL COMPONENTS; OR THAT ANY
+						CONTENT, RECOMMENDATION, PLACE INFORMATION, LOCATION DATA, OR AI-GENERATED OUTPUT IS
+						ACCURATE, COMPLETE, RELIABLE, OR SUITABLE FOR ANY PURPOSE.
+					</p>
+					<p class="mt-3 text-base leading-relaxed text-text/80">
+						WE MAKE NO WARRANTY REGARDING THE CONDUCT OF ANY USER OR THIRD PARTY, OR THE SAFETY,
+						QUALITY, OR LEGALITY OF ANY PLACE, BUSINESS, EVENT, OR ACTIVITY YOU LEARN ABOUT THROUGH THE
+						SERVICE. YOU ASSUME ALL RISK ARISING FROM YOUR USE OF THE SERVICE AND FROM ANY REAL-WORLD
+						ACTIVITY UNDERTAKEN AS A RESULT OF IT.
+					</p>
+					<p class="mt-3 text-base leading-relaxed text-text/80">
+						Some jurisdictions do not allow the exclusion of certain warranties, so some of the above
+						may not apply to you.
 					</p>
 				</div>
 
-				<div id="limitations-of-liability">
-					<h2 class="font-display text-xl font-medium text-primary">20. Limitations of Liability</h2>
+				<div id="limitation-of-liability">
+					<h2 class="font-display text-xl font-medium text-primary">15. Limitation of Liability</h2>
 					<p class="mt-3 text-base leading-relaxed text-text/80">
-						IN NO EVENT WILL WE OR OUR DIRECTORS, EMPLOYEES, OR AGENTS BE LIABLE TO YOU OR ANY
-						THIRD PARTY FOR ANY DIRECT, INDIRECT, CONSEQUENTIAL, EXEMPLARY, INCIDENTAL, SPECIAL, OR
-						PUNITIVE DAMAGES, INCLUDING LOST PROFIT, LOST REVENUE, LOSS OF DATA, OR OTHER DAMAGES
-						ARISING FROM YOUR USE OF THE SERVICES, EVEN IF WE HAVE BEEN ADVISED OF THE POSSIBILITY
-						OF SUCH DAMAGES. NOTWITHSTANDING ANYTHING TO THE CONTRARY CONTAINED HEREIN, OUR
-						LIABILITY TO YOU FOR ANY CAUSE WHATSOEVER AND REGARDLESS OF THE FORM OF THE ACTION,
-						WILL AT ALL TIMES BE LIMITED TO THE LESSER OF THE AMOUNT PAID, IF ANY, BY YOU TO US
-						DURING THE SIX (6) MONTH PERIOD PRIOR TO ANY CAUSE OF ACTION ARISING OR $100.00 USD.
-						CERTAIN US STATE LAWS AND INTERNATIONAL LAWS DO NOT ALLOW LIMITATIONS ON IMPLIED
-						WARRANTIES OR THE EXCLUSION OR LIMITATION OF CERTAIN DAMAGES. IF THESE LAWS APPLY TO
-						YOU, SOME OR ALL OF THE ABOVE DISCLAIMERS OR LIMITATIONS MAY NOT APPLY TO YOU, AND YOU
-						MAY HAVE ADDITIONAL RIGHTS.
+						TO THE MAXIMUM EXTENT PERMITTED BY LAW, LOG SOCIAL AND ITS OFFICERS, MEMBERS, EMPLOYEES,
+						AGENTS, AND LICENSORS WILL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL,
+						CONSEQUENTIAL, EXEMPLARY, OR PUNITIVE DAMAGES, OR FOR ANY LOSS OF PROFITS, REVENUE, DATA,
+						GOODWILL, OR OTHER INTANGIBLE LOSSES, ARISING OUT OF OR RELATING TO THESE TERMS OR THE
+						SERVICE, WHETHER BASED IN CONTRACT, TORT, NEGLIGENCE, STRICT LIABILITY, OR ANY OTHER THEORY,
+						EVEN IF WE HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+					</p>
+					<p class="mt-3 text-base leading-relaxed text-text/80">
+						WITHOUT LIMITING THE FOREGOING, WE WILL NOT BE LIABLE FOR: (A) ANY CONDUCT OR CONTENT OF ANY
+						USER OR THIRD PARTY; (B) ANY UNAUTHORIZED ACCESS TO OR ALTERATION OF YOUR CONTENT OR DATA;
+						(C) ANY PERSONAL INJURY, PROPERTY DAMAGE, OR DEATH ARISING FROM ANY PLACE VISITED OR
+						ACTIVITY UNDERTAKEN; (D) ANY TRANSACTION WITH A THIRD-PARTY BOOKING OR MERCHANT PROVIDER; OR
+						(E) ANY RELIANCE ON AI-GENERATED OUTPUT.
+					</p>
+					<p class="mt-3 text-base leading-relaxed text-text/80">
+						OUR TOTAL AGGREGATE LIABILITY FOR ALL CLAIMS RELATING TO THE SERVICE WILL NOT EXCEED THE
+						GREATER OF (I) THE TOTAL AMOUNT YOU PAID US IN THE TWELVE MONTHS PRECEDING THE EVENT GIVING
+						RISE TO THE CLAIM, OR (II) ONE HUNDRED U.S. DOLLARS ($100).
+					</p>
+					<p class="mt-3 text-base leading-relaxed text-text/80">
+						THESE LIMITATIONS ARE A FUNDAMENTAL BASIS OF THE BARGAIN AND APPLY EVEN IF A LIMITED REMEDY
+						FAILS OF ITS ESSENTIAL PURPOSE.
+					</p>
+					<p class="mt-3 text-base leading-relaxed text-text/80">
+						Some jurisdictions do not allow certain limitations, so some of the above may not apply to
+						you. Nothing in these Terms limits liability that cannot be limited under applicable law.
 					</p>
 				</div>
 
 				<div id="indemnification">
-					<h2 class="font-display text-xl font-medium text-primary">21. Indemnification</h2>
+					<h2 class="font-display text-xl font-medium text-primary">16. Indemnification</h2>
 					<p class="mt-3 text-base leading-relaxed text-text/80">
-						You agree to defend, indemnify, and hold us harmless, including our subsidiaries,
-						affiliates, and all of our respective officers, agents, partners, and employees, from
-						and against any loss, damage, liability, claim, or demand, including reasonable
-						attorneys' fees and expenses, made by any third party due to or arising out of: (1)
-						your Contributions; (2) use of the Services; (3) breach of these Legal Terms; (4) any
-						breach of your representations and warranties set forth in these Legal Terms; (5) your
-						violation of the rights of a third party, including but not limited to intellectual
-						property rights; or (6) any overt harmful act toward any other user of the Services
-						with whom you connected via the Services. Notwithstanding the foregoing, we reserve the
-						right, at your expense, to assume the exclusive defense and control of any matter for
-						which you are required to indemnify us, and you agree to cooperate, at your expense,
-						with our defense of such claims. We will use reasonable efforts to notify you of any
-						such claim, action, or proceeding which is subject to this indemnification upon
-						becoming aware of it.
+						You agree to defend, indemnify, and hold harmless Log Social and its officers, members,
+						employees, and agents from any claim, demand, loss, liability, damage, cost, or expense
+						(including reasonable attorneys' fees) arising out of or relating to: (a) Your Content; (b)
+						your use of the Service; (c) your violation of these Terms or any law; (d) your violation of
+						any third party's rights, including intellectual property, privacy, and publicity rights;
+						(e) any message or invitation you send through or as a result of the Service; or (f) any
+						dispute between you and another user or a third party.
+					</p>
+					<p class="mt-3 text-base leading-relaxed text-text/80">
+						We reserve the right to assume the exclusive defense of any matter subject to
+						indemnification, at your expense, and you agree to cooperate. You will not settle any
+						matter affecting us without our prior written consent.
 					</p>
 				</div>
 
-				<div id="user-data">
-					<h2 class="font-display text-xl font-medium text-primary">22. User Data</h2>
+				<div id="dispute-resolution">
+					<h2 class="font-display text-xl font-medium text-primary">17. Dispute Resolution — Arbitration and Class Action Waiver</h2>
 					<p class="mt-3 text-base leading-relaxed text-text/80">
-						We will maintain certain data that you transmit to the Services for the purpose of
-						managing the performance of the Services, as well as data relating to your use of the
-						Services. Although we perform regular routine backups of data, you are solely
-						responsible for all data that you transmit or that relates to any activity you have
-						undertaken using the Services. You agree that we shall have no liability to you for any
-						loss or corruption of any such data, and you hereby waive any right of action against
-						us arising from any such loss or corruption of such data.
+						<strong>PLEASE READ THIS SECTION CAREFULLY. IT AFFECTS YOUR LEGAL RIGHTS, INCLUDING YOUR
+						RIGHT TO FILE A LAWSUIT IN COURT AND TO HAVE A JURY DECIDE YOUR CLAIMS.</strong>
+					</p>
+					<h3 class="mt-4 text-base font-semibold text-primary">17.1 Informal resolution first — required</h3>
+					<p class="mt-2 text-base leading-relaxed text-text/80">
+						Before starting an arbitration or lawsuit, you and we agree to try to resolve the dispute
+						informally. The party raising the dispute must send a written Notice of Dispute describing
+						the claim and the relief sought — to
+						<a href="mailto:explore@get-vouch.com" class="text-secondary underline">explore@get-vouch.com</a>,
+						from you, or to your account email if from us. <strong>Both parties must then engage in
+						good-faith discussions for 60 days.</strong> This is a precondition to filing, and the
+						limitations period is tolled during it. A court or arbitrator may enjoin a filing made
+						before this period ends.
+					</p>
+					<p class="mt-3 text-base leading-relaxed text-text/80">
+						A Notice of Dispute from you must be individualized and must include: your name, the email
+						address associated with your account, a description of the specific facts giving rise to
+						your claim, the specific relief you seek, and your personal signature. A notice signed only
+						by counsel, or one that does not describe facts specific to your own account and use of the
+						Service, does not satisfy this requirement.
+					</p>
+					<p class="mt-3 text-base leading-relaxed text-text/80">
+						Each party must personally participate — through counsel if represented — in at least one
+						telephone or video conference if the other party requests one. This is a precondition to
+						filing, and the limitations period is tolled during it. A court or arbitrator may enjoin a
+						filing made before this period ends and may award fees incurred in enforcing this Section.
+					</p>
+					<h3 class="mt-5 text-base font-semibold text-primary">17.2 Agreement to arbitrate</h3>
+					<p class="mt-2 text-base leading-relaxed text-text/80">
+						If the dispute is not resolved within 60 days, you and Log Social agree that any dispute,
+						claim, or controversy arising out of or relating to these Terms or the Service will be
+						resolved by <strong>binding individual arbitration</strong>, not in court, except as
+						provided in Section 17.3. This agreement is governed by the Federal Arbitration Act.
+					</p>
+					<h3 class="mt-5 text-base font-semibold text-primary">17.3 Exceptions</h3>
+					<p class="mt-2 text-base leading-relaxed text-text/80">
+						This Section does not apply to: (a) claims that qualify for small claims court, brought
+						individually; (b) claims for injunctive or equitable relief regarding intellectual property
+						or unauthorized access; and (c) claims for public injunctive relief, which are severed and
+						may be brought in court. If a claim for public injunctive relief is severed, arbitration of
+						all other claims proceeds and is not stayed.
+					</p>
+					<h3 class="mt-5 text-base font-semibold text-primary">17.4 Rules and forum</h3>
+					<p class="mt-2 text-base leading-relaxed text-text/80">
+						Arbitration will be administered by the American Arbitration Association under its Consumer
+						Arbitration Rules, before a single arbitrator. If AAA is unavailable, the parties will agree
+						on an alternative or a court will appoint one.
+					</p>
+					<h3 class="mt-5 text-base font-semibold text-primary">17.5 Location</h3>
+					<p class="mt-2 text-base leading-relaxed text-text/80">
+						Arbitration will be conducted by telephone or video, by written submission, or in person in
+						the county where you reside, at your election. <strong>You will not be required to travel
+						to Alaska.</strong>
+					</p>
+					<h3 class="mt-5 text-base font-semibold text-primary">17.6 Fees</h3>
+					<p class="mt-2 text-base leading-relaxed text-text/80">
+						Filing and arbitration fees are governed by the AAA Consumer Arbitration Rules, under which
+						we bear most costs. If the arbitrator finds your claim was frivolous or brought for an
+						improper purpose, fees may be reallocated as the rules permit.
+					</p>
+					<h3 class="mt-5 text-base font-semibold text-primary">17.7 Class action waiver</h3>
+					<p class="mt-2 text-base leading-relaxed text-text/80">
+						YOU AND LOG SOCIAL AGREE THAT EACH MAY BRING CLAIMS AGAINST THE OTHER ONLY IN AN INDIVIDUAL
+						CAPACITY, AND NOT AS A PLAINTIFF OR CLASS MEMBER IN ANY CLASS, COLLECTIVE, CONSOLIDATED, OR
+						REPRESENTATIVE PROCEEDING. THE ARBITRATOR MAY NOT CONSOLIDATE MORE THAN ONE PERSON'S CLAIMS
+						AND MAY NOT PRESIDE OVER ANY CLASS OR REPRESENTATIVE PROCEEDING. THE ARBITRATOR MAY AWARD
+						RELIEF ONLY TO THE INDIVIDUAL PARTY SEEKING IT.
+					</p>
+					<h3 class="mt-5 text-base font-semibold text-primary">17.8 Batch arbitration</h3>
+					<p class="mt-2 text-base leading-relaxed text-text/80">
+						If 20 or more substantially similar demands are filed against us by or with the assistance
+						of the same or coordinated counsel, the parties agree the demands will be administered in
+						batches of no more than 20, with a single arbitrator per batch and a single set of filing
+						fees per batch. The parties will cooperate in good faith with AAA to implement this.
+					</p>
+					<h3 class="mt-5 text-base font-semibold text-primary">17.9 Your right to opt out</h3>
+					<p class="mt-2 text-base leading-relaxed text-text/80">
+						<strong>You may opt out of this arbitration agreement and the class action waiver by
+						sending written notice within 30 days of first accepting these Terms</strong> to
+						<a href="mailto:explore@get-vouch.com" class="text-secondary underline">explore@get-vouch.com</a>
+						with the subject line "Arbitration Opt-Out," including your name, the email address on your
+						account, and a clear statement that you wish to opt out. Opting out does not affect any
+						other part of these Terms and will not affect your use of the Service in any way.
+					</p>
+					<h3 class="mt-5 text-base font-semibold text-primary">17.10 Jury trial waiver</h3>
+					<p class="mt-2 text-base leading-relaxed text-text/80">
+						If for any reason a dispute proceeds in court rather than arbitration, <strong>you and Log
+						Social each waive any right to a jury trial.</strong>
+					</p>
+					<h3 class="mt-5 text-base font-semibold text-primary">17.11 Severability — blow-up provision</h3>
+					<p class="mt-2 text-base leading-relaxed text-text/80">
+						If the class action waiver in Section 17.7 is found unenforceable as to any claim,
+						<strong>then this entire Section 17 is void as to that claim</strong>, and that claim will
+						proceed in court under Section 18. The remainder of Section 17 remains in force for all
+						other claims. If any other provision of this Section is found unenforceable, it will be
+						severed and the remainder will continue to apply.
+					</p>
+					<h3 class="mt-5 text-base font-semibold text-primary">17.12 Time limit</h3>
+					<p class="mt-2 text-base leading-relaxed text-text/80">
+						Any claim must be brought within one (1) year after it arises, or it is permanently barred,
+						except where a longer period is required by applicable law.
+					</p>
+					<h3 class="mt-5 text-base font-semibold text-primary">17.13 Survival</h3>
+					<p class="mt-2 text-base leading-relaxed text-text/80">
+						This Section survives termination of your account and of these Terms.
 					</p>
 				</div>
 
-				<div id="electronic-communications">
-					<h2 class="font-display text-xl font-medium text-primary">23. Electronic Communications, Transactions, and Signatures</h2>
+				<div id="governing-law-and-venue">
+					<h2 class="font-display text-xl font-medium text-primary">18. Governing Law and Venue</h2>
 					<p class="mt-3 text-base leading-relaxed text-text/80">
-						Visiting the Services, sending us emails, and completing online forms constitute
-						electronic communications. You consent to receive electronic communications, and you
-						agree that all agreements, notices, disclosures, and other communications we provide to
-						you electronically, via email and on the Services, satisfy any legal requirement that
-						such communication be in writing. YOU HEREBY AGREE TO THE USE OF ELECTRONIC SIGNATURES,
-						CONTRACTS, ORDERS, AND OTHER RECORDS, AND TO ELECTRONIC DELIVERY OF NOTICES, POLICIES,
-						AND RECORDS OF TRANSACTIONS INITIATED OR COMPLETED BY US OR VIA THE SERVICES. You
-						hereby waive any rights or requirements under any statutes, regulations, rules,
-						ordinances, or other laws in any jurisdiction which require an original signature or
-						delivery or retention of non-electronic records, or to payments or the granting of
-						credits by any means other than electronic means.
+						These Terms are governed by the laws of the <strong>State of Alaska</strong>, without regard
+						to its conflict of laws rules. For any claim not subject to arbitration, the parties consent
+						to the exclusive jurisdiction of the state and federal courts located in Anchorage, Alaska,
+						and waive any objection to venue or inconvenient forum.
+					</p>
+					<p class="mt-3 text-base leading-relaxed text-text/80">
+						If you are a consumer residing in a jurisdiction whose law grants you the right to bring
+						claims locally or under local consumer protection law, nothing here deprives you of that
+						right.
 					</p>
 				</div>
 
-				<div id="california-users-and-residents">
-					<h2 class="font-display text-xl font-medium text-primary">24. California Users and Residents</h2>
-					<p class="mt-3 text-base leading-relaxed text-text/80">
-						If any complaint with us is not satisfactorily resolved, you can contact the Complaint
-						Assistance Unit of the Division of Consumer Services of the California Department of
-						Consumer Affairs in writing at 1625 North Market Blvd., Suite N 112, Sacramento,
-						California 95834 or by telephone at (800) 952-5210 or (916) 445-1254.
+				<div id="apple-and-google">
+					<h2 class="font-display text-xl font-medium text-primary">19. Apple and Google</h2>
+					<h3 class="mt-4 text-base font-semibold text-primary">19.1 Apple</h3>
+					<p class="mt-2 text-base leading-relaxed text-text/80">If you obtained the app through the Apple App Store:</p>
+					<ul class="mt-3 list-disc space-y-2 pl-5 text-base leading-relaxed text-text/80">
+						<li>These Terms are between you and Log Social only, not Apple. Apple is not responsible for the app or its content.</li>
+						<li>Apple has no obligation to provide maintenance or support.</li>
+						<li>If the app fails to conform to any applicable warranty, you may notify Apple, and Apple will refund the purchase price (if any). To the maximum extent permitted by law, Apple has no other warranty obligation.</li>
+						<li>Log Social, not Apple, is responsible for addressing any claim relating to the app, including product liability, legal or regulatory non-conformity, and consumer protection claims.</li>
+						<li>Log Social, not Apple, is responsible for investigating and defending any third-party claim that the app infringes intellectual property rights.</li>
+						<li>You must comply with applicable third-party terms of service when using the app.</li>
+						<li><strong>Apple and its subsidiaries are third-party beneficiaries of these Terms and may enforce them against you.</strong></li>
+						<li>You represent that you are not located in an embargoed country and are not on any U.S. Government prohibited or restricted party list.</li>
+					</ul>
+				</div>
+
+				<div id="general">
+					<h2 class="font-display text-xl font-medium text-primary">20. General</h2>
+					<h3 class="mt-4 text-base font-semibold text-primary">20.1 Changes to these Terms</h3>
+					<p class="mt-2 text-base leading-relaxed text-text/80">
+						We may modify these Terms at any time. For material changes, we will provide at least 30
+						days' notice by email or in-app notice before they take effect. Continued use after the
+						effective date constitutes acceptance. If you do not agree, stop using the Service and
+						delete your account. Changes will not apply retroactively to a dispute for which a Notice of
+						Dispute has already been sent.
+					</p>
+					<h3 class="mt-5 text-base font-semibold text-primary">20.2 Entire agreement</h3>
+					<p class="mt-2 text-base leading-relaxed text-text/80">
+						These Terms and the Privacy Policy are the entire agreement between you and us regarding the
+						Service and supersede all prior agreements, including any prior version of these Terms.
+					</p>
+					<h3 class="mt-5 text-base font-semibold text-primary">20.3 Assignment</h3>
+					<p class="mt-2 text-base leading-relaxed text-text/80">
+						You may not assign these Terms. We may assign them without restriction, including in
+						connection with a merger, acquisition, reorganization, or sale of assets.
+					</p>
+					<h3 class="mt-5 text-base font-semibold text-primary">20.4 Severability</h3>
+					<p class="mt-2 text-base leading-relaxed text-text/80">
+						If any provision is held unenforceable, it will be modified to the minimum extent necessary
+						or severed, and the remainder will continue in full force. Section 17.11 governs
+						severability within Section 17.
+					</p>
+					<h3 class="mt-5 text-base font-semibold text-primary">20.5 No waiver</h3>
+					<p class="mt-2 text-base leading-relaxed text-text/80">Our failure to enforce any provision is not a waiver of it.</p>
+					<h3 class="mt-5 text-base font-semibold text-primary">20.6 Force majeure</h3>
+					<p class="mt-2 text-base leading-relaxed text-text/80">
+						We are not liable for any failure or delay caused by events beyond our reasonable control.
+					</p>
+					<h3 class="mt-5 text-base font-semibold text-primary">20.7 Electronic communications</h3>
+					<p class="mt-2 text-base leading-relaxed text-text/80">
+						You consent to receive communications from us electronically, and agree that electronic
+						notices satisfy any legal requirement that a communication be in writing. You agree that
+						your electronic acceptance of these Terms constitutes a valid signature under the E-SIGN Act
+						and comparable state law. We may retain records of your acceptance, including the version of
+						these Terms accepted, the date and time, and the account and device associated with
+						acceptance, and you agree such records are admissible evidence of your agreement.
+					</p>
+					<h3 class="mt-5 text-base font-semibold text-primary">20.8 Notices to us</h3>
+					<p class="mt-2 text-base leading-relaxed text-text/80">
+						Legal notices must be sent to 4123 Hampton Drive, 9B, Anchorage, AK 99501 or 306 West 30th
+						St, Apt 4R, New York, New York, 10001 with a copy to
+						<a href="mailto:explore@get-vouch.com" class="text-secondary underline">explore@get-vouch.com</a>.
+					</p>
+					<h3 class="mt-5 text-base font-semibold text-primary">20.9 Relationship</h3>
+					<p class="mt-2 text-base leading-relaxed text-text/80">
+						Nothing creates a partnership, joint venture, employment, or agency relationship between you
+						and us.
+					</p>
+					<h3 class="mt-5 text-base font-semibold text-primary">20.10 Export</h3>
+					<p class="mt-2 text-base leading-relaxed text-text/80">
+						You agree to comply with all applicable export control and sanctions laws.
+					</p>
+					<h3 class="mt-5 text-base font-semibold text-primary">20.11 U.S. Government users</h3>
+					<p class="mt-2 text-base leading-relaxed text-text/80">
+						The Service is "commercial computer software" under FAR 12.212 and DFARS 227.7202.
+					</p>
+					<h3 class="mt-5 text-base font-semibold text-primary">20.12 Headings</h3>
+					<p class="mt-2 text-base leading-relaxed text-text/80">
+						Headings are for convenience only and do not affect interpretation.
 					</p>
 				</div>
 
-				<div id="miscellaneous">
-					<h2 class="font-display text-xl font-medium text-primary">25. Miscellaneous</h2>
+				<div id="contact">
+					<h2 class="font-display text-xl font-medium text-primary">21. Contact</h2>
 					<p class="mt-3 text-base leading-relaxed text-text/80">
-						These Legal Terms and any policies or operating rules posted by us on the Services or
-						in respect to the Services constitute the entire agreement and understanding between
-						you and us. Our failure to exercise or enforce any right or provision of these Legal
-						Terms shall not operate as a waiver of such right or provision. These Legal Terms
-						operate to the fullest extent permissible by law. We may assign any or all of our
-						rights and obligations to others at any time. We shall not be responsible or liable for
-						any loss, damage, delay, or failure to act caused by any cause beyond our reasonable
-						control. If any provision or part of a provision of these Legal Terms is determined to
-						be unlawful, void, or unenforceable, that provision or part of the provision is deemed
-						severable from these Legal Terms and does not affect the validity and enforceability of
-						any remaining provisions. There is no joint venture, partnership, employment or agency
-						relationship created between you and us as a result of these Legal Terms or use of the
-						Services. You agree that these Legal Terms will not be construed against us by virtue
-						of having drafted them. You hereby waive any and all defenses you may have based on the
-						electronic form of these Legal Terms and the lack of signing by the parties hereto to
-						execute these Legal Terms.
-					</p>
-				</div>
-
-				<div id="community-guidelines">
-					<h2 class="font-display text-xl font-medium text-primary">26. Community Guidelines and Content Moderation</h2>
-					<p class="mt-3 text-base leading-relaxed text-text/80">
-						Log Social, LLC, may, at its sole discretion, remove content or suspend or terminate
-						accounts that violate these Terms or our Community Guidelines, or that we determine are
-						harmful, illegal, or otherwise objectionable. We are not obligated to monitor all
-						content but reserve the right to act on content that is brought to our attention. Users
-						may report content or abusive behavior by contacting us at explore@get-vouch.com or
-						using in app reporting tools where available. Log Social's moderation decisions are
-						made at our discretion and do not create an obligation to monitor, remove, or take any
-						particular action with respect to any specific content. Exercise of these rights does
-						not waive any legal immunity available to Log Social, LLC, including under 47 U.S.C. §
-						230.
-					</p>
-				</div>
-
-				<div id="section-230">
-					<h2 class="font-display text-xl font-medium text-primary">27. Section 230 and Platform Immunity</h2>
-					<p class="mt-3 text-base leading-relaxed text-text/80">
-						Log Social, LLC, is an interactive computer service under 47 U.S.C. § 230 and is not
-						the publisher or speaker of content posted by users. Log Social, LLC does not assume
-						legal responsibility for the accuracy or legality of user generated content. The right
-						to moderate content does not make Log Social, LLC a publisher of that content for
-						liability purposes. Anti-SLAPP laws, including California Code of Civil Procedure §
-						425.16, may require parties who bring meritless actions against Log Social, LLC or its
-						users arising from protected speech, including consumer reviews, to pay attorneys'
-						fees. Section 230 does not apply to Log Social's own content, federal criminal law, or
-						intellectual property claims.
-					</p>
-				</div>
-
-				<div id="apple-app-store">
-					<h2 class="font-display text-xl font-medium text-primary">28. Apple App Store — Third-Party Beneficiary</h2>
-					<p class="mt-3 text-base leading-relaxed text-text/80">
-						If you downloaded the App from the Apple App Store, you acknowledge that Apple Inc. and
-						its subsidiaries are third-party beneficiaries of this Agreement and have the right to
-						enforce it against you. Log Social, LLC, not Apple, is solely responsible for the App,
-						its content, maintenance, support, and compliance with applicable law. Apple has no
-						obligation to provide support for the App. If the App fails to conform to any
-						applicable warranty, you may notify Apple for a refund of the purchase price; Apple has
-						no further warranty obligation. Your use of the App is also subject to Apple's App
-						Store Terms of Service.
-					</p>
-				</div>
-
-				<div id="location-data">
-					<h2 class="font-display text-xl font-medium text-primary">29. Location Data</h2>
-					<p class="mt-3 text-base leading-relaxed text-text/80">
-						The Services may request access to your device's precise geographic location to
-						provide features such as experience logging, discovery, and maps. By granting location
-						permissions, you consent to Log Social, LLC, collecting and using your location data as
-						described in our Privacy Policy. We treat precise location as sensitive personal
-						information and do not sell it to third parties. You may revoke location access at any
-						time through your device settings.
-					</p>
-				</div>
-
-				<div id="authentic-reviews">
-					<h2 class="font-display text-xl font-medium text-primary">30. Authentic Reviews and FTC Compliance</h2>
-					<p class="mt-3 text-base leading-relaxed text-text/80">
-						Reviews, ratings, and recommendations on the Services must reflect your honest,
-						first-hand experience. You agree not to post fake, fabricated, AI generated, or
-						inauthentic reviews; post reviews of businesses where you have a personal or financial
-						conflict of interest without disclosing that relationship; accept or offer compensation
-						in exchange for reviews without clear disclosure; trade reviews with other users; or
-						artificially manipulate ratings through any means. These rules are designed to comply
-						with the FTC Trade Regulation Rule on Consumer Reviews (16 CFR Part 465) and FTC
-						Endorsement Guides (16 CFR Part 255). Violations may result in account termination.
-						Business information on the Services is provided for informational purposes only. Log
-						Social, LLC does not verify the accuracy of business listings, and you should confirm
-						details directly with the business before visiting.
-					</p>
-				</div>
-
-				<div id="waitlist-sms">
-					<h2 class="font-display text-xl font-medium text-primary">31. Waitlist and SMS Communications</h2>
-					<p class="mt-3 text-base leading-relaxed text-text/80">
-						When you request early access to the Services, we collect your name, phone number, and
-						city to place you on our waitlist. By submitting your phone number and checking the SMS
-						consent box, you agree to receive text messages from Log Social, LLC at the phone
-						number provided, including messages about your waitlist status, referral program
-						updates, and early access availability. Message frequency varies. Message and data
-						rates may apply. Reply STOP to any message to unsubscribe, or HELP for help.
-					</p>
-					<p class="mt-3 text-base leading-relaxed text-text/80">
-						No mobile information will be shared with third parties or affiliates for marketing or
-						promotional purposes. All the categories of information disclosed in this section
-						exclude text messaging originator opt-in data and consent — this information will not
-						be shared with any third parties.
-					</p>
-					<p class="mt-3 text-base leading-relaxed text-text/80">
-						The "refer a friend" feature opens a pre-filled message in your own device's messaging
-						application for you to review and choose to send. You are responsible for what you send
-						and to whom. Log Social, LLC does not send that message on your behalf and does not
-						access your contacts or message history to provide this feature. You may withdraw SMS
-						consent at any time by replying STOP to any message, or by contacting us at
-						explore@get-vouch.com.
-					</p>
-				</div>
-
-				<div id="contact-us">
-					<h2 class="font-display text-xl font-medium text-primary">32. Contact Us</h2>
-					<p class="mt-3 text-base leading-relaxed text-text/80">
-						In order to resolve a complaint regarding the Services or to receive further
-						information regarding use of the Services, please contact us at:
-					</p>
-					<p class="mt-3 text-base leading-relaxed text-text/80">
-						Log Social, LLC<br />
+						Log Social, LLC Alaska Entity #10361849<br />
 						4123 Hampton Drive, 9B<br />
 						Anchorage, AK 99501<br />
-						United States
-					</p>
-					<p class="mt-3 text-base leading-relaxed text-text/80">
-						Email us at <a href="mailto:explore@get-vouch.com" class="text-secondary underline">explore@get-vouch.com</a>.
+						<a href="mailto:explore@get-vouch.com" class="text-secondary underline">explore@get-vouch.com</a>
 					</p>
 				</div>
 			</div>
