@@ -1,0 +1,17 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "YVFS9CRYJS.com.averyv12.log",
+        "paths": [
+          "/share/*",
+          "/post/*",
+          "/auth/email-change",
+          "/auth/email-change/*",
+          "/open"
+        ]
+      }
+    ]
+  }
+}

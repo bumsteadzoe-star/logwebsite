@@ -1,0 +1,68 @@
+---
+/**
+ * Bridge target for the "Open Vouch" CTA in the onboarding emails.
+ *
+ * Behaviour: open the app if it's installed, otherwise send the visitor to the App Store.
+ *
+ * Two mechanisms stack here, and either one alone is enough:
+ *  1. Universal link — the app claims `applinks:logsocial.app`, so once
+ *     /.well-known/apple-app-site-association is live on that domain iOS intercepts the tap and
+ *     this page never renders for someone who has the app.
+ *  2. This page — tries the `log://` scheme, and falls back to the App Store if nothing takes
+ *     over the tab. That covers get-vouch.com (which the app does *not* claim) and any client
+ *     that routes around universal links.
+ *
+ * Deliberately standalone rather than wrapped in the marketing Layout: this page exists to be
+ * left immediately, so loading the nav and hero would just add a flash of the wrong thing.
+ */
+const APP_STORE_URL =
+  import.meta.env.PUBLIC_IOS_APP_STORE_URL || 'https://apps.apple.com/app/id6763411702';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Opening Vouch…</title>
+    <meta name="robots" content="noindex" />
+  </head>
+  <body
+    style="margin:0;font-family:system-ui,-apple-system,'Helvetica Neue',Helvetica,Arial,sans-serif;background:#ffffff;color:#0c1a08;"
+  >
+    <main
+      style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 24px;"
+    >
+      <h1 style="font-size:1.5rem;margin:0 0 8px;">Opening Vouch…</h1>
+      <p style="color:#5f646a;margin:0 0 24px;">
+        If the app doesn&rsquo;t open, we&rsquo;ll take you to the App Store.
+      </p>
+      <a href={APP_STORE_URL} style="color:#3d6b2f;font-weight:600;">Get Vouch on the App Store</a>
+    </main>
+
+    {/* `is:inline` matters: a bundled/deferred module would run too late, and the user would
+        watch this page sit there before anything happened. */}
+    <script is:inline define:vars={{ APP_STORE_URL }}>
+      (function () {
+        // Desktop has no app to open — go straight to the listing.
+        if (!/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+          window.location.replace(APP_STORE_URL);
+          return;
+        }
+        // If the app takes over, the page is backgrounded. Without cancelling on that signal the
+        // user returns to Safari already redirected to the App Store, which reads as a failure.
+        var handedOff = false;
+        document.addEventListener('visibilitychange', function () {
+          if (document.hidden) handedOff = true;
+        });
+        window.addEventListener('pagehide', function () {
+          handedOff = true;
+        });
+        window.location.href = 'log://';
+        setTimeout(function () {
+          if (!handedOff) window.location.replace(APP_STORE_URL);
+        }, 2000);
+      })();
+    </script>
+  </body>
+</html>
