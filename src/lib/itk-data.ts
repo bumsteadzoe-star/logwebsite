@@ -21,6 +21,7 @@ export interface ItkPlace {
 	tags: string[];
 	rating: Rating | null;
 	event_date: string | null;
+	event_time: string | null;
 	itk_photos: ItkPhoto[];
 }
 

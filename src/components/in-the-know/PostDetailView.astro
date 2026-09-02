@@ -25,6 +25,18 @@ const places = post.itk_places;
 function telHref(phone: string) {
 	return `tel:${phone.replace(/[^0-9+]/g, "")}`;
 }
+
+function formatPlaceDateTime(place: ItkPlace): string | null {
+	const datePart = place.event_date
+		? new Date(`${place.event_date}T00:00:00`).toLocaleDateString("en-US", {
+				month: "long",
+				day: "numeric",
+				year: "numeric",
+			})
+		: null;
+	const parts = [datePart, place.event_time].filter(Boolean);
+	return parts.length > 0 ? parts.join(" · ") : null;
+}
 ---
 
 <main class="pb-[var(--spacing-section)] pt-12 sm:pt-14">
@@ -82,16 +94,6 @@ function telHref(phone: string) {
 									</span>
 								)}
 							</div>
-
-							{place.event_date && (
-								<p class="eyebrow text-accent">
-									{new Date(`${place.event_date}T00:00:00`).toLocaleDateString("en-US", {
-										month: "long",
-										day: "numeric",
-										year: "numeric",
-									})}
-								</p>
-							)}
 
 							{place.description && (
 								<p class="text-base leading-relaxed text-text/80">{place.description}</p>
@@ -166,12 +168,19 @@ function telHref(phone: string) {
 
 						<div class:list={["order-1 flex flex-col gap-3", textFirst ? "lg:order-2" : "lg:order-1"]}>
 							{place.itk_photos.length > 0 && (
-								<img
-									src={place.itk_photos[0].url}
-									alt={place.itk_photos[0].alt_text}
-									loading="lazy"
-									class="aspect-[4/3] w-full rounded-[var(--radius-lg)] object-cover"
-								/>
+								<div class="relative overflow-hidden rounded-[var(--radius-lg)]">
+									<img
+										src={place.itk_photos[0].url}
+										alt={place.itk_photos[0].alt_text}
+										loading="lazy"
+										class="aspect-[4/3] w-full object-cover"
+									/>
+									{formatPlaceDateTime(place) && (
+										<span class="glass-pill absolute bottom-3 left-3 px-3 py-1.5 text-xs font-dm-sans font-medium text-primary">
+											{formatPlaceDateTime(place)}
+										</span>
+									)}
+								</div>
 							)}
 							{place.itk_photos.length > 1 && (
 								<div class="itk-hscroll flex gap-2 overflow-x-auto pb-1">
