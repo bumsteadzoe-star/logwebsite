@@ -66,18 +66,45 @@ function orderPosts(posts: ItkPost[]): ItkPost[] {
 
 // Build-time only — called once from Astro frontmatter, never per-visitor,
 // so the public pages stay fully static.
+//
+// Never throws. This runs inside `getStaticPaths`, where an exception aborts the entire
+// `astro build` — so a CMS problem used to take the whole site down with it, including
+// /open, the bridge page the onboarding email's "Open Vouch" button depends on. The blog is
+// the only thing that needs Supabase; nothing else on the site should be hostage to it.
+//
+// The cost of that choice: a broken CMS now ships an empty blog instead of failing the build,
+// so the warnings below are the only signal. Grep the deploy log for "In the Know" before
+// assuming an empty /in-the-know is just an empty CMS.
 export async function fetchPublishedPosts(): Promise<ItkPost[]> {
-	const res = await fetch(
-		`${SUPABASE_URL}/rest/v1/itk_posts?select=*,itk_places(*,itk_photos(*))&published=eq.true`,
-		{
-			headers: {
-				apikey: SUPABASE_ANON_KEY,
-				Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+	if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+		// Unset vars stringify to "undefined" inside the template literal below, which fetch
+		// rejects as an invalid URL. Catching it here says why, instead of "Failed to parse URL".
+		console.warn(
+			"[In the Know] PUBLIC_SUPABASE_URL / PUBLIC_SUPABASE_ANON_KEY are not set — building with no posts.",
+		);
+		return [];
+	}
+
+	let res: Response;
+	try {
+		res = await fetch(
+			`${SUPABASE_URL}/rest/v1/itk_posts?select=*,itk_places(*,itk_photos(*))&published=eq.true`,
+			{
+				headers: {
+					apikey: SUPABASE_ANON_KEY,
+					Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+				},
 			},
-		},
-	);
+		);
+	} catch (err) {
+		console.warn(`[In the Know] Could not reach Supabase — building with no posts. ${err}`);
+		return [];
+	}
 	if (!res.ok) {
-		throw new Error(`Failed to fetch In the Know posts: ${res.status} ${await res.text()}`);
+		console.warn(
+			`[In the Know] Supabase returned ${res.status} — building with no posts. ${await res.text()}`,
+		);
+		return [];
 	}
 	const posts = (await res.json()) as ItkPost[];
 	for (const post of posts) {
