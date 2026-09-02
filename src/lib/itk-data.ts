@@ -20,6 +20,8 @@ export interface ItkPlace {
 	booking_url: string | null;
 	tags: string[];
 	rating: Rating | null;
+	event_date: string | null;
+	event_time: string | null;
 	itk_photos: ItkPhoto[];
 }
 
