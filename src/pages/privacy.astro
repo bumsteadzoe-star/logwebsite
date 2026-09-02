@@ -6,19 +6,20 @@ const sections = [
 	{ id: "summary", title: "2. Summary" },
 	{ id: "information-you-provide", title: "3. Information You Provide" },
 	{ id: "information-from-your-device", title: "4. Information Collected From Your Device" },
-	{ id: "information-from-third-parties", title: "5. Information From Third Parties" },
-	{ id: "sensitive-information", title: "6. Sensitive Information" },
-	{ id: "how-we-use-information", title: "7. How We Use Information" },
-	{ id: "ai-features", title: "8. AI Features" },
-	{ id: "how-we-share-information", title: "9. How We Share Information" },
-	{ id: "retention", title: "10. Retention" },
-	{ id: "security", title: "11. Security" },
-	{ id: "international-transfers", title: "12. International Transfers" },
-	{ id: "your-rights-and-choices", title: "13. Your Rights and Choices" },
-	{ id: "children", title: "14. Children" },
-	{ id: "third-party-services", title: "15. Third-Party Services" },
-	{ id: "changes", title: "16. Changes" },
-	{ id: "contact", title: "17. Contact" },
+	{ id: "app-store-disclosures", title: "5. App Store Disclosures and Data Categories" },
+	{ id: "information-from-third-parties", title: "6. Information From Third Parties" },
+	{ id: "sensitive-information", title: "7. Sensitive Information" },
+	{ id: "how-we-use-information", title: "8. How We Use Information" },
+	{ id: "ai-features", title: "9. AI Features" },
+	{ id: "how-we-share-information", title: "10. How We Share Information" },
+	{ id: "retention", title: "11. Retention" },
+	{ id: "security", title: "12. Security" },
+	{ id: "international-transfers", title: "13. International Transfers" },
+	{ id: "your-rights-and-choices", title: "14. Your Rights and Choices" },
+	{ id: "children", title: "15. Children" },
+	{ id: "third-party-services", title: "16. Third-Party Services" },
+	{ id: "changes", title: "17. Changes" },
+	{ id: "contact", title: "18. Contact" },
 ];
 
 const legalBases = [
@@ -53,7 +54,18 @@ const ccpaCategories = [
 	{ cat: "I. Employment information", collected: "No", examples: "—", disclosed: "—" },
 	{ cat: "J. Education information", collected: "Yes (limited)", examples: "School email, institution", disclosed: "Service providers" },
 	{ cat: "K. Inferences", collected: "Yes", examples: "Taste profile, place suggestions", disclosed: "AI provider" },
-	{ cat: "L. Sensitive personal information", collected: "Yes — precise geolocation only", examples: "See Section 6", disclosed: "Service providers" },
+	{ cat: "L. Sensitive personal information", collected: "Yes — precise geolocation only", examples: "See Section 7", disclosed: "Service providers" },
+];
+
+const dataCategories = [
+	{ data: "Name, email, phone number", why: "Account creation and sign-in" },
+	{ data: "Date of birth", why: "18+ age check" },
+	{ data: "Hometown / current city", why: "Personalizing recommendations" },
+	{ data: "Camera-roll photos and their location data", why: "Building your profile of places you've been" },
+	{ data: "Precise location", why: "Recommending nearby places" },
+	{ data: "Contacts", why: "Finding friends already on the app" },
+	{ data: "Gmail messages (opt-in only)", why: "Detecting restaurant reservations" },
+	{ data: "Product usage and screen views", why: "Improving the app" },
 ];
 ---
 
@@ -67,7 +79,7 @@ const ccpaCategories = [
 			<h1 class="mt-4 font-display text-[clamp(2rem,5vw,3rem)] font-medium leading-[1.1] text-primary">
 				Privacy Policy
 			</h1>
-			<p class="mt-3 text-sm text-accent">Effective Date: August 28, 2026 · Last updated August 28, 2026</p>
+			<p class="mt-3 text-sm text-accent">Effective Date: August 28, 2026 · Last updated September 2, 2026</p>
 		</section>
 
 		<section class="mx-auto max-w-3xl px-4 pb-10 sm:px-6 lg:px-8" data-reveal>
@@ -129,7 +141,7 @@ const ccpaCategories = [
 								</tr>
 								<tr class="border-b hairline align-top">
 									<td class="py-2.5 pr-4 font-semibold text-primary">Photos</td>
-									<td class="py-2.5 text-text/80">If you use our photo-based setup, the app scans your camera roll on your device and <strong>uploads a limited number of photos automatically</strong> to build your first entries. Section 4.4 explains this in detail.</td>
+									<td class="py-2.5 text-text/80">If you use our photo-based setup, the app scans your camera roll on your device and <strong>uploads a limited number of photos automatically</strong> to build your first entries. Section 4.3 explains this in detail.</td>
 								</tr>
 								<tr class="align-top">
 									<td class="py-2.5 pr-4 font-semibold text-primary">Your controls</td>
@@ -243,9 +255,14 @@ const ccpaCategories = [
 
 					<h3 class="mt-5 text-base font-semibold text-primary">4.5 Usage data</h3>
 					<p class="mt-2 text-base leading-relaxed text-text/80">
-						We use PostHog to understand how the Service is used. Events are associated with a randomly
-						generated device identifier, not with your account. PostHog derives approximate location
-						from your IP address.
+						We use PostHog to understand how the Service is used — which screens are reached and where
+						people drop off. Events are always associated with a device identifier, and, <strong>once
+						you sign in, with your account</strong>. We link usage events to your account so we can
+						reliably measure things like onboarding completion, which anonymous device data alone could
+						not tell us. We send PostHog your account identifier only — not your name, email address,
+						phone number, or location. PostHog separately derives approximate location from your IP
+						address for its own analytics. See Section 5 for a fuller summary of what we collect and
+						why.
 					</p>
 
 					<h3 class="mt-5 text-base font-semibold text-primary">4.6 Push notifications</h3>
@@ -263,8 +280,67 @@ const ccpaCategories = [
 					</p>
 				</div>
 
+				<div id="app-store-disclosures">
+					<h2 class="font-display text-xl font-medium text-primary">5. App Store Disclosures and Data Categories</h2>
+					<p class="mt-3 text-base leading-relaxed text-text/80">
+						This section brings together, in one place, the categories of information the Service
+						collects and why — matching what we declare in Apple's App Store privacy disclosures and
+						privacy manifest. If anything here reads as new, it isn't a change in what we collect; it's
+						us being more explicit about it.
+					</p>
+
+					<h3 class="mt-5 text-base font-semibold text-primary">5.1 Analytics tied to your account</h3>
+					<p class="mt-2 text-base leading-relaxed text-text/80">
+						As described in Section 4.5, usage analytics through PostHog are linked to your account
+						once you sign in, in addition to a device identifier. Previously this was anonymous,
+						device-only data. We made this change because anonymous data could not reliably tell us
+						whether someone leaving the sign-up flow was a new or returning user, which made it
+						impossible to accurately measure and improve onboarding. We send PostHog your account
+						identifier only — never your name, email address, phone number, or location.
+					</p>
+
+					<h3 class="mt-5 text-base font-semibold text-primary">5.2 What we collect, and why</h3>
+					<div class="mt-4 overflow-x-auto">
+						<table class="w-full min-w-[560px] border-collapse text-sm">
+							<thead>
+								<tr class="border-b hairline text-left">
+									<th class="py-2 pr-4 font-semibold text-primary">Data</th>
+									<th class="py-2 font-semibold text-primary">Why we collect it</th>
+								</tr>
+							</thead>
+							<tbody>
+								{dataCategories.map((row) => (
+									<tr class="border-b hairline align-top">
+										<td class="py-2.5 pr-4 text-text/80">{row.data}</td>
+										<td class="py-2.5 text-text/80">{row.why}</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+					</div>
+
+					<h3 class="mt-5 text-base font-semibold text-primary">5.3 Two things worth stating plainly</h3>
+					<ul class="mt-3 list-disc space-y-2 pl-5 text-base leading-relaxed text-text/80">
+						<li><strong>Photos are uploaded to our servers, not just read on your device.</strong> As described in Section 4.3, when you use photo-based setup we upload up to four photos per place we detect to our servers, so we can build draft entries for you to review.</li>
+						<li><strong>Gmail access means we access your mailbox.</strong> As described in Section 6, connecting your email is opt-in and read-only, and limited to detecting restaurant and venue reservations — we do not read, store, or process any other message content. But to be direct about what "connect your email" means in practice: we do access your mailbox to look for that information.</li>
+					</ul>
+
+					<h3 class="mt-5 text-base font-semibold text-primary">5.4 What we do not do</h3>
+					<ul class="mt-3 list-disc space-y-2 pl-5 text-base leading-relaxed text-text/80">
+						<li>No advertising and no ad networks.</li>
+						<li>No selling or sharing data with data brokers.</li>
+						<li>No tracking you across other companies' apps or websites.</li>
+					</ul>
+					<p class="mt-3 text-base leading-relaxed text-text/80">
+						That last point is why the Service does not show Apple's "Allow Tracking?" prompt — the
+						App Tracking Transparency framework applies to cross-app/cross-site tracking, which we do
+						not do. If we ever introduce advertising, that would change, and we would revisit this
+						policy and the related App Store disclosures before doing so.
+					</p>
+				</div>
+
 				<div id="information-from-third-parties">
-					<h2 class="font-display text-xl font-medium text-primary">5. Information From Third Parties</h2>
+					<h2 class="font-display text-xl font-medium text-primary">6. Information From Third Parties</h2>
 					<h3 class="mt-4 text-base font-semibold text-primary">Sign-in providers</h3>
 					<p class="mt-2 text-base leading-relaxed text-text/80">
 						If you sign in with Google or Apple, we receive your name and email address as permitted by
@@ -296,7 +372,7 @@ const ccpaCategories = [
 				</div>
 
 				<div id="sensitive-information">
-					<h2 class="font-display text-xl font-medium text-primary">6. Sensitive Information</h2>
+					<h2 class="font-display text-xl font-medium text-primary">7. Sensitive Information</h2>
 					<p class="mt-3 text-base leading-relaxed text-text/80">
 						<strong>Precise geolocation is "sensitive personal information" under the California
 						Privacy Rights Act and comparable state laws.</strong> We collect it as described in
@@ -308,7 +384,7 @@ const ccpaCategories = [
 						<strong>We do not use or disclose sensitive personal information to infer characteristics
 						about you.</strong> Under the CPRA, uses limited to performing the service you requested do
 						not trigger the right to limit — but you may still contact us with any request under
-						Section 13.
+						Section 14.
 					</p>
 					<p class="mt-3 text-base leading-relaxed text-text/80">
 						<strong>Please be aware:</strong> the places you log can reveal sensitive things about you,
@@ -325,13 +401,13 @@ const ccpaCategories = [
 				</div>
 
 				<div id="how-we-use-information">
-					<h2 class="font-display text-xl font-medium text-primary">7. How We Use Information</h2>
+					<h2 class="font-display text-xl font-medium text-primary">8. How We Use Information</h2>
 					<p class="mt-3 text-base leading-relaxed text-text/80">We use personal information to:</p>
 					<ul class="mt-3 list-disc space-y-2 pl-5 text-base leading-relaxed text-text/80">
 						<li>Create and maintain your account and verify your age</li>
 						<li>Provide the Service: store your entries, display them to your chosen audience, and show you entries shared with you</li>
 						<li>Suggest places and people you may know</li>
-						<li>Generate draft content and summaries using AI (Section 8)</li>
+						<li>Generate draft content and summaries using AI (Section 9)</li>
 						<li>Send transactional messages: verification codes, notifications you enable, and Service updates</li>
 						<li>Respond to support requests</li>
 						<li>Detect, investigate, and prevent fraud, abuse, security incidents, and Terms violations</li>
@@ -368,7 +444,7 @@ const ccpaCategories = [
 				</div>
 
 				<div id="ai-features">
-					<h2 class="font-display text-xl font-medium text-primary">8. AI Features</h2>
+					<h2 class="font-display text-xl font-medium text-primary">9. AI Features</h2>
 					<p class="mt-3 text-base leading-relaxed text-text/80">
 						We use artificial intelligence to generate suggested captions, profile summaries, and place
 						categorizations, and to rank recommendations.
@@ -405,9 +481,9 @@ const ccpaCategories = [
 				</div>
 
 				<div id="how-we-share-information">
-					<h2 class="font-display text-xl font-medium text-primary">9. How We Share Information</h2>
+					<h2 class="font-display text-xl font-medium text-primary">10. How We Share Information</h2>
 
-					<h3 class="mt-4 text-base font-semibold text-primary">9.1 With other users</h3>
+					<h3 class="mt-4 text-base font-semibold text-primary">10.1 With other users</h3>
 					<p class="mt-2 text-base leading-relaxed text-text/80">
 						When you post an experience, you choose who can see it:
 					</p>
@@ -437,7 +513,7 @@ const ccpaCategories = [
 						Likes, comments, and follows on a post are visible to other users of the app.
 					</p>
 
-					<h3 class="mt-5 text-base font-semibold text-primary">9.2 With service providers</h3>
+					<h3 class="mt-5 text-base font-semibold text-primary">10.2 With service providers</h3>
 					<p class="mt-2 text-base leading-relaxed text-text/80">
 						We share information with vendors who process it on our behalf, under contract, for the
 						purposes below.
@@ -463,7 +539,7 @@ const ccpaCategories = [
 						</table>
 					</div>
 
-					<h3 class="mt-5 text-base font-semibold text-primary">9.3 Affiliate partners</h3>
+					<h3 class="mt-5 text-base font-semibold text-primary">10.3 Affiliate partners</h3>
 					<p class="mt-2 text-base leading-relaxed text-text/80">
 						When you tap a booking link, you leave the Service and go to a third-party site.
 						<strong>We do not pass your name, account identifier, email, phone number, or precise
@@ -475,14 +551,14 @@ const ccpaCategories = [
 						We may earn a commission on bookings made through these links.
 					</p>
 
-					<h3 class="mt-5 text-base font-semibold text-primary">9.4 Other disclosures</h3>
+					<h3 class="mt-5 text-base font-semibold text-primary">10.4 Other disclosures</h3>
 					<ul class="mt-3 list-disc space-y-2 pl-5 text-base leading-relaxed text-text/80">
 						<li><strong>Legal.</strong> We may disclose information where we believe in good faith it is required by law, legal process, or governmental request, or necessary to protect the rights, property, or safety of Log Social, our users, or the public.</li>
 						<li><strong>Business transfer.</strong> If we are involved in a merger, acquisition, financing, or sale of assets, information may be transferred. We will notify you before your information becomes subject to a materially different privacy policy.</li>
 						<li><strong>With your direction.</strong> When you choose to share content outside the Service.</li>
 					</ul>
 
-					<h3 class="mt-5 text-base font-semibold text-primary">9.5 What we do not do</h3>
+					<h3 class="mt-5 text-base font-semibold text-primary">10.5 What we do not do</h3>
 					<p class="mt-2 text-base leading-relaxed text-text/80">
 						<strong>We do not sell your personal information, and we have not sold or shared it for
 						cross-context behavioral advertising in the preceding 12 months.</strong>
@@ -495,7 +571,7 @@ const ccpaCategories = [
 				</div>
 
 				<div id="retention">
-					<h2 class="font-display text-xl font-medium text-primary">10. Retention</h2>
+					<h2 class="font-display text-xl font-medium text-primary">11. Retention</h2>
 					<p class="mt-3 text-base leading-relaxed text-text/80">
 						We retain your personal information for as long as your account remains active. We do not
 						automatically delete account information, content, or activity after a fixed period. Your
@@ -520,7 +596,7 @@ const ccpaCategories = [
 				</div>
 
 				<div id="security">
-					<h2 class="font-display text-xl font-medium text-primary">11. Security</h2>
+					<h2 class="font-display text-xl font-medium text-primary">12. Security</h2>
 					<p class="mt-3 text-base leading-relaxed text-text/80">
 						We use technical and organizational measures to protect personal information, including
 						encryption in transit and at rest, access controls, and authentication safeguards.
@@ -533,7 +609,7 @@ const ccpaCategories = [
 				</div>
 
 				<div id="international-transfers">
-					<h2 class="font-display text-xl font-medium text-primary">12. International Transfers</h2>
+					<h2 class="font-display text-xl font-medium text-primary">13. International Transfers</h2>
 					<p class="mt-3 text-base leading-relaxed text-text/80">
 						Our servers are located in the United States, and personal information is only processed
 						there.
@@ -541,9 +617,9 @@ const ccpaCategories = [
 				</div>
 
 				<div id="your-rights-and-choices">
-					<h2 class="font-display text-xl font-medium text-primary">13. Your Rights and Choices</h2>
+					<h2 class="font-display text-xl font-medium text-primary">14. Your Rights and Choices</h2>
 
-					<h3 class="mt-4 text-base font-semibold text-primary">13.1 Everyone</h3>
+					<h3 class="mt-4 text-base font-semibold text-primary">14.1 Everyone</h3>
 					<ul class="mt-3 list-disc space-y-2 pl-5 text-base leading-relaxed text-text/80">
 						<li><strong>Access and correct</strong> most of your information directly in the app.</li>
 						<li><strong>Delete your account</strong> in the app at any time.</li>
@@ -552,7 +628,7 @@ const ccpaCategories = [
 						<li><strong>Disconnect third-party accounts</strong> in settings.</li>
 					</ul>
 
-					<h3 class="mt-5 text-base font-semibold text-primary">13.2 United States — state privacy rights</h3>
+					<h3 class="mt-5 text-base font-semibold text-primary">14.2 United States — state privacy rights</h3>
 					<p class="mt-2 text-base leading-relaxed text-text/80">
 						Depending on your state of residence, you may have the right to: know what personal
 						information we collect, use, and disclose; access a copy; correct inaccuracies; delete it;
@@ -583,7 +659,7 @@ const ccpaCategories = [
 						denied, you may contact your state Attorney General.
 					</p>
 
-					<h3 class="mt-5 text-base font-semibold text-primary">13.3 California — CCPA/CPRA categories</h3>
+					<h3 class="mt-5 text-base font-semibold text-primary">14.3 California — CCPA/CPRA categories</h3>
 					<p class="mt-2 text-base leading-relaxed text-text/80">
 						In the preceding 12 months we have collected the following categories:
 					</p>
@@ -611,7 +687,7 @@ const ccpaCategories = [
 					</div>
 					<p class="mt-3 text-base leading-relaxed text-text/80">
 						<strong>Sources:</strong> you; your device (with permission); third parties you connect;
-						place data providers. <strong>Purposes:</strong> Section 7. <strong>We do not sell or share
+						place data providers. <strong>Purposes:</strong> Section 8. <strong>We do not sell or share
 						any category.</strong>
 					</p>
 					<p class="mt-3 text-base leading-relaxed text-text/80">
@@ -621,7 +697,7 @@ const ccpaCategories = [
 				</div>
 
 				<div id="children">
-					<h2 class="font-display text-xl font-medium text-primary">14. Children</h2>
+					<h2 class="font-display text-xl font-medium text-primary">15. Children</h2>
 					<p class="mt-3 text-base leading-relaxed text-text/80">
 						The Service is for adults 18 and older. We do not knowingly collect personal information
 						from anyone under 18. If we learn that we have, we will delete it and terminate the account.
@@ -635,7 +711,7 @@ const ccpaCategories = [
 				</div>
 
 				<div id="third-party-services">
-					<h2 class="font-display text-xl font-medium text-primary">15. Third-Party Services</h2>
+					<h2 class="font-display text-xl font-medium text-primary">16. Third-Party Services</h2>
 					<p class="mt-3 text-base leading-relaxed text-text/80">
 						The Service links to third-party websites and services we do not control. Their privacy
 						practices are their own. Review their policies before providing information.
@@ -643,7 +719,7 @@ const ccpaCategories = [
 				</div>
 
 				<div id="changes">
-					<h2 class="font-display text-xl font-medium text-primary">16. Changes</h2>
+					<h2 class="font-display text-xl font-medium text-primary">17. Changes</h2>
 					<p class="mt-3 text-base leading-relaxed text-text/80">
 						We may update this policy. For material changes we will provide at least 30 days' notice by
 						email or in-app notice before they take effect. The "Last Updated" date reflects the most
@@ -652,7 +728,7 @@ const ccpaCategories = [
 				</div>
 
 				<div id="contact">
-					<h2 class="font-display text-xl font-medium text-primary">17. Contact</h2>
+					<h2 class="font-display text-xl font-medium text-primary">18. Contact</h2>
 					<p class="mt-3 text-base leading-relaxed text-text/80">
 						Log Social, LLC Alaska Entity #10361849 at 4123 Hampton Drive, 9B, Anchorage, AK 99501, with
 						a copy to
