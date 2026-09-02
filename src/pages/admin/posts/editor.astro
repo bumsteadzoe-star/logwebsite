@@ -126,13 +126,19 @@ import { RATING_VALUES } from "../../../lib/itk-ratings";
 				</div>
 			</div>
 			<input type="text" placeholder="Name" data-field="name" class="glass-pill w-full px-4 py-2.5 text-sm text-text outline-none" />
-			<label class="flex flex-col gap-1.5 text-sm">
-				<span class="text-accent">Rating</span>
-				<select data-field="rating" class="glass-pill w-full max-w-[14rem] px-4 py-2.5 text-sm text-text outline-none">
-					<option value="">No rating</option>
-					{RATING_VALUES.map((value) => <option value={value}>{value}</option>)}
-				</select>
-			</label>
+			<div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+				<label class="flex flex-col gap-1.5 text-sm">
+					<span class="text-accent">Rating</span>
+					<select data-field="rating" class="glass-pill w-full px-4 py-2.5 text-sm text-text outline-none">
+						<option value="">No rating</option>
+						{RATING_VALUES.map((value) => <option value={value}>{value}</option>)}
+					</select>
+				</label>
+				<label class="flex flex-col gap-1.5 text-sm">
+					<span class="text-accent">Date (optional — e.g. a limited-time event)</span>
+					<input type="date" data-field="event_date" class="glass-pill w-full px-4 py-2.5 text-sm text-text outline-none" />
+				</label>
+			</div>
 			<textarea placeholder="Description" rows="2" data-field="description" class="glass-pill w-full px-4 py-2.5 text-sm text-text outline-none"></textarea>
 			<div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
 				<div class="flex flex-col gap-1">
@@ -199,6 +205,7 @@ import { RATING_VALUES } from "../../../lib/itk-ratings";
 		position: number;
 		name: string;
 		rating: Rating | null;
+		event_date: string | null;
 		description: string | null;
 		address: string | null;
 		phone: string | null;
@@ -312,6 +319,7 @@ import { RATING_VALUES } from "../../../lib/itk-ratings";
 			};
 			setVal("name", place.name);
 			setVal("rating", place.rating ?? "");
+			setVal("event_date", place.event_date ?? "");
 			setVal("description", place.description ?? "");
 			setVal("address", place.address ?? "");
 			setVal("phone", place.phone ?? "");
@@ -337,6 +345,7 @@ import { RATING_VALUES } from "../../../lib/itk-ratings";
 				const updates = {
 					name: get("name"),
 					rating: get("rating") || null,
+					event_date: get("event_date") || null,
 					description: get("description") || null,
 					address: get("address") || null,
 					phone: get("phone") || null,
@@ -599,6 +608,7 @@ import { RATING_VALUES } from "../../../lib/itk-ratings";
 						(placeEl.querySelector(`[data-field="${field}"]`) as HTMLInputElement)?.value ?? "";
 					const name = get("name");
 					const rating = (get("rating") || null) as Rating | null;
+					const eventDate = get("event_date") || null;
 					const description = get("description");
 					const address = get("address");
 					const phone = get("phone");
@@ -672,6 +682,17 @@ import { RATING_VALUES } from "../../../lib/itk-ratings";
 											: ""
 									}
 								</div>
+								${
+									eventDate
+										? `<p class="eyebrow text-accent">${escapeHtml(
+												new Date(`${eventDate}T00:00:00`).toLocaleDateString("en-US", {
+													month: "long",
+													day: "numeric",
+													year: "numeric",
+												}),
+											)}</p>`
+										: ""
+								}
 								${description ? `<p class="text-base leading-relaxed text-text/80">${escapeHtml(description)}</p>` : ""}
 								${tagsHtml}
 								${detailsHtml}

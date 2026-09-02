@@ -83,6 +83,16 @@ function telHref(phone: string) {
 								)}
 							</div>
 
+							{place.event_date && (
+								<p class="eyebrow text-accent">
+									{new Date(`${place.event_date}T00:00:00`).toLocaleDateString("en-US", {
+										month: "long",
+										day: "numeric",
+										year: "numeric",
+									})}
+								</p>
+							)}
+
 							{place.description && (
 								<p class="text-base leading-relaxed text-text/80">{place.description}</p>
 							)}
