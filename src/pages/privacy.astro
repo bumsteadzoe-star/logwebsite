@@ -24,14 +24,15 @@ const sections = [
 
 const legalBases = [
 	{ purpose: "Providing the Service, maintaining your account", basis: "Performance of a contract (Art. 6(1)(b))" },
-	{ purpose: "Location, contacts, photo library, calendar access", basis: "Consent (Art. 6(1)(a)), given via device permission" },
+	{ purpose: "Location, photo library, calendar access", basis: "Consent (Art. 6(1)(a)), given via device permission" },
+	{ purpose: "Storing and matching contacts, and sending notifications you enable", basis: "Consent (Art. 6(1)(a)), given via device permission; and, as to contacts who are not Vouch users, our and your legitimate interest in connecting you with people you already know (Art. 6(1)(f))" },
 	{ purpose: "Precise location as special-category-adjacent data", basis: "Explicit consent (Art. 9(2)(a)) where applicable" },
 	{ purpose: "Security, fraud prevention, service improvement", basis: "Legitimate interests (Art. 6(1)(f))" },
 	{ purpose: "Age verification, responding to legal requests", basis: "Legal obligation (Art. 6(1)(c))" },
 ];
 
 const serviceProviders = [
-	{ provider: "Supabase (AWS)", purpose: "Database, authentication, file storage, backend functions", info: "All account and content data" },
+	{ provider: "Supabase (AWS)", purpose: "Database, authentication, file storage, backend functions", info: "All account and content data, including contact information from your device address book" },
 	{ provider: "Google Cloud (Vertex AI, Cloud Vision)", purpose: "AI generation and photo labeling", info: "Photos, derived labels, city names" },
 	{ provider: "Google Places", purpose: "Venue lookup", info: "Search queries, coordinates" },
 	{ provider: "Google Sheets", purpose: "Waitlist form storage", info: "Name, email, city/university" },
@@ -43,7 +44,7 @@ const serviceProviders = [
 ];
 
 const ccpaCategories = [
-	{ cat: "A. Identifiers", collected: "Yes", examples: "Name, username, email, phone, account ID", disclosed: "Service providers" },
+	{ cat: "A. Identifiers", collected: "Yes", examples: "Name, username, email, phone, account ID, and phone numbers and names from your device address book", disclosed: "Service providers" },
 	{ cat: "B. Customer records", collected: "Yes", examples: "Name, phone, email", disclosed: "Service providers" },
 	{ cat: "C. Protected classifications", collected: "Yes (limited)", examples: "Age/date of birth", disclosed: "Service providers" },
 	{ cat: "D. Commercial information", collected: "No", examples: "—", disclosed: "—" },
@@ -63,9 +64,10 @@ const dataCategories = [
 	{ data: "Hometown / current city", why: "Personalizing recommendations" },
 	{ data: "Camera-roll photos and their location data", why: "Building your profile of places you've been" },
 	{ data: "Precise location", why: "Recommending nearby places" },
-	{ data: "Contacts", why: "Finding friends already on the app" },
+	{ data: "Contacts", why: "Finding friends already on the app, and notifying you when someone in your contacts joins" },
 	{ data: "Gmail messages (opt-in only)", why: "Detecting restaurant reservations" },
 	{ data: "Product usage and screen views", why: "Improving the app" },
+	{ data: "Push token", why: "Delivering the notifications you enable" },
 ];
 ---
 
@@ -79,7 +81,7 @@ const dataCategories = [
 			<h1 class="mt-4 font-display text-[clamp(2rem,5vw,3rem)] font-medium leading-[1.1] text-primary">
 				Privacy Policy
 			</h1>
-			<p class="mt-3 text-sm text-accent">Effective Date: August 28, 2026 · Last updated September 2, 2026</p>
+			<p class="mt-3 text-sm text-accent">Effective Date: October 13, 2026 · Last updated September 13, 2026</p>
 		</section>
 
 		<section class="mx-auto max-w-3xl px-4 pb-10 sm:px-6 lg:px-8" data-reveal>
@@ -125,7 +127,7 @@ const dataCategories = [
 							<tbody>
 								<tr class="border-b hairline align-top">
 									<td class="py-2.5 pr-4 font-semibold text-primary">We collect</td>
-									<td class="py-2.5 text-text/80">Your account details, the places and experiences you log, photos you share, precise location tied to those places, your connections, and app usage data.</td>
+									<td class="py-2.5 text-text/80">Your account details, the places and experiences you log, photos you share, precise location tied to those places, your connections, contact information from your device address book, and app usage data.</td>
 								</tr>
 								<tr class="border-b hairline align-top">
 									<td class="py-2.5 pr-4 font-semibold text-primary">We use it to</td>
@@ -142,6 +144,10 @@ const dataCategories = [
 								<tr class="border-b hairline align-top">
 									<td class="py-2.5 pr-4 font-semibold text-primary">Photos</td>
 									<td class="py-2.5 text-text/80">If you use our photo-based setup, the app scans your camera roll on your device and <strong>uploads a limited number of photos automatically</strong> to build your first entries. Section 4.3 explains this in detail.</td>
+								</tr>
+								<tr class="border-b hairline align-top">
+									<td class="py-2.5 pr-4 font-semibold text-primary">Contacts</td>
+									<td class="py-2.5 text-text/80">If you grant contacts permission, we store contact information from your address book on our servers so we can tell you when someone you know joins Vouch. Section 4.2 explains this in detail.</td>
 								</tr>
 								<tr class="align-top">
 									<td class="py-2.5 pr-4 font-semibold text-primary">Your controls</td>
@@ -209,12 +215,36 @@ const dataCategories = [
 
 					<h3 class="mt-5 text-base font-semibold text-primary">4.2 Contacts</h3>
 					<p class="mt-2 text-base leading-relaxed text-text/80">
-						If you grant contacts permission, we use your address book to help you find people you
-						already know who use Vouch. Vouch reads your address book on your device and compares the
-						phone numbers in it against phone numbers of existing Vouch accounts. This comparison
-						happens entirely on your device — <strong>your contacts are never transmitted to or stored
-						on our servers</strong>. We show you two things: contacts who already have Vouch accounts,
-						so you can follow them, and your remaining contacts, so you can invite them.
+						If you grant contacts permission, we collect the phone numbers, and where available the
+						associated names, in your device address book, and we store them on our servers.
+					</p>
+					<p class="mt-3 text-base leading-relaxed text-text/80">
+						We use this information to: (a) identify contacts who already have Vouch accounts, so you
+						can follow them; (b) show you your remaining contacts, so you can invite them; and (c)
+						notify you when a person in your address book later creates a Vouch account.
+					</p>
+					<p class="mt-3 text-base leading-relaxed text-text/80">
+						Purpose (c) requires comparing your address book against accounts created after you granted
+						permission. That comparison cannot be performed solely on your device at the moment
+						permission is granted, which is why the information is stored on our servers.
+					</p>
+					<p class="mt-3 text-base leading-relaxed text-text/80">
+						<strong>This is a change from our prior practice.</strong> Earlier versions of this policy
+						stated that contact comparison happened entirely on your device and that contacts were
+						never transmitted to or stored on our servers. As of the Effective Date above, contact
+						information is stored on our servers for the purposes described in this section.
+					</p>
+					<p class="mt-3 text-base leading-relaxed text-text/80">
+						We do not use your contacts to build profiles of people who are not Vouch users, to market
+						to them, or to contact them on your behalf or our own. We do not sell contact information
+						or share it for cross-context behavioral advertising, and we do not disclose it to any
+						party other than the service providers identified in Section 10.2.
+					</p>
+					<p class="mt-3 text-base leading-relaxed text-text/80">
+						You may revoke contacts permission at any time in your device settings. If you revoke
+						permission, we stop collecting new contact information and delete the contact information
+						previously stored for your account within 30 days. Deleting your account deletes it
+						immediately, along with the rest of your account data.
 					</p>
 					<p class="mt-3 text-base leading-relaxed text-text/80">
 						We do not send messages on your behalf. When you invite a contact, Vouch opens your device's
@@ -267,9 +297,31 @@ const dataCategories = [
 
 					<h3 class="mt-5 text-base font-semibold text-primary">4.6 Push notifications</h3>
 					<p class="mt-2 text-base leading-relaxed text-text/80">
-						If you enable notifications, we store a push token to deliver them. Notifications may reveal
-						another user's name and activity to you — for example, that a specific person followed you
-						or liked your post.
+						If you enable notifications, we store a push token in order to deliver them.
+					</p>
+					<p class="mt-3 text-base leading-relaxed text-text/80">We send the following notifications:</p>
+					<ul class="mt-3 list-disc space-y-2 pl-5 text-base leading-relaxed text-text/80">
+						<li>when a person in your device address book creates a Vouch account;</li>
+						<li>reminders to log or approve your daily experiences;</li>
+						<li>a daily roundup of place and experience suggestions personalized to you;</li>
+						<li>when the entries generated for your account are ready to view;</li>
+						<li>when experiences you asked us to generate are ready for your approval.</li>
+					</ul>
+					<p class="mt-3 text-base leading-relaxed text-text/80">
+						To produce and deliver these notifications we use your account information, the contact
+						information described in Section 4.2, the places and experiences you have logged, and the
+						preferences inferred from them as described in Sections 8 and 9.
+					</p>
+					<p class="mt-3 text-base leading-relaxed text-text/80">
+						Notifications may reveal another user's name and activity to you, for example that a
+						specific person followed you, liked your post, or joined Vouch. Depending on your device
+						settings, notification content may be displayed on your lock screen and visible to anyone
+						with access to your device.
+					</p>
+					<p class="mt-3 text-base leading-relaxed text-text/80">
+						You can disable notifications entirely in your device settings, and control individual
+						notification types in the app where those controls are offered. Disabling notifications
+						does not affect your ability to use the rest of the Service.
 					</p>
 
 					<h3 class="mt-5 text-base font-semibold text-primary">4.7 What we do not collect from your device</h3>
@@ -319,10 +371,11 @@ const dataCategories = [
 						</table>
 					</div>
 
-					<h3 class="mt-5 text-base font-semibold text-primary">5.3 Two things worth stating plainly</h3>
+					<h3 class="mt-5 text-base font-semibold text-primary">5.3 Three things worth stating plainly</h3>
 					<ul class="mt-3 list-disc space-y-2 pl-5 text-base leading-relaxed text-text/80">
 						<li><strong>Photos are uploaded to our servers, not just read on your device.</strong> As described in Section 4.3, when you use photo-based setup we upload up to four photos per place we detect to our servers, so we can build draft entries for you to review.</li>
 						<li><strong>Gmail access means we access your mailbox.</strong> As described in Section 6, connecting your email is opt-in and read-only, and limited to detecting restaurant and venue reservations — we do not read, store, or process any other message content. But to be direct about what "connect your email" means in practice: we do access your mailbox to look for that information.</li>
+						<li><strong>Contacts are stored on our servers, not just matched on your device.</strong> As described in Section 4.2, we retain contact information from your address book so we can notify you when someone you already know joins Vouch. This is a change from our prior practice, which matched contacts on-device only.</li>
 					</ul>
 
 					<h3 class="mt-5 text-base font-semibold text-primary">5.4 What we do not do</h3>
@@ -408,7 +461,9 @@ const dataCategories = [
 						<li>Provide the Service: store your entries, display them to your chosen audience, and show you entries shared with you</li>
 						<li>Suggest places and people you may know</li>
 						<li>Generate draft content and summaries using AI (Section 9)</li>
-						<li>Send transactional messages: verification codes, notifications you enable, and Service updates</li>
+						<li>Send transactional and service messages: verification codes, Service updates, and the notifications described in Section 4.6</li>
+						<li>Notify you when a person in your device address book joins the Service</li>
+						<li>Prepare the personalized daily suggestions and roundups described in Section 4.6</li>
 						<li>Respond to support requests</li>
 						<li>Detect, investigate, and prevent fraud, abuse, security incidents, and Terms violations</li>
 						<li>Analyze usage to understand and improve the Service</li>
@@ -581,6 +636,12 @@ const dataCategories = [
 					<p class="mt-3 text-base leading-relaxed text-text/80">
 						<strong>Content you delete individually.</strong> When you delete a post, journal entry,
 						trip, or comment, it is removed from the Service and is no longer visible to anyone.
+					</p>
+					<p class="mt-3 text-base leading-relaxed text-text/80">
+						<strong>Contacts.</strong> Contact information from your address book is retained for as
+						long as contacts permission remains enabled and your account is active. If you revoke
+						contacts permission, we delete it within 30 days. If you delete your account, it is deleted
+						with the rest of your data.
 					</p>
 					<p class="mt-3 text-base leading-relaxed text-text/80">
 						<strong>Account deletion.</strong> You can delete your account in the app at any time.
