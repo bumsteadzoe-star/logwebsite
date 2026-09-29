@@ -9,7 +9,7 @@ export default defineConfig({
   site: 'https://www.get-vouch.com',
   integrations: [
     sitemap({
-      filter: (page) => !page.includes('/admin'),
+      filter: (page) => !page.includes('/admin') && !/\/u\/?$/.test(page),
     }),
   ],
   vite: {

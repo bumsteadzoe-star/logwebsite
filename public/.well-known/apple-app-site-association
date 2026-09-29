@@ -9,7 +9,8 @@
           "/post/*",
           "/auth/email-change",
           "/auth/email-change/*",
-          "/open"
+          "/open",
+          "/u/*"
         ]
       }
     ]

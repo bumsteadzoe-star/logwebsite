@@ -1,0 +1,88 @@
+---
+/**
+ * Bridge for profile links, `https://www.get-vouch.com/u/<username>` — what Profile → Share hands
+ * out in the app, meant for an Instagram bio. vercel.json rewrites every `/u/<username>` here.
+ *
+ * With the app installed, iOS opens the link in the app (the AASA lists `/u/*`) and this page
+ * never renders. It renders in two cases:
+ *  - inside an in-app browser (Instagram, TikTok…), which ignores universal links: try
+ *    `log://u/<username>` (the app's /u/[username] route), then the App Store;
+ *  - no app: straight to the App Store. (In plain Safari with the app installed the universal
+ *    link would already have fired, so trying the scheme there only earns an "invalid address"
+ *    alert.)
+ *
+ * Standalone like open.astro: this page exists to be left immediately.
+ */
+const APP_STORE_URL =
+  import.meta.env.PUBLIC_IOS_APP_STORE_URL || 'https://apps.apple.com/app/id6763411702';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Vouch</title>
+    <meta name="robots" content="noindex" />
+    <meta name="apple-itunes-app" content="app-id=6763411702" />
+  </head>
+  <body
+    style="margin:0;font-family:system-ui,-apple-system,'Helvetica Neue',Helvetica,Arial,sans-serif;background:#ffffff;color:#0c1a08;"
+  >
+    <main
+      style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 24px;"
+    >
+      <h1 id="title" style="font-size:1.5rem;margin:0 0 8px;overflow-wrap:anywhere;">Opening Vouch…</h1>
+      <p style="color:#5f646a;margin:0 0 24px;">
+        If the app doesn&rsquo;t open, get it on the App Store.
+      </p>
+      <a
+        id="open"
+        href="log://"
+        style="display:block;width:100%;max-width:320px;box-sizing:border-box;padding:14px 20px;border-radius:999px;background:#0c1a08;color:#ffffff;font-weight:600;text-decoration:none;margin-bottom:12px;"
+        >Open in Vouch</a
+      >
+      <a href={APP_STORE_URL} style="color:#3d6b2f;font-weight:600;">Get Vouch on the App Store</a>
+    </main>
+
+    {/* `is:inline`: a bundled/deferred module would run too late (same as open.astro). */}
+    <script is:inline define:vars={{ APP_STORE_URL }}>
+      (function () {
+        var parts = location.pathname.split('/').filter(Boolean);
+        var name = '';
+        try {
+          name = decodeURIComponent(parts[0] === 'u' ? parts[1] || '' : '').replace(/^@+/, '').trim();
+        } catch (e) {}
+        var appUrl = name ? 'log://u/' + encodeURIComponent(name) : 'log://';
+        if (name) {
+          document.title = '@' + name + ' on Vouch';
+          document.getElementById('title').textContent = '@' + name + ' on Vouch';
+        }
+        document.getElementById('open').href = appUrl;
+
+        var ua = navigator.userAgent;
+        if (!/iPhone|iPad|iPod|Android/i.test(ua)) {
+          window.location.replace(APP_STORE_URL);
+          return;
+        }
+        var inAppBrowser = /Instagram|FBAN|FBAV|FB_IAB|LinkedInApp|musical_ly|TikTok|Snapchat|Twitter|Line\//i.test(ua);
+        if (!inAppBrowser) {
+          window.location.replace(APP_STORE_URL);
+          return;
+        }
+        // If the app takes over the page is backgrounded; don't also redirect behind it.
+        var handedOff = false;
+        document.addEventListener('visibilitychange', function () {
+          if (document.hidden) handedOff = true;
+        });
+        window.addEventListener('pagehide', function () {
+          handedOff = true;
+        });
+        window.location.href = appUrl;
+        setTimeout(function () {
+          if (!handedOff) window.location.replace(APP_STORE_URL);
+        }, 2000);
+      })();
+    </script>
+  </body>
+</html>
