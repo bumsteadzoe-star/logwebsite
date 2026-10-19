@@ -8,9 +8,12 @@
  *  1. Universal link — the app claims `applinks:logsocial.app`, so once
  *     /.well-known/apple-app-site-association is live on that domain iOS intercepts the tap and
  *     this page never renders for someone who has the app.
- *  2. This page — tries the `log://` scheme, and falls back to the App Store if nothing takes
- *     over the tab. That covers get-vouch.com (which the app does *not* claim) and any client
- *     that routes around universal links.
+ *  2. This page — opens the app by its own scheme ON THE SAME SCREEN (`com.averyv12.log:///open`
+ *     + this URL's query, which app/open.tsx routes: ?guide=, ?place=, ?post=, ?event=,
+ *     ?location=, ?trip=, ?user=, ?invite=), and falls back to the App Store only if nothing
+ *     takes over the tab. That covers every client that routes around universal links: in-app
+ *     browsers (Instagram, Gmail…), a link pasted into Safari, "Open in Safari". Not `log://`:
+ *     it dropped the query (the app opened on Home) and v1's Log app claims it too.
  *
  * Deliberately standalone rather than wrapped in the marketing Layout: this page exists to be
  * left immediately, so loading the nav and hero would just add a flash of the wrong thing.
@@ -35,8 +38,14 @@ const APP_STORE_URL =
     >
       <h1 style="font-size:1.5rem;margin:0 0 8px;">Opening Vouch…</h1>
       <p style="color:#5f646a;margin:0 0 24px;">
-        If the app doesn&rsquo;t open, we&rsquo;ll take you to the App Store.
+        If the app doesn&rsquo;t open, get it on the App Store.
       </p>
+      <a
+        id="open"
+        href="com.averyv12.log:///open"
+        style="display:block;width:100%;max-width:320px;box-sizing:border-box;padding:14px 20px;border-radius:999px;background:#0c1a08;color:#ffffff;font-weight:600;text-decoration:none;margin-bottom:12px;"
+        >Open in Vouch</a
+      >
       <a href={APP_STORE_URL} style="color:#3d6b2f;font-weight:600;">Get Vouch on the App Store</a>
     </main>
 
@@ -44,13 +53,22 @@ const APP_STORE_URL =
         watch this page sit there before anything happened. */}
     <script is:inline define:vars={{ APP_STORE_URL }}>
       (function () {
+        // The same screen in the app: /open?guide=… → com.averyv12.log:///open?guide=…
+        var appUrl = 'com.averyv12.log:///open' + window.location.search;
+        document.getElementById('open').href = appUrl;
         // Desktop has no app to open — go straight to the listing.
         if (!/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
           window.location.replace(APP_STORE_URL);
           return;
         }
-        // If the app takes over, the page is backgrounded. Without cancelling on that signal the
-        // user returns to Safari already redirected to the App Store, which reads as a failure.
+        // Hand-off to the app; the App Store only when nothing takes over (Daniela, 2026-10-19).
+        //  - The app opens → the page is hidden / unloaded → no redirect.
+        //  - A Safari sheet has focus at the 2 s mark ("Open this page in 'Vouch'?") → no redirect
+        //    underneath it: the old fixed timer did that and sent people WITH the app to the store.
+        //  - Otherwise (no app, or an in-app browser that ignores the scheme) → the App Store, once.
+        //    Never retried: after Safari fails the scheme ("address is invalid"), every further
+        //    navigation re-raises that alert (seen in Safari, 2026-10-19), so a retry loop strands
+        //    the visitor in alerts. The two buttons on the page are the fallback.
         var handedOff = false;
         document.addEventListener('visibilitychange', function () {
           if (document.hidden) handedOff = true;
@@ -58,9 +76,11 @@ const APP_STORE_URL =
         window.addEventListener('pagehide', function () {
           handedOff = true;
         });
-        window.location.href = 'log://';
+        window.location.href = appUrl;
         setTimeout(function () {
-          if (!handedOff) window.location.replace(APP_STORE_URL);
+          if (handedOff || document.hidden) return;
+          if (typeof document.hasFocus === 'function' && !document.hasFocus()) return;
+          window.location.replace(APP_STORE_URL);
         }, 2000);
       })();
     </script>
