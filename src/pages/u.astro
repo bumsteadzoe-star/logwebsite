@@ -4,12 +4,12 @@
  * out in the app, meant for an Instagram bio. vercel.json rewrites every `/u/<username>` here.
  *
  * With the app installed, iOS opens the link in the app (the AASA lists `/u/*`) and this page
- * never renders. It renders in two cases:
- *  - inside an in-app browser (Instagram, TikTok…), which ignores universal links: try
- *    `log://u/<username>` (the app's /u/[username] route), then the App Store;
- *  - no app: straight to the App Store. (In plain Safari with the app installed the universal
- *    link would already have fired, so trying the scheme there only earns an "invalid address"
- *    alert.)
+ * never renders — except where universal links don't fire: in-app browsers (Instagram, TikTok…),
+ * a link pasted into Safari, "Open in Safari". So on every phone this page opens the app by its
+ * own scheme on that profile (`com.averyv12.log:///u/<username>`, the app's /u/[username]
+ * route) and goes to the App Store only if nothing takes over (Daniela, 2026-10-19: "only to
+ * app store if phone doesn't have it downloaded"). It used to send plain Safari straight to the
+ * store, and used `log://`, which v1's Log app claims too.
  *
  * Standalone like open.astro: this page exists to be left immediately.
  */
@@ -38,7 +38,7 @@ const APP_STORE_URL =
       </p>
       <a
         id="open"
-        href="log://"
+        href="com.averyv12.log:///"
         style="display:block;width:100%;max-width:320px;box-sizing:border-box;padding:14px 20px;border-radius:999px;background:#0c1a08;color:#ffffff;font-weight:600;text-decoration:none;margin-bottom:12px;"
         >Open in Vouch</a
       >
@@ -53,7 +53,7 @@ const APP_STORE_URL =
         try {
           name = decodeURIComponent(parts[0] === 'u' ? parts[1] || '' : '').replace(/^@+/, '').trim();
         } catch (e) {}
-        var appUrl = name ? 'log://u/' + encodeURIComponent(name) : 'log://';
+        var appUrl = 'com.averyv12.log:///' + (name ? 'u/' + encodeURIComponent(name) : '');
         if (name) {
           document.title = '@' + name + ' on Vouch';
           document.getElementById('title').textContent = '@' + name + ' on Vouch';
@@ -65,12 +65,14 @@ const APP_STORE_URL =
           window.location.replace(APP_STORE_URL);
           return;
         }
-        var inAppBrowser = /Instagram|FBAN|FBAV|FB_IAB|LinkedInApp|musical_ly|TikTok|Snapchat|Twitter|Line\//i.test(ua);
-        if (!inAppBrowser) {
-          window.location.replace(APP_STORE_URL);
-          return;
-        }
-        // If the app takes over the page is backgrounded; don't also redirect behind it.
+        // Hand-off to the app; the App Store only when nothing takes over (Daniela, 2026-10-19).
+        //  - The app opens → the page is hidden / unloaded → no redirect.
+        //  - A Safari sheet has focus at the 2 s mark ("Open this page in 'Vouch'?") → no redirect
+        //    underneath it: the old fixed timer did that and sent people WITH the app to the store.
+        //  - Otherwise (no app, or an in-app browser that ignores the scheme) → the App Store, once.
+        //    Never retried: after Safari fails the scheme ("address is invalid"), every further
+        //    navigation re-raises that alert (seen in Safari, 2026-10-19), so a retry loop strands
+        //    the visitor in alerts. The two buttons on the page are the fallback.
         var handedOff = false;
         document.addEventListener('visibilitychange', function () {
           if (document.hidden) handedOff = true;
@@ -80,7 +82,9 @@ const APP_STORE_URL =
         });
         window.location.href = appUrl;
         setTimeout(function () {
-          if (!handedOff) window.location.replace(APP_STORE_URL);
+          if (handedOff || document.hidden) return;
+          if (typeof document.hasFocus === 'function' && !document.hasFocus()) return;
+          window.location.replace(APP_STORE_URL);
         }, 2000);
       })();
     </script>
